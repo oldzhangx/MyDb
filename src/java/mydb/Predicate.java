@@ -10,7 +10,7 @@ public class Predicate implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /** Constants used for return codes in Field.compare */
-    public enum Op implements Serializable {
+    public enum Operation implements Serializable {
         EQUALS, GREATER_THAN, LESS_THAN, LESS_THAN_OR_EQ, GREATER_THAN_OR_EQ, LIKE, NOT_EQUALS;
 
         /**
@@ -20,7 +20,7 @@ public class Predicate implements Serializable {
          * @param s
          *            a string containing a valid integer Op index
          */
-        public static Op getOp(String s) {
+        public static Operation getOp(String s) {
             return getOp(Integer.parseInt(s));
         }
 
@@ -31,7 +31,7 @@ public class Predicate implements Serializable {
          * @param i
          *            a valid integer Op index
          */
-        public static Op getOp(int i) {
+        public static Operation getOp(int i) {
             return values()[i];
         }
 
@@ -64,7 +64,7 @@ public class Predicate implements Serializable {
      * @param operand
      *            field value to compare passed in tuples to
      */
-    public Predicate(int field, Op op, Field operand) {
+    public Predicate(int field, Operation op, Field operand) {
         // some code goes here
     }
 
@@ -80,7 +80,7 @@ public class Predicate implements Serializable {
     /**
      * @return the operator
      */
-    public Op getOp()
+    public Operation getOp()
     {
         // some code goes here
         return null;

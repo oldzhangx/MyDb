@@ -20,7 +20,7 @@ public interface Field extends Serializable{
      * @param value The value to compare this Field to
      * @return Whether or not the comparison yields true.
      */
-    public boolean compare(Predicate.Op op, Field value);
+    public boolean compare(Predicate.Operation op, Field value);
 
     /**
      * Returns the type of this field (see {@link Type#INT_TYPE} or {@link Type#STRING_TYPE}

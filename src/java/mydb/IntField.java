@@ -47,7 +47,7 @@ public class IntField implements Field {
      * @throws IllegalCastException if val is not an IntField
      * @see Field#compare
      */
-    public boolean compare(Predicate.Op op, Field val) {
+    public boolean compare(Predicate.Operation op, Field val) {
 
         IntField iVal = (IntField) val;
 
