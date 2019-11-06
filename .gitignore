@@ -1,2 +1,6 @@
-.idea/*
-/.idea/
+docker-stack.yml
+catalog.json
+.env
+.idea/
+.project
+.classpath
