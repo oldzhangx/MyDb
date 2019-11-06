@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="simpledb" default="dist">
+<project name="mydb" default="dist">
     <property name="src" location="src"/>
     <property name="testd" location="test"/>
 
@@ -68,7 +68,7 @@
     project">
         <echo file=".project" append="false">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;projectDescription&gt;
-	&lt;name&gt;simpledb&lt;/name&gt;
+	&lt;name&gt;mydb&lt;/name&gt;
 	&lt;comment&gt;&lt;/comment&gt;
 	&lt;projects&gt;
 	&lt;/projects&gt;
@@ -114,7 +114,7 @@
         <javadoc destdir="${doc}" access="private" failonerror="true" source="${sourceversion}">
             <classpath refid="classpath.base" />
             <fileset dir="src/java" defaultexcludes="yes">
-                <include name="simpledb/**/*.java"/>
+                <include name="mydb/**/*.java"/>
             </fileset>
         </javadoc>
     </target>
@@ -123,7 +123,7 @@
         <mkdir dir="${dist}"/>
         <jar jarfile="${jarfile}" basedir="${build.src}">
             <manifest>
-                <attribute name="Main-Class" value="simpledb.MyDb"/>
+                <attribute name="Main-Class" value="mydb.MyDb"/>
                 <attribute name="Class-Path" value="../lib/zql.jar ../lib/jline-0.9.94.jar mina-core-2.0.4.jar mina-filter-compression-2.0.4.jar slf4j-api-1.6.1.jar"/>
             </manifest>
             <!-- Merge library jars into final jar file -->
@@ -149,7 +149,7 @@
                 <fileset dir="${build.test}">
                     <include name="**/*Test.class"/>
                     <exclude name="**/*$*.class"/>
-                    <exclude name="simpledb/systemtest/*.class"/>
+                    <exclude name="mydb/systemtest/*.class"/>
                 </fileset>
             </batchtest>
         </RunJunit>
@@ -159,7 +159,7 @@
         <RunJunit>
             <batchtest>
                 <fileset dir="${build.test}">
-                    <include name="simpledb/systemtest/*Test.class"/>
+                    <include name="mydb/systemtest/*Test.class"/>
                 </fileset>
             </batchtest>
         </RunJunit>
@@ -171,13 +171,13 @@
         <fail unless="test" message="You must run this target with -Dtest=TestName"/>
 
         <!-- Check if the class exists -->
-        <available property="test.exists" classname="simpledb.${test}">
+        <available property="test.exists" classname="mydb.${test}">
                 <classpath refid="classpath.test" />
         </available>
         <fail unless="test.exists" message="Test ${test} could not be found"/>
 
         <RunJunit>
-            <test name="simpledb.${test}"/>
+            <test name="mydb.${test}"/>
         </RunJunit>
     </target>
 
@@ -187,13 +187,13 @@
         <fail unless="test" message="You must run this target with -Dtest=TestName"/>
 
         <!-- Check if the class exists -->
-        <available property="test.exists" classname="simpledb.systemtest.${test}">
+        <available property="test.exists" classname="mydb.systemtest.${test}">
                 <classpath refid="classpath.test" />
         </available>
         <fail unless="test.exists" message="Test ${test} could not be found"/>
 
         <RunJunit>
-            <test name="simpledb.systemtest.${test}"/>
+            <test name="mydb.systemtest.${test}"/>
         </RunJunit>
     </target>
 
