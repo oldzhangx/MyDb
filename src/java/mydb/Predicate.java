@@ -50,7 +50,7 @@ public class Predicate implements Serializable {
                 return "like";
             if (this == NOT_EQUALS)
                 return "<>";
-            throw new IllegalStateException("impossible to reach here");
+            throw new IllegalStateException("Operation enum error!");
         }
     }
 

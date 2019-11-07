@@ -53,6 +53,7 @@ public class IntField implements Field {
 
         switch (op) {
         case EQUALS:
+        case LIKE:
             return value == iVal.value;
         case NOT_EQUALS:
             return value != iVal.value;
@@ -68,9 +69,6 @@ public class IntField implements Field {
 
         case LESS_THAN_OR_EQ:
             return value <= iVal.value;
-
-    case LIKE:
-        return value == iVal.value;
         }
 
         return false;
