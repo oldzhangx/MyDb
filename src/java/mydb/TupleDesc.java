@@ -204,7 +204,7 @@ public class TupleDesc implements Serializable {
      */
     static TupleDesc merge(TupleDesc td1, TupleDesc td2) {
         if(td1 == null) return td2;
-        if(td2 ==null) return td1;
+        if(td2 == null) return td1;
         TDItem[] tdItems = new TDItem[td1.tdAr.length+ td2.tdAr.length];
         for(int i = 0; i< td1.tdAr.length;i++){
             tdItems[i] = td1.tdAr[i];
@@ -225,7 +225,16 @@ public class TupleDesc implements Serializable {
      * @return true if the object is equal to this TupleDesc.
      */
     public boolean equals(Object o) {
-        // some code goes here
+        if(o == null) return false;
+        if(o == this) return true;
+        if(o.getClass() == this.getClass()){
+            TupleDesc tupleDesc = (TupleDesc) o;
+            if (!tupleDesc.fieldNumber.equals(this.fieldNumber)) return false;
+            for(int i = 0; i< tupleDesc.fieldNumber;i++)
+                if(!tupleDesc.tdAr[i].equals(this.tdAr[i]))
+                    return false;
+            return true;
+        }
         return false;
     }
 
@@ -243,7 +252,10 @@ public class TupleDesc implements Serializable {
      * @return String describing this descriptor.
      */
     public String toString() {
-        // some code goes here
-        return "";
+        TDItem[] tdItems  = this.tdAr;
+        String result = "";
+        for(TDItem tdItem: tdItems)
+            result = result + " " + tdItem.toString();
+        return result;
     }
 }
