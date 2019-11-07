@@ -1,6 +1,8 @@
 
 package mydb;
 
+import mydb.TupleDetail.TupleDetail;
+
 import java.util.*;
 import java.io.*;
 

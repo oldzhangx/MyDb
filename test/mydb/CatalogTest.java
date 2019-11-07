@@ -7,6 +7,7 @@ import java.util.NoSuchElementException;
 import junit.framework.Assert;
 import junit.framework.JUnit4TestAdapter;
 
+import mydb.TupleDetail.TupleDetail;
 import org.junit.Before;
 import org.junit.Test;
 

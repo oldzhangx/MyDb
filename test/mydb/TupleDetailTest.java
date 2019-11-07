@@ -2,6 +2,7 @@ package mydb;
 
 import java.util.NoSuchElementException;
 
+import mydb.TupleDetail.TupleDetail;
 import org.junit.Test;
 
 import mydb.systemtest.MyDbTestBase;

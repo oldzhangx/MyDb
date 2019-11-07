@@ -1,4 +1,6 @@
 package mydb;
+import mydb.TupleDetail.TupleDetail;
+
 import java.io.Serializable;
 import java.util.*;
 

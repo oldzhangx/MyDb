@@ -1,5 +1,7 @@
 package mydb;
 
+import mydb.TupleDetail.TupleDetail;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.UUID;

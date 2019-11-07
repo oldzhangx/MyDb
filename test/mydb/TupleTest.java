@@ -3,6 +3,7 @@ package mydb;
 import static org.junit.Assert.assertEquals;
 import junit.framework.JUnit4TestAdapter;
 
+import mydb.TupleDetail.TupleDetail;
 import org.junit.Test;
 
 import mydb.systemtest.MyDbTestBase;
