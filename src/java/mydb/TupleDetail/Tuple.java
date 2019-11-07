@@ -16,6 +16,10 @@ public class Tuple implements Serializable {
 
     private static final long serialVersionUID = 5220765131088728433L;
 
+    private TupleDetail tupleDetail;
+    private RecordId recordId;
+    private Field[] fields;
+
     /**
      * Create a new tuple with the specified schema (type).
      * 
@@ -24,15 +28,14 @@ public class Tuple implements Serializable {
      *            instance with at least one field.
      */
     public Tuple(TupleDetail td) {
-        // some code goes here
+        tupleDetail = td;
     }
 
     /**
      * @return The TupleDesc representing the schema of this tuple.
      */
     public TupleDetail getTupleDesc() {
-        // some code goes here
-        return null;
+        return tupleDetail;
     }
 
     /**
@@ -40,30 +43,30 @@ public class Tuple implements Serializable {
      *         be null.
      */
     public RecordId getRecordId() {
-        // some code goes here
-        return null;
+        return recordId;
     }
 
     /**
      * Set the RecordId information for this tuple.
      * 
-     * @param rid
+     * @param redId
      *            the new RecordId for this tuple.
      */
-    public void setRecordId(RecordId rid) {
-        // some code goes here
+    public void setRecordId(RecordId redId) {
+        recordId = redId;
     }
 
     /**
      * Change the value of the ith field of this tuple.
      * 
-     * @param i
+     * @param index
      *            index of the field to change. It must be a valid index.
-     * @param f
+     * @param field
      *            new value for the field.
      */
-    public void setField(int i, Field f) {
-        // some code goes here
+    public void setField(int index, Field field) {
+        if (index < 0 || index > fields.length)  throw new IllegalArgumentException("field index out error");
+        fields[index] = field;
     }
 
     /**
