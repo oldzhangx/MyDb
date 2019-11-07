@@ -1,5 +1,7 @@
-package mydb;
+package mydb.TupleDetail;
 
+import mydb.Field;
+import mydb.RecordId;
 import mydb.TupleDetail.TupleDetail;
 
 import java.io.Serializable;
