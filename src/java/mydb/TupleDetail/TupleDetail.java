@@ -216,9 +216,9 @@ public class TupleDetail implements Serializable {
      */
     public String toString() {
         TupleCell[] tupleCells = this.tdAr;
-        String result = "";
+        StringBuilder result = new StringBuilder();
         for(TupleCell tupleCell : tupleCells)
-            result = result + " " + tupleCell.toString();
-        return result;
+            result.append(" ").append(tupleCell.toString());
+        return result.toString();
     }
 }
