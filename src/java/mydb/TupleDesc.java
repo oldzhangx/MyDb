@@ -15,14 +15,10 @@ public class TupleDesc implements Serializable {
 
         private static final long serialVersionUID = 1L;
 
-        /**
-         * The type of the field
-         * */
+        //field type
         Type fieldType;
         
-        /**
-         * The name of the field
-         * */
+        //field name
         String fieldName;
 
         public TDItem(Type type, String name) {
@@ -30,10 +26,31 @@ public class TupleDesc implements Serializable {
             this.fieldType = type;
         }
 
+        @Override
         public String toString() {
             return fieldName + "(" + fieldType + ")";
         }
+
+        @Override
+        public boolean equals(Object o) {
+            if(o == null)
+                return false;
+
+            //if two objects' hashcode() are equal.
+            if(this == o) {
+                return true;
+            }
+            if (o instanceof TDItem) {
+                TDItem item = (TDItem) o;
+                return Objects.equals(fieldName, item.fieldName) && Objects.equals(fieldType, item.fieldType);
+            } else return false;
+        }
     }
+
+    //field name
+    Integer fieldNumber;
+
+    TDItem[] tdAr;
 
     /**
      * @return
@@ -41,11 +58,28 @@ public class TupleDesc implements Serializable {
      *        that are included in this TupleDesc
      * */
     public Iterator<TDItem> iterator() {
-        // some code goes here
-        return null;
+        return new TDItemIterator();
     }
 
     private static final long serialVersionUID = 1L;
+
+    private class TDItemIterator implements Iterator<TDItem> {
+
+        int pos = 0;
+
+        @Override
+        public boolean hasNext() {
+            return tdAr.length > pos;
+        }
+
+        @Override
+        public TDItem next() {
+            if (!hasNext()) {
+                throw new NoSuchElementException();
+            }
+            return tdAr[pos++];
+        }
+    }
 
     /**
      * Create a new TupleDesc with typeAr.length fields with fields of the
@@ -59,7 +93,16 @@ public class TupleDesc implements Serializable {
      *            be null.
      */
     public TupleDesc(Type[] typeAr, String[] fieldAr) {
-        // some code goes here
+        if(typeAr == null) throw new IllegalArgumentException("typeAr null error");
+        if(typeAr.length == 0) throw new IllegalArgumentException("typeAr length 0 tuple error");
+        if(typeAr.length != fieldAr.length) throw new IllegalArgumentException("typeAr length has to be equal to fieldAr");
+
+        fieldNumber = typeAr.length;
+        tdAr = new TDItem[fieldNumber];
+
+        for(int i = 0; i < fieldNumber; i++) {
+            tdAr[i] = new TDItem(typeAr[i], fieldAr[i]);
+        }
     }
 
     /**
@@ -71,15 +114,14 @@ public class TupleDesc implements Serializable {
      *            TupleDesc. It must contain at least one entry.
      */
     public TupleDesc(Type[] typeAr) {
-        // some code goes here
+        this(typeAr, new String[typeAr.length]);
     }
 
     /**
      * @return the number of fields in this TupleDesc
      */
-    public int numFields() {
-        // some code goes here
-        return 0;
+    public int fieldNumber() {
+        return this.fieldNumber;
     }
 
     /**
@@ -92,8 +134,8 @@ public class TupleDesc implements Serializable {
      *             if i is not a valid field reference.
      */
     public String getFieldName(int i) throws NoSuchElementException {
-        // some code goes here
-        return null;
+        if (i < 0 || i> fieldNumber) throw new NoSuchElementException();
+        return tdAr[i].fieldName;
     }
 
     /**
@@ -107,8 +149,8 @@ public class TupleDesc implements Serializable {
      *             if i is not a valid field reference.
      */
     public Type getFieldType(int i) throws NoSuchElementException {
-        // some code goes here
-        return null;
+        if (i < 0 || i> this.fieldNumber) throw new NoSuchElementException();
+        return tdAr[i].fieldType;
     }
 
     /**
@@ -120,18 +162,25 @@ public class TupleDesc implements Serializable {
      * @throws NoSuchElementException
      *             if no field with a matching name is found.
      */
-    public int fieldNameToIndex(String name) throws NoSuchElementException {
-        // some code goes here
-        return 0;
+    int fieldNameToIndex(String name) throws NoSuchElementException {
+        if(name == null) throw new NoSuchElementException();
+        for(int i = 0;i< tdAr.length;i++){
+            if (tdAr[i].fieldName.equals(name))
+                return i;
+        }
+        throw new NoSuchElementException();
     }
 
     /**
      * @return The size (in bytes) of tuples corresponding to this TupleDesc.
      *         Note that tuples from a given TupleDesc are of a fixed size.
      */
-    public int getSize() {
-        // some code goes here
-        return 0;
+    int getSize() {
+        int totalSize = 0;
+        for (TDItem tdItem : tdAr) {
+            totalSize = totalSize + tdItem.fieldType.getLen();
+        }
+        return totalSize;
     }
 
     /**

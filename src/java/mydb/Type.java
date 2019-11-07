@@ -20,7 +20,7 @@ public enum Type implements Serializable {
             try {
                 return new IntField(dis.readInt());
             }  catch (IOException e) {
-                throw new ParseException("couldn't parse", 0);
+                throw new ParseException("parse error", 0);
             }
         }
 
@@ -36,7 +36,7 @@ public enum Type implements Serializable {
             try {
                 return new LongField(dis.readLong());
             } catch (IOException e) {
-                throw new ParseException("couldn't parse", 0);
+                throw new ParseException("parse error", 0);
             }
         }
     },
@@ -55,7 +55,7 @@ public enum Type implements Serializable {
                 dis.skipBytes(STRING_LEN - strLen);
                 return new StringField( new String(bs), STRING_LEN);
             } catch (IOException e) {
-                throw new ParseException("couldn't parse", 0);
+                throw new ParseException("parse error", 0);
             }
         }
     };

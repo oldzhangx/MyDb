@@ -23,7 +23,7 @@ public class TupleDescTest extends MyDbTestBase {
 
         // test td1.combine(td2)
         td3 = TupleDesc.merge(td1, td2);
-        assertEquals(3 , td3.numFields());
+        assertEquals(3 , td3.fieldNumber());
         assertEquals(3 * Type.INT_TYPE.getLen(), td3.getSize());
         for (int i = 0; i < 3; ++i)
             assertEquals(Type.INT_TYPE, td3.getFieldType(i));
@@ -31,7 +31,7 @@ public class TupleDescTest extends MyDbTestBase {
 
         // test td2.combine(td1)
         td3 = TupleDesc.merge(td2, td1);
-        assertEquals(3 , td3.numFields());
+        assertEquals(3 , td3.fieldNumber());
         assertEquals(3 * Type.INT_TYPE.getLen(), td3.getSize());
         for (int i = 0; i < 3; ++i)
             assertEquals(Type.INT_TYPE, td3.getFieldType(i));
@@ -39,7 +39,7 @@ public class TupleDescTest extends MyDbTestBase {
 
         // test td2.combine(td2)
         td3 = TupleDesc.merge(td2, td2);
-        assertEquals(4 , td3.numFields());
+        assertEquals(4 , td3.fieldNumber());
         assertEquals(4 * Type.INT_TYPE.getLen(), td3.getSize());
         for (int i = 0; i < 4; ++i)
             assertEquals(Type.INT_TYPE, td3.getFieldType(i));
@@ -50,16 +50,16 @@ public class TupleDescTest extends MyDbTestBase {
      * Ensures that combined's field names = td1's field names + td2's field names
      */
     private boolean combinedStringArrays(TupleDesc td1, TupleDesc td2, TupleDesc combined) {
-        for (int i = 0; i < td1.numFields(); i++) {
+        for (int i = 0; i < td1.fieldNumber(); i++) {
             if (!(((td1.getFieldName(i) == null) && (combined.getFieldName(i) == null)) ||
                     td1.getFieldName(i).equals(combined.getFieldName(i)))) {
                 return false;
             }
         }
 
-        for (int i = td1.numFields(); i < td1.numFields() + td2.numFields(); i++) {
-            if (!(((td2.getFieldName(i-td1.numFields()) == null) && (combined.getFieldName(i) == null)) ||
-                    td2.getFieldName(i-td1.numFields()).equals(combined.getFieldName(i)))) {
+        for (int i = td1.fieldNumber(); i < td1.fieldNumber() + td2.fieldNumber(); i++) {
+            if (!(((td2.getFieldName(i-td1.fieldNumber()) == null) && (combined.getFieldName(i) == null)) ||
+                    td2.getFieldName(i-td1.fieldNumber()).equals(combined.getFieldName(i)))) {
                 return false;
             }
         }
@@ -141,7 +141,7 @@ public class TupleDescTest extends MyDbTestBase {
 
         for (int len : lengths) {
             TupleDesc td = Utility.getTupleDesc(len);
-            assertEquals(len, td.numFields());
+            assertEquals(len, td.fieldNumber());
         }
     }
 
