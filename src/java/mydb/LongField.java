@@ -8,9 +8,8 @@ import java.io.IOException;
  */
 public class LongField implements Field {
 
-	private static final long serialVersionUID = 1L;
-
-	private long value;
+    private static final long serialVersionUID = -2443766130679394998L;
+    private long value;
 
     public long getValue() {
         return value;

@@ -14,7 +14,7 @@ import junit.framework.JUnit4TestAdapter;
 public class HeapFileReadTest extends MyDbTestBase {
     private HeapFile hf;
     private TransactionId tid;
-    private TupleDesc td;
+    private TupleDetail td;
 
     /**
      * Set up initial resources for each unit test.

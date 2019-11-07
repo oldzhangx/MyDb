@@ -9,7 +9,7 @@ import java.util.*;
  */
 public class SeqScan implements DbIterator {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = -469138633245600769L;
 
     /**
      * Creates a sequential scan over the specified table as a part of the
@@ -82,7 +82,7 @@ public class SeqScan implements DbIterator {
      * @return the TupleDesc with field names from the underlying HeapFile,
      *         prefixed with the tableAlias string from the constructor.
      */
-    public TupleDesc getTupleDesc() {
+    public TupleDetail getTupleDesc() {
         // some code goes here
         return null;
     }

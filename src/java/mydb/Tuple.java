@@ -10,7 +10,7 @@ import java.util.Iterator;
  */
 public class Tuple implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 5220765131088728433L;
 
     /**
      * Create a new tuple with the specified schema (type).
@@ -19,14 +19,14 @@ public class Tuple implements Serializable {
      *            the schema of this tuple. It must be a valid TupleDesc
      *            instance with at least one field.
      */
-    public Tuple(TupleDesc td) {
+    public Tuple(TupleDetail td) {
         // some code goes here
     }
 
     /**
      * @return The TupleDesc representing the schema of this tuple.
      */
-    public TupleDesc getTupleDesc() {
+    public TupleDetail getTupleDesc() {
         // some code goes here
         return null;
     }

@@ -50,7 +50,7 @@ public class TestUtil {
      */
     public static TupleIterator createTupleList(int width, Object[] tupdata) {
         ArrayList<Tuple> tuplist = new ArrayList<Tuple>();
-        TupleDesc td;
+        TupleDetail td;
         Type[] types = new Type[width];
         int i= 0;
         for (int j = 0; j < width; j++) {
@@ -61,7 +61,7 @@ public class TestUtil {
                 types[j] = Type.INT_TYPE;
             }
         }
-        td = new TupleDesc(types);
+        td = new TupleDetail(types);
 
         while (i < tupdata.length) {
             Tuple tup = new Tuple(td);
@@ -195,9 +195,9 @@ public class TestUtil {
      */
     public static class SkeletonFile implements DbFile {
         private int tableid;
-        private TupleDesc td;
+        private TupleDetail td;
 
-        public SkeletonFile(int tableid, TupleDesc td) {
+        public SkeletonFile(int tableid, TupleDetail td) {
             this.tableid = tableid;
             this.td = td;
         }
@@ -236,7 +236,7 @@ public class TestUtil {
             throw new RuntimeException("not implemented");
         }
 
-		public TupleDesc getTupleDesc() {			
+		public TupleDetail getTupleDesc() {
 			return td;
 		}
     }
@@ -269,7 +269,7 @@ public class TestUtil {
             cur = low;
         }
 
-        public TupleDesc getTupleDesc() {
+        public TupleDetail getTupleDesc() {
             return Utility.getTupleDesc(width);
         }
 

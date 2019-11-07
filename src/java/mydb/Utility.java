@@ -31,15 +31,15 @@ public class Utility {
      * @return a TupleDesc with n fields of type Type.INT_TYPE, each named
      * name + n (name1, name2, etc.).
      */
-    public static TupleDesc getTupleDesc(int n, String name) {
-        return new TupleDesc(getTypes(n), getStrings(n, name));
+    public static TupleDetail getTupleDesc(int n, String name) {
+        return new TupleDetail(getTypes(n), getStrings(n, name));
     }
 
     /**
      * @return a TupleDesc with n fields of type Type.INT_TYPE
      */
-    public static TupleDesc getTupleDesc(int n) {
-        return new TupleDesc(getTypes(n));
+    public static TupleDetail getTupleDesc(int n) {
+        return new TupleDetail(getTypes(n));
     }
 
     /**
@@ -131,7 +131,7 @@ public class Utility {
      */
     public static HeapFile openHeapFile(int cols, File f) {
         // create the HeapFile and add it to the catalog
-    	TupleDesc td = getTupleDesc(cols);
+    	TupleDetail td = getTupleDesc(cols);
         HeapFile hf = new HeapFile(f, td);
         Database.getCatalog().addTable(hf, UUID.randomUUID().toString());
         return hf;
@@ -139,7 +139,7 @@ public class Utility {
     
     public static HeapFile openHeapFile(int cols, String colPrefix, File f) {
         // create the HeapFile and add it to the catalog
-    	TupleDesc td = getTupleDesc(cols, colPrefix);
+    	TupleDetail td = getTupleDesc(cols, colPrefix);
         HeapFile hf = new HeapFile(f, td);
         Database.getCatalog().addTable(hf, UUID.randomUUID().toString());
         return hf;

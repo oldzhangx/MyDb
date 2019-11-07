@@ -13,7 +13,7 @@ public class TupleTest extends MyDbTestBase {
      * Unit test for Tuple.getField() and Tuple.setField()
      */
     @Test public void modifyFields() {
-        TupleDesc td = Utility.getTupleDesc(2);
+        TupleDetail td = Utility.getTupleDesc(2);
 
         Tuple tup = new Tuple(td);
         tup.setField(0, new IntField(-1));
@@ -33,7 +33,7 @@ public class TupleTest extends MyDbTestBase {
      * Unit test for Tuple.getTupleDesc()
      */
     @Test public void getTupleDesc() {
-        TupleDesc td = Utility.getTupleDesc(5);
+        TupleDetail td = Utility.getTupleDesc(5);
         Tuple tup = new Tuple(td);
         assertEquals(td, tup.getTupleDesc());
     }

@@ -14,7 +14,7 @@ import java.io.*;
 public class HeapPage implements Page {
 
     HeapPageId pid;
-    TupleDesc td;
+    TupleDetail td;
     byte header[];
     Tuple tuples[];
     int numSlots;

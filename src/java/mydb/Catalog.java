@@ -67,7 +67,7 @@ public class Catalog {
      *     function passed to addTable
      * @throws NoSuchElementException if the table doesn't exist
      */
-    public TupleDesc getTupleDesc(int tableid) throws NoSuchElementException {
+    public TupleDetail getTupleDesc(int tableid) throws NoSuchElementException {
         // some code goes here
         return null;
     }
@@ -144,7 +144,7 @@ public class Catalog {
                 }
                 Type[] typeAr = types.toArray(new Type[0]);
                 String[] namesAr = names.toArray(new String[0]);
-                TupleDesc t = new TupleDesc(typeAr, namesAr);
+                TupleDetail t = new TupleDetail(typeAr, namesAr);
                 HeapFile tabHf = new HeapFile(new File(baseFolder+"/"+name + ".dat"), t);
                 addTable(tabHf,name,primaryKey);
                 System.out.println("Added table : " + name + " with schema " + t);

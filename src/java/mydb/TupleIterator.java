@@ -6,13 +6,11 @@ import java.util.*;
  * Implements a DbIterator by wrapping an Iterable<Tuple>.
  */
 public class TupleIterator implements DbIterator {
-    /**
-	 * 
-	 */
-    private static final long serialVersionUID = 1L;
-    Iterator<Tuple> i = null;
-    TupleDesc td = null;
-    Iterable<Tuple> tuples = null;
+    private static final long serialVersionUID = -1020449676759920107L;
+
+    private Iterator<Tuple> i = null;
+    private TupleDetail td = null;
+    private Iterable<Tuple> tuples = null;
 
     /**
      * Constructs an iterator from the specified Iterable, and the specified
@@ -21,7 +19,7 @@ public class TupleIterator implements DbIterator {
      * @param tuples
      *            The set of tuples to iterate over
      */
-    public TupleIterator(TupleDesc td, Iterable<Tuple> tuples) {
+    public TupleIterator(TupleDetail td, Iterable<Tuple> tuples) {
         this.td = td;
         this.tuples = tuples;
 
@@ -50,7 +48,7 @@ public class TupleIterator implements DbIterator {
         open();
     }
 
-    public TupleDesc getTupleDesc() {
+    public TupleDetail getTupleDesc() {
         return td;
     }
 

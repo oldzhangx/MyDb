@@ -6,10 +6,10 @@ import java.io.*;
  * Instance of Field that stores a single integer.
  */
 public class IntField implements Field {
-    
-	private static final long serialVersionUID = 1L;
-	
-	private int value;
+
+
+    private static final long serialVersionUID = 4662232909262937129L;
+    private int value;
 
     public int getValue() {
         return value;

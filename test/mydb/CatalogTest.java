@@ -29,8 +29,8 @@ public class CatalogTest extends MyDbTestBase {
      * Unit test for Catalog.getTupleDesc()
      */
     @Test public void getTupleDesc() throws Exception {
-        TupleDesc expected = Utility.getTupleDesc(2);
-        TupleDesc actual = Database.getCatalog().getTupleDesc(-1);
+        TupleDetail expected = Utility.getTupleDesc(2);
+        TupleDetail actual = Database.getCatalog().getTupleDesc(-1);
 
         assertEquals(expected, actual);
     }

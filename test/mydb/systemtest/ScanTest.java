@@ -71,7 +71,7 @@ public class ScanTest extends MyDbTestBase {
     @Test public void testCache() throws IOException, DbException, TransactionAbortedException {
         /** Counts the number of readPage operations. */
         class InstrumentedHeapFile extends HeapFile {
-            public InstrumentedHeapFile(File f, TupleDesc td) {
+            public InstrumentedHeapFile(File f, TupleDetail td) {
                 super(f, td);
             }
 
@@ -88,7 +88,7 @@ public class ScanTest extends MyDbTestBase {
         final int PAGES = 30;
         ArrayList<ArrayList<Integer>> tuples = new ArrayList<ArrayList<Integer>>();
         File f = SystemTestUtil.createRandomHeapFileUnopened(1, 992*PAGES, 1000, null, tuples);
-        TupleDesc td = Utility.getTupleDesc(1);
+        TupleDetail td = Utility.getTupleDesc(1);
         InstrumentedHeapFile table = new InstrumentedHeapFile(f, td);
         Database.getCatalog().addTable(table, SystemTestUtil.getUUID());
 

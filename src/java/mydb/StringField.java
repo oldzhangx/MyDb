@@ -7,8 +7,7 @@ import java.io.*;
  */
 public class StringField implements Field {
 
-	private static final long serialVersionUID = 1L;
-
+	private static final long serialVersionUID = -8875396221418374446L;
 	private String value;
 	private int maxSize;
 

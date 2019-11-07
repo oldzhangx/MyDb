@@ -13,8 +13,8 @@ import org.junit.Assert;
 import mydb.*;
 
 public class SystemTestUtil {
-    public static final TupleDesc SINGLE_INT_DESCRIPTOR =
-            new TupleDesc(new Type[]{Type.INT_TYPE});
+    public static final TupleDetail SINGLE_INT_DESCRIPTOR =
+            new TupleDetail(new Type[]{Type.INT_TYPE});
 
     private static final int MAX_RAND_VALUE = 1 << 16;
 

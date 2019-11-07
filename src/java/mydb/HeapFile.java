@@ -22,7 +22,7 @@ public class HeapFile implements DbFile {
      *            the file that stores the on-disk backing store for this heap
      *            file.
      */
-    public HeapFile(File f, TupleDesc td) {
+    public HeapFile(File f, TupleDetail td) {
         // some code goes here
     }
 
@@ -55,7 +55,7 @@ public class HeapFile implements DbFile {
      * 
      * @return TupleDesc of this DbFile.
      */
-    public TupleDesc getTupleDesc() {
+    public TupleDetail getTupleDesc() {
         // some code goes here
         throw new UnsupportedOperationException("implement this");
     }

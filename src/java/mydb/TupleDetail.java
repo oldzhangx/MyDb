@@ -6,15 +6,16 @@ import java.util.*;
 /**
  * TupleDesc describes the schema of a tuple.
  */
-public class TupleDesc implements Serializable {
+public class TupleDetail implements Serializable {
+
+    private static final long serialVersionUID = 7041402579811379073L;
 
     /**
      * A help class to facilitate organizing the information of each field
      * */
     public static class TDItem implements Serializable {
 
-        private static final long serialVersionUID = 1L;
-
+        private static final long serialVersionUID = -8419977542514739836L;
         //field type
         Type fieldType;
         
@@ -62,8 +63,6 @@ public class TupleDesc implements Serializable {
         return new TDItemIterator();
     }
 
-    private static final long serialVersionUID = 1L;
-
     private class TDItemIterator implements Iterator<TDItem> {
 
         int pos = 0;
@@ -90,11 +89,11 @@ public class TupleDesc implements Serializable {
      *            array specifying the number of and types of fields in this
      *            TupleDesc. It must contain at least one entry.
      */
-    public TupleDesc(Type[] typeAr) {
+    public TupleDetail(Type[] typeAr) {
         this(typeAr, new String[typeAr.length]);
     }
 
-    public TupleDesc(TDItem[] tdItems) {
+    public TupleDetail(TDItem[] tdItems) {
         if(tdItems == null) throw new IllegalArgumentException("tdItems null error");
         if(tdItems.length == 0) throw new IllegalArgumentException("tdItems length 0 tuple error");
 
@@ -113,7 +112,7 @@ public class TupleDesc implements Serializable {
      *            array specifying the names of the fields. Note that names may
      *            be null.
      */
-    public TupleDesc(Type[] typeAr, String[] fieldAr) {
+    public TupleDetail(Type[] typeAr, String[] fieldAr) {
         if(typeAr == null) throw new IllegalArgumentException("typeAr null error");
         if(typeAr.length == 0) throw new IllegalArgumentException("typeAr length 0 tuple error");
         if(typeAr.length != fieldAr.length) throw new IllegalArgumentException("typeAr length has to be equal to fieldAr");
@@ -202,7 +201,7 @@ public class TupleDesc implements Serializable {
      *            The TupleDesc with the last fields of the TupleDesc
      * @return the new TupleDesc
      */
-    static TupleDesc merge(TupleDesc td1, TupleDesc td2) {
+    static TupleDetail merge(TupleDetail td1, TupleDetail td2) {
         if(td1 == null) return td2;
         if(td2 == null) return td1;
         TDItem[] tdItems = new TDItem[td1.tdAr.length+ td2.tdAr.length];
@@ -212,7 +211,7 @@ public class TupleDesc implements Serializable {
         for(int i = 0; i< td2.tdAr.length;i++){
             tdItems[i+ td1.tdAr.length] = td2.tdAr[i];
         }
-        return new TupleDesc(tdItems);
+        return new TupleDetail(tdItems);
     }
 
     /**
@@ -228,10 +227,10 @@ public class TupleDesc implements Serializable {
         if(o == null) return false;
         if(o == this) return true;
         if(o.getClass() == this.getClass()){
-            TupleDesc tupleDesc = (TupleDesc) o;
-            if (!tupleDesc.fieldNumber.equals(this.fieldNumber)) return false;
-            for(int i = 0; i< tupleDesc.fieldNumber;i++)
-                if(!tupleDesc.tdAr[i].equals(this.tdAr[i]))
+            TupleDetail tupleDetail = (TupleDetail) o;
+            if (!tupleDetail.fieldNumber.equals(this.fieldNumber)) return false;
+            for(int i = 0; i< tupleDetail.fieldNumber; i++)
+                if(!tupleDetail.tdAr[i].equals(this.tdAr[i]))
                     return false;
             return true;
         }

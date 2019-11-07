@@ -7,7 +7,7 @@ import java.io.Serializable;
  */
 public class Predicate implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = -3498782164862027213L;
 
     /** Constants used for return codes in Field.compare */
     public enum Operation implements Serializable {

@@ -8,7 +8,7 @@ import java.io.Serializable;
  */
 public class RecordId implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = -2127109345052312268L;
 
     /**
      * Creates a new RecordId referring to the specified PageId and tuple
