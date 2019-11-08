@@ -50,7 +50,8 @@ public enum Type implements Serializable {
         public Field parse(DataInputStream dis) throws ParseException {
             try {
                 int strLen = dis.readInt();
-                byte bs[] = new byte[strLen];
+                byte[] bs = new byte[strLen];
+
                 dis.read(bs);
                 dis.skipBytes(STRING_LEN - strLen);
                 return new StringField( new String(bs), STRING_LEN);

@@ -105,7 +105,7 @@ public class TupleDetail implements Serializable {
      * @throws NoSuchElementException
      *             if i is not a valid field reference.
      */
-    String getFieldName(int i) throws NoSuchElementException {
+    public String getFieldName(int i) throws NoSuchElementException {
         if (i < 0 || i> fieldNumber) throw new NoSuchElementException();
         return tdAr[i].fieldName;
     }
@@ -120,7 +120,7 @@ public class TupleDetail implements Serializable {
      * @throws NoSuchElementException
      *             if i is not a valid field reference.
      */
-    Type getFieldType(int i) throws NoSuchElementException {
+    public Type getFieldType(int i) throws NoSuchElementException {
         if (i < 0 || i> this.fieldNumber) throw new NoSuchElementException();
         return tdAr[i].fieldType;
     }
@@ -134,7 +134,7 @@ public class TupleDetail implements Serializable {
      * @throws NoSuchElementException
      *             if no field with a matching name is found.
      */
-    int fieldNameToIndex(String name) throws NoSuchElementException {
+    public int fieldNameToIndex(String name) throws NoSuchElementException {
         if(name == null) throw new NoSuchElementException();
         for(int i = 0;i< tdAr.length;i++){
             if (tdAr[i].fieldName.equals(name))
@@ -147,7 +147,7 @@ public class TupleDetail implements Serializable {
      * @return The size (in bytes) of tuples corresponding to this TupleDesc.
      *         Note that tuples from a given TupleDesc are of a fixed size.
      */
-    int getSize() {
+    public int getSize() {
         int totalSize = 0;
         for (TupleCell tupleCell : tdAr) {
             totalSize = totalSize + tupleCell.fieldType.getLen();
@@ -165,7 +165,7 @@ public class TupleDetail implements Serializable {
      *            The TupleDesc with the last fields of the TupleDesc
      * @return the new TupleDesc
      */
-    static TupleDetail merge(TupleDetail td1, TupleDetail td2) {
+    public static TupleDetail merge(TupleDetail td1, TupleDetail td2) {
         if(td1 == null) return td2;
         if(td2 == null) return td1;
         TupleCell[] tupleCells = new TupleCell[td1.tdAr.length+ td2.tdAr.length];
@@ -216,9 +216,9 @@ public class TupleDetail implements Serializable {
      */
     public String toString() {
         TupleCell[] tupleCells = this.tdAr;
-        String result = "";
+        StringBuilder result = new StringBuilder();
         for(TupleCell tupleCell : tupleCells)
-            result = result + " " + tupleCell.toString();
-        return result;
+            result.append(" ").append(tupleCell.toString());
+        return result.toString();
     }
 }

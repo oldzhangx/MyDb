@@ -28,7 +28,7 @@ public class TupleDetailTest extends MyDbTestBase {
         assertEquals(3 * Type.INT_TYPE.getLen(), td3.getSize());
         for (int i = 0; i < 3; ++i)
             assertEquals(Type.INT_TYPE, td3.getFieldType(i));
-        assertEquals(combinedStringArrays(td1, td2, td3), true);
+        assertTrue(combinedStringArrays(td1, td2, td3));
 
         // test td2.combine(td1)
         td3 = TupleDetail.merge(td2, td1);
@@ -36,7 +36,7 @@ public class TupleDetailTest extends MyDbTestBase {
         assertEquals(3 * Type.INT_TYPE.getLen(), td3.getSize());
         for (int i = 0; i < 3; ++i)
             assertEquals(Type.INT_TYPE, td3.getFieldType(i));
-        assertEquals(combinedStringArrays(td2, td1, td3), true);
+        assertTrue(combinedStringArrays(td2, td1, td3));
 
         // test td2.combine(td2)
         td3 = TupleDetail.merge(td2, td2);
@@ -44,7 +44,7 @@ public class TupleDetailTest extends MyDbTestBase {
         assertEquals(4 * Type.INT_TYPE.getLen(), td3.getSize());
         for (int i = 0; i < 4; ++i)
             assertEquals(Type.INT_TYPE, td3.getFieldType(i));
-        assertEquals(combinedStringArrays(td2, td2, td3), true);
+        assertTrue(combinedStringArrays(td2, td2, td3));
     }
 
     /**
@@ -160,7 +160,7 @@ public class TupleDetailTest extends MyDbTestBase {
         assertTrue(singleInt.equals(singleInt));
         assertTrue(singleInt.equals(singleInt2));
         assertTrue(singleInt2.equals(singleInt));
-        assertTrue(intString.equals(intString));
+        assertEquals(intString, intString);
 
         assertFalse(singleInt.equals(intString));
         assertFalse(singleInt2.equals(intString));

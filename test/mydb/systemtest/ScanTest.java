@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import java.util.Random;
 
+import mydb.TupleDetail.Tuple;
 import mydb.TupleDetail.TupleDetail;
 import org.junit.Test;
 

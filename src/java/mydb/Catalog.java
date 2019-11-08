@@ -22,8 +22,7 @@ public class Catalog {
      * Constructor.
      * Creates a new, empty catalog.
      */
-    public Catalog() {
-        // some code goes here
+    Catalog() {
     }
 
     /**
@@ -35,7 +34,7 @@ public class Catalog {
      * @param pkeyField the name of the primary key field
      * conflict exists, use the last table to be added as the table for a given name.
      */
-    public void addTable(DbFile file, String name, String pkeyField) {
+    private void addTable(DbFile file, String name, String pkeyField) {
         // some code goes here
     }
 
