@@ -2,10 +2,10 @@ package mydb.TupleDetail;
 
 import mydb.Field;
 import mydb.RecordId;
-import mydb.TupleDetail.TupleDetail;
 
 import java.io.Serializable;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 /**
  * Tuple maintains information about the contents of a tuple. Tuples have a
@@ -72,12 +72,12 @@ public class Tuple implements Serializable {
     /**
      * @return the value of the ith field, or null if it has not been set.
      * 
-     * @param i
+     * @param index
      *            field index to return. Must be a valid index.
      */
-    public Field getField(int i) {
-        // some code goes here
-        return null;
+    public Field getField(int index) {
+        if (index < 0 || index > fields.length)  throw new IllegalArgumentException("field index out error");
+        return fields[index];
     }
 
     /**
@@ -89,17 +89,34 @@ public class Tuple implements Serializable {
      * where \t is any whitespace, except newline, and \n is a newline
      */
     public String toString() {
-        // some code goes here
-        throw new UnsupportedOperationException("Implement this");
+        StringBuilder result = new StringBuilder();
+        for (Field field : fields) {
+            result.append(field).append(" ");
+        }
+        result.append("\n");
+        return result.toString();
     }
     
     /**
      * @return
      *        An iterator which iterates over all the fields of this tuple
      * */
-    public Iterator<Field> fields()
-    {
-        // some code goes here
-        return null;
+    public Iterator<Field> fields() {
+        return new FieldRow();
+    }
+
+    private class FieldRow implements Iterator<Field> {
+        private int num = 0;
+
+        @Override
+        public boolean hasNext() {
+            return num < fields.length ;
+        }
+
+        @Override
+        public Field next() {
+            if (!hasNext())  throw new NoSuchElementException();
+            return fields[num++];
+        }
     }
 }
