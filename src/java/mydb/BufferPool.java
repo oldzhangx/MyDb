@@ -55,10 +55,16 @@ public class BufferPool {
      */
     public  Page getPage(TransactionId tid, PageId pid, Permissions perm)
         throws TransactionAbortedException, DbException {
-        // some code goes here
+        if (pages != null && pages.containsKey(pid))
+            return pages.get(pid);
+        DbFile dbFile = Database.getCatalog().getDbFile(pid.getTableId());
+        HeapPage newPage = (HeapPage) dbFile.readPage(pid);
+        pages.put(pid, newPage);
 
-
-        return null;
+//        if (pages.size() > NUM_PAGES) {
+//            // TODO: implement this
+//        }
+        return newPage;
     }
 
     /**
