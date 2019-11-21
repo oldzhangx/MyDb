@@ -3,21 +3,25 @@ package mydb;
 /** Unique identifier for HeapPage objects. */
 public class HeapPageId implements PageId {
 
+    private int tableId;
+    private int pageNumber;
+
     /**
      * Constructor. Create a page id structure for a specific page of a
      * specific table.
      *
-     * @param tableId The table that is being referenced
+     * @param tId The table that is being referenced
      * @param pgNo The page number in that table.
      */
-    public HeapPageId(int tableId, int pgNo) {
-        // some code goes here
+    public HeapPageId(int tId, int pgNo) {
+        tableId = tId;
+        pageNumber = pgNo;
+
     }
 
     /** @return the table associated with this PageId */
     public int getTableId() {
-        // some code goes here
-        return 0;
+        return tableId;
     }
 
     /**
@@ -25,8 +29,7 @@ public class HeapPageId implements PageId {
      *   this PageId
      */
     public int pageNumber() {
-        // some code goes here
-        return 0;
+        return pageNumber;
     }
 
     /**
@@ -36,8 +39,8 @@ public class HeapPageId implements PageId {
      * @see BufferPool
      */
     public int hashCode() {
-        // some code goes here
-        throw new UnsupportedOperationException("implement this");
+        return 31 * tableId + pageNumber;
+        //throw new UnsupportedOperationException("implement this");
     }
 
     /**
@@ -48,8 +51,10 @@ public class HeapPageId implements PageId {
      *   ids are the same)
      */
     public boolean equals(Object o) {
-        // some code goes here
-        return false;
+        if(this == o) return true;
+        if(o.getClass()!=this.getClass()) return false;
+        PageId pageId = (PageId) o;
+        return this.pageNumber == pageId.pageNumber() && this.tableId == pageId.getTableId();
     }
 
     /**
@@ -59,11 +64,10 @@ public class HeapPageId implements PageId {
      *  constructors.
      */
     public int[] serialize() {
-        int data[] = new int[2];
+        int[] data = new int[2];
 
         data[0] = getTableId();
         data[1] = pageNumber();
-
         return data;
     }
 
