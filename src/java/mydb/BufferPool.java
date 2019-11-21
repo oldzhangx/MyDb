@@ -3,6 +3,7 @@ package mydb;
 import mydb.TupleDetail.Tuple;
 
 import java.io.*;
+import java.util.HashMap;
 
 /**
  * BufferPool manages the reading and writing of pages into memory from
@@ -22,14 +23,20 @@ public class BufferPool {
     constructor instead. */
     public static final int DEFAULT_PAGES = 50;
 
+    public static int NUM_PAGES;
+    private HashMap<PageId, Page> pages;
+
     /**
      * Creates a BufferPool that caches up to numPages pages.
      *
      * @param numPages maximum number of pages in this buffer pool.
      */
     public BufferPool(int numPages) {
-        // some code goes here
+        NUM_PAGES = numPages;
+        pages = new HashMap<PageId, Page>(NUM_PAGES);
     }
+
+
 
     /**
      * Retrieve the specified page with the associated permissions.
@@ -48,8 +55,16 @@ public class BufferPool {
      */
     public  Page getPage(TransactionId tid, PageId pid, Permissions perm)
         throws TransactionAbortedException, DbException {
-        // some code goes here
-        return null;
+        if (pages != null && pages.containsKey(pid))
+            return pages.get(pid);
+        DbFile dbFile = Database.getCatalog().getDbFile(pid.getTableId());
+        HeapPage newPage = (HeapPage) dbFile.readPage(pid);
+        pages.put(pid, newPage);
+
+//        if (pages.size() > NUM_PAGES) {
+//            // TODO: implement this
+//        }
+        return newPage;
     }
 
     /**
