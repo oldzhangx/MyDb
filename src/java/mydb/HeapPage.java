@@ -157,8 +157,8 @@ public class HeapPage implements Page {
      */
     public byte[] getPageData() {
         int len = BufferPool.PAGE_SIZE;
-        ByteArrayOutputStream baos = new ByteArrayOutputStream(len);
-        DataOutputStream dos = new DataOutputStream(baos);
+        ByteArrayOutputStream output = new ByteArrayOutputStream(len);
+        DataOutputStream dos = new DataOutputStream(output);
 
         // create the header of the page
         for (int i=0; i<header.length; i++) {
@@ -213,7 +213,7 @@ public class HeapPage implements Page {
             e.printStackTrace();
         }
 
-        return baos.toByteArray();
+        return output.toByteArray();
     }
 
     /**
@@ -276,16 +276,22 @@ public class HeapPage implements Page {
      * Returns the number of empty slots on this page.
      */
     public int getNumEmptySlots() {
-        // some code goes here
-        return 0;
+        int result = 0;
+        for(int i = 0; i< getNumTuples(); i++){
+            result = isSlotUsed(i)? result:result+1;
+        }
+        return result;
     }
 
     /**
      * Returns true if associated slot on this page is filled.
      */
     public boolean isSlotUsed(int i) {
-        // some code goes here
-        return false;
+        // i/8 to calculate where section the data is
+        int t = i/8;
+        int d = i%8;
+
+        return (header[t] >> d) %2 ==1;
     }
 
     /**
@@ -301,8 +307,27 @@ public class HeapPage implements Page {
      * (note that this iterator shouldn't return tuples in empty slots!)
      */
     public Iterator<Tuple> iterator() {
-        // some code goes here
-        return null;
+        return new UsedTupleIterator();
+    }
+
+    class UsedTupleIterator implements Iterator<Tuple> {
+
+        int divide = 0;
+        int count = 0;
+
+        @Override
+        public boolean hasNext() {
+            return getNumTuples()> count && divide < getNumTuples() - getNumEmptySlots();
+        }
+
+        @Override
+        public Tuple next() {
+            if(!hasNext()) throw new NoSuchElementException();
+            while (!isSlotUsed(count)) count++;
+            divide++;
+            return tuples[count++];
+        }
+
     }
 
 }
