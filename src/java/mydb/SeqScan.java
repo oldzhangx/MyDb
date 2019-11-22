@@ -13,7 +13,10 @@ import java.util.*;
 public class SeqScan implements DbIterator {
 
     private static final long serialVersionUID = -469138633245600769L;
-
+    TransactionId transactionId;
+    int tableId;
+    String tableAlias;
+    DbFileIterator tupleIterator;
     /**
      * Creates a sequential scan over the specified table as a part of the
      * specified transaction.
@@ -31,7 +34,10 @@ public class SeqScan implements DbIterator {
      *            tableAlias.null, or null.null).
      */
     public SeqScan(TransactionId tid, int tableid, String tableAlias) {
-        // some code goes here
+        tableId = tableid;
+        transactionId = tid;
+        this.tableAlias = tableAlias;
+        tupleIterator = Database.getCatalog().getDbFile(tableid).iterator(tid);
     }
 
     /**
@@ -40,16 +46,14 @@ public class SeqScan implements DbIterator {
      *       be the actual name of the table in the catalog of the database
      * */
     public String getTableName() {
-        return null;
+        return Database.getCatalog().getTableName(tableId);
     }
     
     /**
      * @return Return the alias of the table this operator scans. 
      * */
-    public String getAlias()
-    {
-        // some code goes here
-        return null;
+    public String getAlias() {
+        return tableAlias;
     }
 
     /**
@@ -65,7 +69,8 @@ public class SeqScan implements DbIterator {
      *            tableAlias.null, or null.null).
      */
     public void reset(int tableid, String tableAlias) {
-        // some code goes here
+        tableId = tableid;
+        this.tableAlias = tableAlias;
     }
 
     public SeqScan(TransactionId tid, int tableid) {
@@ -73,7 +78,7 @@ public class SeqScan implements DbIterator {
     }
 
     public void open() throws DbException, TransactionAbortedException {
-        // some code goes here
+        tupleIterator.open();
     }
 
     /**
@@ -86,27 +91,35 @@ public class SeqScan implements DbIterator {
      *         prefixed with the tableAlias string from the constructor.
      */
     public TupleDetail getTupleDesc() {
-        // some code goes here
-        return null;
+        TupleDetail desc = Database.getCatalog().getTupleDesc(tableId);
+        int fieldNumber = desc.fieldNumber();
+        Type[] types = new Type[fieldNumber];
+        String[] names = new String[fieldNumber];
+        for (int i = 0; i < fieldNumber; i++) {
+            types[i] = desc.getFieldType(i);
+            String prefix = getAlias() == null ? "null." : getAlias() + ".";
+            String fieldName = desc.getFieldName(i);
+            fieldName = fieldName == null ? "null" : fieldName;
+            names[i] = prefix + fieldName;
+        }
+        return new TupleDetail(types, names);
     }
 
     public boolean hasNext() throws TransactionAbortedException, DbException {
-        // some code goes here
-        return false;
+        return tupleIterator.hasNext();
     }
 
     public Tuple next() throws NoSuchElementException,
             TransactionAbortedException, DbException {
-        // some code goes here
-        return null;
+        return tupleIterator.next();
     }
 
     public void close() {
-        // some code goes here
+        tupleIterator.close();
     }
 
     public void rewind() throws DbException, NoSuchElementException,
             TransactionAbortedException {
-        // some code goes here
+        tupleIterator.rewind();
     }
 }
