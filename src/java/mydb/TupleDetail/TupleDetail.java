@@ -16,11 +16,6 @@ public class TupleDetail implements Serializable {
 
     private TupleCell[] tupleCells;
 
-    /**
-     * @return
-     *        An iterator which iterates over all the field TDItems
-     *        that are included in this TupleDesc
-     * */
     public Iterator<TupleCell> iterator() {
         return new TDItemIterator();
     }
