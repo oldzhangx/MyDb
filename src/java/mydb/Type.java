@@ -6,6 +6,7 @@ import java.io.Serializable;
 import java.text.ParseException;
 
 public enum Type implements Serializable {
+
     INT_TYPE() {
         @Override
         public int getLen() {
@@ -13,15 +14,16 @@ public enum Type implements Serializable {
         }
 
         @Override
-        public Field parse(DataInputStream dis) throws ParseException {
-            try {
-                return new IntField(dis.readInt());
-            }  catch (IOException e) {
-                throw new ParseException("parse error", 0);
+        public Field parse (DataInputStream dataInputStream) throws ParseException {
+            try{
+                return new IntField(dataInputStream.readInt());
+            } catch (IOException e) {
+                e.printStackTrace();
+                throw new ParseException("int parse error", 0);
             }
         }
-
     },
+
     LONG_TYPE() {
         @Override
         public int getLen() {
@@ -29,14 +31,16 @@ public enum Type implements Serializable {
         }
 
         @Override
-        public Field parse(DataInputStream dis) throws ParseException {
-            try {
-                return new LongField(dis.readLong());
+        public Field parse (DataInputStream dataInputStream) throws ParseException {
+            try{
+                return new LongField(dataInputStream.readLong());
             } catch (IOException e) {
-                throw new ParseException("parse error", 0);
+                e.printStackTrace();
+                throw new ParseException("long parse error", 0);
             }
         }
     },
+
     STRING_TYPE() {
         @Override
         public int getLen() {
@@ -44,7 +48,13 @@ public enum Type implements Serializable {
         }
 
         @Override
-        public Field parse(DataInputStream dis) throws ParseException {
+        public Field parse(DataInputStream dataInputStream) throws ParseException {
+
+            try{
+                int length = dataInputStream.readInt()
+            }
+
+
             try {
                 int strLen = dis.readInt();
                 byte[] bs = new byte[strLen];
