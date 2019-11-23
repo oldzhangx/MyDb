@@ -3,7 +3,9 @@ package mydb.TupleDetail;
 import mydb.Type;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
 
 /**
  * TupleDesc describes the schema of a tuple.
