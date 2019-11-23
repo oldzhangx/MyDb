@@ -1,11 +1,13 @@
 package mydb;
 
-import java.io.*;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.Serializable;
 
 /**
  * Interface for values of fields in tuples in SimpleDB.
  */
-public interface Field extends Serializable{
+public interface Field extends Serializable {
     /**
      * Write the bytes representing this field to the specified
      * DataOutputStream.
