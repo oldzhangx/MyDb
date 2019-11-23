@@ -137,7 +137,7 @@ public class TupleDetail implements Serializable {
     public int fieldNameToIndex(String name) throws NoSuchElementException {
         if(name == null) throw new NoSuchElementException();
         for(int i = 0;i< tdAr.length;i++){
-            if (tdAr[i].fieldName.equals(name))
+            if (name.equals(tdAr[i].fieldName))
                 return i;
         }
         throw new NoSuchElementException();

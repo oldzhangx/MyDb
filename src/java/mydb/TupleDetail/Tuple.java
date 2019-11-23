@@ -29,6 +29,7 @@ public class Tuple implements Serializable {
      */
     public Tuple(TupleDetail td) {
         tupleDetail = td;
+        fields = new Field[td.fieldNumber()];
     }
 
     /**
