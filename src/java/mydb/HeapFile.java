@@ -147,7 +147,7 @@ public class HeapFile implements DbFile {
             if (tuplesInPage == null) return false;
             if (tuplesInPage.hasNext()) return true;
             //TODO : page and iter relation
-            if(pageNum + 1 > numPages())
+            if(pageNum + 1 >= numPages())
                 return false;
             pageNum = pageNum+1;
             HeapPageId pid = new HeapPageId(getId(), pageNum);

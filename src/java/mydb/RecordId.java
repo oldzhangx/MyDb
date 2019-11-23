@@ -50,7 +50,7 @@ public class RecordId implements Serializable {
     public boolean equals(Object o) {
         if(o == this) return true;
         if(o== null) return false;
-        if(o.getClass()!= this.getClass()) return false;
+        if(! (o instanceof PageId)) return false;
         RecordId recordId = (RecordId) o;
         return pageId.equals(recordId.getPageId()) && tupleNo == recordId.tupleno();
         //throw new UnsupportedOperationException("implement this");
