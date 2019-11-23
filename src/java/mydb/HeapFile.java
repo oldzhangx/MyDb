@@ -34,7 +34,7 @@ public class HeapFile implements DbFile {
     public HeapFile(File f, TupleDetail detail) {
         file =  f;
         tupleDetail = detail;
-        pageNumber = (int) (file.length() / BufferPool.PAGE_SIZE) +1 ;
+        pageNumber = (int) (file.length() / BufferPool.PAGE_SIZE);
     }
 
     /**

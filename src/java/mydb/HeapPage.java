@@ -46,23 +46,22 @@ public class HeapPage implements Page {
         this.heapPageId = id;
         this.tupleDetail = Database.getCatalog().getTupleDesc(id.getTableId());
         this.numSlots = getNumTuples();
-        DataInputStream dis = new DataInputStream(new ByteArrayInputStream(data));
+        DataInputStream dataInputStream = new DataInputStream(new ByteArrayInputStream(data));
 
         // allocate and read the header slots of this page
         header = new byte[getHeaderSize()];
         for (int i=0; i<header.length; i++)
-            header[i] = dis.readByte();
+            header[i] = dataInputStream.readByte();
 
         try{
             // allocate and read the actual records of this page
             tuples = new Tuple[numSlots];
             for (int i=0; i<tuples.length; i++)
-                tuples[i] = readNextTuple(dis,i);
+                tuples[i] = readNextTuple(dataInputStream,i);
         }catch(NoSuchElementException e){
             e.printStackTrace();
         }
-        dis.close();
-
+        dataInputStream.close();
         setBeforeImage();
     }
 
@@ -323,7 +322,7 @@ public class HeapPage implements Page {
             if(!hasNext()) throw new NoSuchElementException();
             while (!isSlotUsed(count)) count++;
             divide++;
-            return tuples[count++];
+            return tuples[count];
         }
 
     }
