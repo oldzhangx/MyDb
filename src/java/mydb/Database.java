@@ -1,59 +1,62 @@
 package mydb;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 
-/** Database is a class that initializes several static
-    variables used by the database system (the catalog, the buffer pool,
-    and the log files, in particular.)
-    <p>
-    Provides a set of methods that can be used to access these variables
-    from anywhere.
-*/
+// db main class
+// implement the database instance, catalog, bufferpool
+// skeleton inspired from simple db file
 
 public class Database {
+    // init the database instance
 	private static Database _instance = new Database();
-    private final Catalog _catalog;
-    private BufferPool _bufferpool; 
 
-    private final static String LOGFILENAME = "log";
+    private static final String LOG_FILE_PEX = "LOG";
+
+	// init the catalog
+    private final Catalog _catalog;
+
+    public static Catalog getCatalog() {
+        return _instance._catalog;
+    }
+
+    // init the bufferpool
+    private BufferPool _bufferpool;
+
+    public static BufferPool getBufferPool() {
+        return _instance._bufferpool;
+    }
+
     private LogFile _logfile;
 
+    public static LogFile getLogFile() {
+        return _instance._logfile;
+    }
+
     private Database() {
+
     	_catalog = new Catalog();
+
     	_bufferpool = new BufferPool(BufferPool.DEFAULT_PAGES);
-    	try {
-            _logfile = new LogFile(new File(LOGFILENAME));
-        } catch(IOException e) {
-            _logfile = null;
+    	try{
+            _logfile = new LogFile(new File(LOG_FILE_PEX));
+        } catch (IOException e) {
             e.printStackTrace();
+            // inspired by simple db
+            // make the system safe quit from crach
+            _logfile = null;
             System.exit(1);
         }
         // startControllerThread();
     }
 
-    /** Return the log file of the static Database instance*/
-    public static LogFile getLogFile() {
-        return _instance._logfile;
-    }
-
-    /** Return the buffer pool of the static Database instance*/
-    public static BufferPool getBufferPool() {
-        return _instance._bufferpool;
-    }
-
-    /** Return the catalog of the static Database instance*/
-    public static Catalog getCatalog() {
-        return _instance._catalog;
-    }
-
-    /** Method used for testing -- create a new instance of the
-        buffer pool and return it
-    */
+    // TODO zhang :delete after the test
     public static BufferPool resetBufferPool(int pages) {
         _instance._bufferpool = new BufferPool(pages);
         return _instance._bufferpool;
     }
 
+    // TODO zhang :delete after the test
     //reset the database, used for unit tests only.
     public static void reset() {
     	_instance = new Database();
