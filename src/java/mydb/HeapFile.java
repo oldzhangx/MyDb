@@ -126,19 +126,19 @@ public class HeapFile implements DbFile {
             tid = transactionId;
         }
 
-        public Iterator<Tuple> getTuplesInPage(HeapPageId pid) throws TransactionAbortedException, DbException {
+        public Iterator<Tuple> getTuplesInPage(HeapPageId pid) throws TransactionAbortedException, DbException, IOException {
             return ((HeapPage) Database.getBufferPool().getPage(tid, pid, Permissions.READ_ONLY)).iterator();
         }
 
         @Override
-        public void open() throws DbException, TransactionAbortedException {
+        public void open() throws DbException, TransactionAbortedException, IOException {
             pageNum = 0;
             HeapPageId pid = new HeapPageId(getId(), pageNum);
             tuplesInPage = getTuplesInPage(pid);
         }
 
         @Override
-        public boolean hasNext() throws DbException, TransactionAbortedException {
+        public boolean hasNext() throws DbException, TransactionAbortedException, IOException {
             if (tuplesInPage == null) return false;
             if (tuplesInPage.hasNext()) return true;
             //TODO : page and iter relation
@@ -151,14 +151,14 @@ public class HeapFile implements DbFile {
         }
 
         @Override
-        public Tuple next() throws DbException, TransactionAbortedException, NoSuchElementException {
+        public Tuple next() throws DbException, TransactionAbortedException, NoSuchElementException, IOException {
             //TODO
             if (!hasNext()) throw new NoSuchElementException("not opened or no tuple remained");
             return tuplesInPage.next();
         }
 
         @Override
-        public void rewind() throws DbException, TransactionAbortedException {
+        public void rewind() throws DbException, TransactionAbortedException, IOException {
             open();
         }
 

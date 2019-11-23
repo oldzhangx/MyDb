@@ -3,6 +3,7 @@ package mydb;
 import mydb.TupleDetail.Tuple;
 import mydb.TupleDetail.TupleDetail;
 
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -77,7 +78,7 @@ public class SeqScan implements DbIterator {
         this(tid, tableid, Database.getCatalog().getTableName(tableid));
     }
 
-    public void open() throws DbException, TransactionAbortedException {
+    public void open() throws DbException, TransactionAbortedException, IOException {
         tupleIterator.open();
     }
 
@@ -105,12 +106,12 @@ public class SeqScan implements DbIterator {
         return new TupleDetail(types, names);
     }
 
-    public boolean hasNext() throws TransactionAbortedException, DbException {
+    public boolean hasNext() throws TransactionAbortedException, DbException, IOException {
         return tupleIterator.hasNext();
     }
 
     public Tuple next() throws NoSuchElementException,
-            TransactionAbortedException, DbException {
+            TransactionAbortedException, DbException, IOException {
         return tupleIterator.next();
     }
 
@@ -119,7 +120,7 @@ public class SeqScan implements DbIterator {
     }
 
     public void rewind() throws DbException, NoSuchElementException,
-            TransactionAbortedException {
+            TransactionAbortedException, IOException {
         tupleIterator.rewind();
     }
 }
