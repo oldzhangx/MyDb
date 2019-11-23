@@ -1,6 +1,7 @@
 package mydb;
-
 import java.io.*;
+
+// Last Change: 11/23
 
 /**
  * Instance of Field that stores a single integer.
@@ -47,7 +48,9 @@ public class IntField implements Field {
      * @throws IllegalArgumentException if val is not an IntField
      * @see Field#compare
      */
-    public boolean compare(Predicate.Operation op, Field val) {
+    
+    // 11/23: Change Predicate.Operation to Predicate.Op
+    public boolean compare(Predicate.Op op, Field val) {
 
         IntField iVal = (IntField) val;
 
