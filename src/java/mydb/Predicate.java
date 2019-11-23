@@ -1,39 +1,42 @@
 package mydb;
-
 import mydb.TupleDetail.Tuple;
-
 import java.io.Serializable;
+//Last Change: 11/23
+
 
 /**
  * Predicate compares tuples to a specified Field value.
  */
 public class Predicate implements Serializable {
 
-    private static final long serialVersionUID = -3498782164862027213L;
+    private static final long serialVersionUID = 1L;
 
+    int field;
+    Op op;
+    Field operand;
     /** Constants used for return codes in Field.compare */
-    public enum Operation implements Serializable {
+    public enum Op implements Serializable {
         EQUALS, GREATER_THAN, LESS_THAN, LESS_THAN_OR_EQ, GREATER_THAN_OR_EQ, LIKE, NOT_EQUALS;
 
         /**
          * Interface to access operations by a string containing an integer
          * index for command-line convenience.
-         * 
+         *
          * @param s
          *            a string containing a valid integer Op index
          */
-        public static Operation getOp(String s) {
+        public static Op getOp(String s) {
             return getOp(Integer.parseInt(s));
         }
 
         /**
          * Interface to access operations by integer value for command-line
          * convenience.
-         * 
+         *
          * @param i
          *            a valid integer Op index
          */
-        public static Operation getOp(int i) {
+        public static Op getOp(int i) {
             return values()[i];
         }
 
@@ -52,13 +55,13 @@ public class Predicate implements Serializable {
                 return "like";
             if (this == NOT_EQUALS)
                 return "<>";
-            throw new IllegalStateException("Operation enum error!");
+            throw new IllegalStateException("impossible to reach here");
         }
     }
 
     /**
      * Constructor.
-     * 
+     *
      * @param field
      *            field number of passed in tuples to compare against.
      * @param op
@@ -66,8 +69,11 @@ public class Predicate implements Serializable {
      * @param operand
      *            field value to compare passed in tuples to
      */
-    public Predicate(int field, Operation op, Field operand) {
+    public Predicate(int field, Op op, Field operand) {
         // some code goes here
+        this.field = field;
+        this.op = op;
+        this.operand = operand;
     }
 
     /**
@@ -76,48 +82,55 @@ public class Predicate implements Serializable {
     public int getField()
     {
         // some code goes here
-        return -1;
+        return field;
     }
 
     /**
      * @return the operator
      */
-    public Operation getOp()
+    public Op getOp()
     {
         // some code goes here
-        return null;
+        return op;
     }
-    
+
     /**
      * @return the operand
      */
     public Field getOperand()
     {
         // some code goes here
-        return null;
+        return operand;
     }
-    
+
     /**
      * Compares the field number of t specified in the constructor to the
      * operand field specified in the constructor using the operator specific in
      * the constructor. The comparison can be made through Field's compare
      * method.
-     * 
-     * @param t
-     *            The tuple to compare against
+     *
+     * @param t The tuple to compare against
      * @return true if the comparison is true, false otherwise.
      */
+    //  public boolean filter(Tuple t) {
+    // some code goes here
+    //   return t.getField(field).compare(op,operand);
     public boolean filter(Tuple t) {
         // some code goes here
-        return false;
+        if (t == null) return false;
+        //like the t > operand
+        if (t.getField(field).compare(op, operand)) return true;
+        else return false;
     }
+
+
 
     /**
      * Returns something useful, like "f = field_id op = op_string operand =
      * operand_string
      */
     public String toString() {
-        // some code goes here
-        return "";
+
+        return ""+"field = "+field+" op = "+op.toString()+" operand"+operand.toString();
     }
 }
