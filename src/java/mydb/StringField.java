@@ -71,9 +71,9 @@ public class StringField implements Field {
 	 * 
 	 * @throws IllegalArgumentException
 	 *             if val is not a StringField
-	 * @see Field#compare
+	 * @see Field#compareWith
 	 */
-	public boolean compare(Predicate.Operation op, Field val) {
+	public boolean compareWith(Predicate.Operation op, Field val) {
 
 		StringField iVal = (StringField) val;
 		int cmpVal = value.compareTo(iVal.value);
