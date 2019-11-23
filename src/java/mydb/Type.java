@@ -1,13 +1,10 @@
 package mydb;
 
+import java.io.DataInputStream;
+import java.io.IOException;
+import java.io.Serializable;
 import java.text.ParseException;
-import java.io.*;
 
-/**
- * Class representing a type in SimpleDB.
- * Types are static objects defined by this class; hence, the Type
- * constructor is private.
- */
 public enum Type implements Serializable {
     INT_TYPE() {
         @Override
