@@ -13,7 +13,8 @@ import java.util.NoSuchElementException;
  */
 public abstract class Operator implements DbIterator {
 
-    private static final long serialVersionUID = 1L;
+
+    private static final long serialVersionUID = -8386431487731922691L;
 
     public boolean hasNext() throws DbException, TransactionAbortedException{
         if (!this.open)
