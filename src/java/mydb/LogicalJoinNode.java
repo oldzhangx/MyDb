@@ -1,4 +1,4 @@
-package simpledb;
+package mydb;
 
 /** A LogicalJoinNode represens the state needed of a join of two
  * tables in a LogicalQueryPlan */
@@ -21,7 +21,7 @@ public class LogicalJoinNode {
     public String f2QuantifiedName;
 
     /** The join predicate */
-    public Predicate.Op p;
+    public Predicate.Operation p;
 
     public LogicalJoinNode() {
     }
@@ -47,15 +47,15 @@ public class LogicalJoinNode {
     /** Return a new LogicalJoinNode with the inner and outer (t1.f1
      * and t2.f2) tables swapped. */
     public LogicalJoinNode swapInnerOuter() {
-        Predicate.Op newp;
-        if (p == Predicate.Op.GREATER_THAN)
-            newp = Predicate.Op.LESS_THAN;
-        else if (p == Predicate.Op.GREATER_THAN_OR_EQ)
-            newp = Predicate.Op.LESS_THAN_OR_EQ;
-        else if (p == Predicate.Op.LESS_THAN)
-            newp = Predicate.Op.GREATER_THAN;
-        else if (p == Predicate.Op.LESS_THAN_OR_EQ)
-            newp = Predicate.Op.GREATER_THAN_OR_EQ;
+        Predicate.Operation newp;
+        if (p == Predicate.Operation.GREATER_THAN)
+            newp = Predicate.Operation.LESS_THAN;
+        else if (p == Predicate.Operation.GREATER_THAN_OR_EQ)
+            newp = Predicate.Operation.LESS_THAN_OR_EQ;
+        else if (p == Predicate.Operation.LESS_THAN)
+            newp = Predicate.Operation.GREATER_THAN;
+        else if (p == Predicate.Operation.LESS_THAN_OR_EQ)
+            newp = Predicate.Operation.GREATER_THAN_OR_EQ;
         else 
             newp = p;
         
