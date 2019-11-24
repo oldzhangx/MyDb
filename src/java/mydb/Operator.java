@@ -1,4 +1,7 @@
-package simpledb;
+package mydb;
+
+import mydb.TupleDetail.Tuple;
+import mydb.TupleDetail.TupleDetail;
 
 import java.util.NoSuchElementException;
 
@@ -85,7 +88,7 @@ public abstract class Operator implements DbIterator {
     /**
      * @return return the TupleDesc of the output tuples of this operator
      * */
-    public abstract TupleDesc getTupleDesc();
+    public abstract TupleDetail getTupleDesc();
 
     /**
      * @return The estimated cardinality of this operator. 
