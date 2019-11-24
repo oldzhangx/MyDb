@@ -1,4 +1,5 @@
 package mydb;
+
 import java.io.*;
 
 // Last Change: 11/23
@@ -46,11 +47,9 @@ public class IntField implements Field {
      * Return semantics are as specified by Field.compare
      *
      * @throws IllegalArgumentException if val is not an IntField
-     * @see Field#compare
+     * @see Field#compareWith
      */
-    
-    // 11/23: Change Predicate.Operation to Predicate.Op
-    public boolean compare(Predicate.Op op, Field val) {
+    public boolean compareWith(Predicate.Op op, Field val) {
 
         IntField iVal = (IntField) val;
 
