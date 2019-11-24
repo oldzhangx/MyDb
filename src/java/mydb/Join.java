@@ -3,14 +3,16 @@ package mydb;
 import mydb.TupleDetail.Tuple;
 import mydb.TupleDetail.TupleDetail;
 
-import java.util.*;
+import java.util.NoSuchElementException;
+
 
 /**
  * The Join operator implements the relational join operation.
  */
 public class Join extends Operator {
 
-    private static final long serialVersionUID = 1L;
+
+    private static final long serialVersionUID = 1421683959262591903L;
 
     /**
      * Constructor. Accepts to children to join and the predicate to join them
@@ -52,10 +54,6 @@ public class Join extends Operator {
         return null;
     }
 
-    /**
-     * @see simpledb.TupleDesc#merge(TupleDesc, TupleDesc) for possible
-     *      implementation logic.
-     */
     public TupleDetail getTupleDesc() {
         // some code goes here
         return null;
