@@ -17,15 +17,13 @@ public class Join extends Operator {
     /**
      * Constructor. Accepts to children to join and the predicate to join them
      * on
-     * 
-     * @param p
+     *  @param p
      *            The predicate to use to join the children
      * @param child1
      *            Iterator for the left(outer) relation to join
      * @param child2
-     *            Iterator for the right(inner) relation to join
      */
-    public Join(Predicate p, DbIterator child1, DbIterator child2) {
+    public Join(JoinPredicate p, DbIterator child1, DbIterator child2) {
         // some code goes here
     }
 

@@ -150,7 +150,7 @@ public class JoinOptimizer {
     /**
      * Estimate the join cardinality of two tables.
      * */
-    public static int estimateTableJoinCardinality(Predicate.Op joinOp,
+    public static int estimateTableJoinCardinality(Predicate.Operation joinOp,
             String table1Alias, String table2Alias, String field1PureName,
             String field2PureName, int card1, int card2, boolean t1pkey,
             boolean t2pkey, Map<String, TableStats> stats,

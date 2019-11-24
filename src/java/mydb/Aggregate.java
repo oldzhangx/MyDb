@@ -13,7 +13,7 @@ import java.util.NoSuchElementException;
  */
 public class Aggregate extends Operator {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 6394662876144848862L;
 
     /**
      * Constructor.

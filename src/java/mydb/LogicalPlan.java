@@ -1,4 +1,7 @@
 package mydb;
+import mydb.TupleDetail.Tuple;
+import mydb.TupleDetail.TupleDetail;
+
 import java.util.Map;
 import java.util.Vector;
 import java.util.HashMap;
@@ -95,7 +98,7 @@ public class LogicalPlan {
      *   added via {@link #addScan} or if field is ambiguous (e.g., two
      *   tables contain a field named field.)
      */
-    public void addFilter(String field, Predicate.Op p, String
+    public void addFilter(String field, Predicate.Operation p, String
         constantValue) throws ParsingException{ 
 
         field = disambiguateName(field); 
@@ -117,7 +120,7 @@ public class LogicalPlan {
      *      or is not in one of the tables added via {@link #addScan}
     */
 
-    public void addJoin( String joinField1, String joinField2, Predicate.Op pred) throws ParsingException {
+    public void addJoin( String joinField1, String joinField2, Predicate.Operation pred) throws ParsingException {
         joinField1 = disambiguateName(joinField1);
         joinField2 = disambiguateName(joinField2);
         String table1Alias = joinField1.split("[.]")[0];
@@ -145,7 +148,7 @@ public class LogicalPlan {
      *  @throws ParsingException if either of the fields is ambiguous,
      *      or is not in one of the tables added via {@link #addScan}
      */
-    public void addJoin( String joinField1, DbIterator joinField2, Predicate.Op pred) throws ParsingException {
+    public void addJoin( String joinField1, DbIterator joinField2, Predicate.Operation pred) throws ParsingException {
         joinField1 = disambiguateName(joinField1);
 
         String table1 = joinField1.split("[.]")[0];
@@ -239,7 +242,7 @@ public class LogicalPlan {
         while (tableIt.hasNext()) {
             LogicalScanNode table = tableIt.next();
             try {
-                TupleDesc td = Database.getCatalog().getDbFile(table.t).getTupleDesc();
+                TupleDetail td = Database.getCatalog().getDbFile(table.t).getTupleDesc();
 //                int id = 
                   td.fieldNameToIndex(name);
                 if (tableName == null) {
@@ -316,7 +319,7 @@ public class LogicalPlan {
 
             Field f;
             Type ftyp;
-            TupleDesc td = subplanMap.get(lf.tableAlias).getTupleDesc();
+            TupleDetail td = subplanMap.get(lf.tableAlias).getTupleDesc();
             
             try {//td.fieldNameToIndex(disambiguateName(lf.fieldPureName))
                 ftyp = td.getFieldType(td.fieldNameToIndex(lf.fieldQuantifiedName));
@@ -415,7 +418,7 @@ public class LogicalPlan {
             LogicalSelectListNode si = selectList.elementAt(i);
             if (si.aggOp != null) {
                 outFields.add(groupByField!=null?1:0);
-                TupleDesc td = node.getTupleDesc();
+                TupleDetail td = node.getTupleDesc();
 //                int  id;
                 try {
 //                    id = 
@@ -430,7 +433,7 @@ public class LogicalPlan {
                         throw new ParsingException("Field " + si.fname + " does not appear in GROUP BY list");
                     }
                     outFields.add(0);
-                    TupleDesc td = node.getTupleDesc();
+                    TupleDetail td = node.getTupleDesc();
                     int  id;
                     try {
                         id = td.fieldNameToIndex(groupByField);
@@ -439,13 +442,13 @@ public class LogicalPlan {
                     }
                     outTypes.add(td.getFieldType(id));
             } else if (si.fname.equals("null.*")) {
-                    TupleDesc td = node.getTupleDesc();
-                    for ( i = 0; i < td.numFields(); i++) {
+                    TupleDetail td = node.getTupleDesc();
+                    for ( i = 0; i < td.fieldNumber(); i++) {
                         outFields.add(i);
                         outTypes.add(td.getFieldType(i));
                     }
             } else  {
-                    TupleDesc td = node.getTupleDesc();
+                    TupleDetail td = node.getTupleDesc();
                     int id;
                     try {
                         id = td.fieldNameToIndex(si.fname);
@@ -459,17 +462,15 @@ public class LogicalPlan {
         }
 
         if (hasAgg) {
-            TupleDesc td = node.getTupleDesc();
+            TupleDetail td = node.getTupleDesc();
             Aggregate aggNode;
             try {
                 aggNode = new Aggregate(node,
                                         td.fieldNameToIndex(aggField),
                                         groupByField == null?Aggregator.NO_GROUPING:td.fieldNameToIndex(groupByField),
                                 getAggOp(aggOp));
-            } catch (NoSuchElementException e) {
-                throw new simpledb.ParsingException(e);
-            } catch (IllegalArgumentException e) {
-                throw new simpledb.ParsingException(e);
+            } catch (NoSuchElementException | IllegalArgumentException e) {
+                throw new mydb.ParsingException(e);
             }
             node = aggNode;
         }
@@ -483,10 +484,10 @@ public class LogicalPlan {
 
     public static void main(String argv[]) {
         // construct a 3-column table schema
-        Type types[] = new Type[]{ Type.INT_TYPE, Type.INT_TYPE, Type.INT_TYPE };
-        String names[] = new String[]{ "field0", "field1", "field2" };
+        Type[] types = new Type[]{ Type.INT_TYPE, Type.INT_TYPE, Type.INT_TYPE };
+        String[] names = new String[]{ "field0", "field1", "field2" };
 
-        TupleDesc td = new TupleDesc(types, names);
+        UsedTuplesIterator td = new UsedTuplesIterator(types, names);
         TableStats ts;
         HashMap<String, TableStats> tableMap = new HashMap<String,TableStats>();
 
@@ -504,7 +505,7 @@ public class LogicalPlan {
         lp.addScan(table1.getId(), "t1");
 
         try {
-            lp.addFilter("t1.field0", Predicate.Op.GREATER_THAN, "1");
+            lp.addFilter("t1.field0", Predicate.Operation.GREATER_THAN, "1");
         } catch (Exception e) {
         }
 
