@@ -10,3 +10,4 @@ simpledb.iml
 mydb1.iml
 out/
 production/
+test/mydb/mydb/
