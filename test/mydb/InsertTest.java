@@ -1,5 +1,6 @@
-package simpledb;
+package mydb;
 
+import mydb.TupleDetail.TupleDetail;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -37,8 +38,8 @@ public class InsertTest extends TestUtil.CreateHeapFile {
    */
   @Test public void getTupleDesc() throws Exception {
     Insert op = new Insert(tid,scan1, empty.getId());
-    TupleDesc expected = Utility.getTupleDesc(1);
-    TupleDesc actual = op.getTupleDesc();
+    TupleDetail expected = Utility.getTupleDesc(1);
+    TupleDetail actual = op.getTupleDesc();
     assertEquals(expected, actual);
   }
 

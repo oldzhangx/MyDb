@@ -1,4 +1,4 @@
-package simpledb.systemtest;
+package mydb.systemtest;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -6,11 +6,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.Assert.*;
+
+import mydb.*;
+import mydb.systemtest.MyDbTestBase;
 import org.junit.Test;
 
-import simpledb.*;
 
-public abstract class FilterBase extends SimpleDbTestBase {
+
+public abstract class FilterBase extends MyDbTestBase {
     private static final int COLUMNS = 3;
     private static final int ROWS = 1097;
 
@@ -33,7 +36,7 @@ public abstract class FilterBase extends SimpleDbTestBase {
     }
 
     private void validatePredicate(int column, int columnValue, int trueValue, int falseValue,
-            Predicate.Op operation) throws IOException, DbException, TransactionAbortedException {
+            Predicate.Operation operation) throws IOException, DbException, TransactionAbortedException {
         // Test the true value
         HeapFile f = createTable(column, columnValue);
         Predicate predicate = new Predicate(column, operation, new IntField(trueValue));
@@ -60,26 +63,26 @@ public abstract class FilterBase extends SimpleDbTestBase {
 
     @Test public void testEquals() throws
             DbException, TransactionAbortedException, IOException {
-        validatePredicate(0, 1, 1, 2, Predicate.Op.EQUALS);
+        validatePredicate(0, 1, 1, 2, Predicate.Operation.EQUALS);
     }
 
     @Test public void testLessThan() throws
             DbException, TransactionAbortedException, IOException {
-        validatePredicate(1, 1, 2, 1, Predicate.Op.LESS_THAN);
+        validatePredicate(1, 1, 2, 1, Predicate.Operation.LESS_THAN);
     }
 
     @Test public void testLessThanOrEq() throws
             DbException, TransactionAbortedException, IOException {
-        validatePredicate(2, 42, 42, 41, Predicate.Op.LESS_THAN_OR_EQ);
+        validatePredicate(2, 42, 42, 41, Predicate.Operation.LESS_THAN_OR_EQ);
     }
 
     @Test public void testGreaterThan() throws
             DbException, TransactionAbortedException, IOException {
-        validatePredicate(2, 42, 41, 42, Predicate.Op.GREATER_THAN);
+        validatePredicate(2, 42, 41, 42, Predicate.Operation.GREATER_THAN);
     }
 
     @Test public void testGreaterThanOrEq() throws
             DbException, TransactionAbortedException, IOException {
-        validatePredicate(2, 42, 42, 43, Predicate.Op.GREATER_THAN_OR_EQ);
+        validatePredicate(2, 42, 42, 43, Predicate.Operation.GREATER_THAN_OR_EQ);
     }
 }

@@ -1,15 +1,16 @@
-package simpledb.systemtest;
+package mydb.systemtest;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import simpledb.*;
+import mydb.*;
+import mydb.systemtest.MyDbTestBase;
 
 import org.junit.Test;
 
-public class AggregateTest extends SimpleDbTestBase {
+public class AggregateTest extends MyDbTestBase {
     public void validateAggregate(DbFile table, Aggregator.Op operation, int aggregateColumn, int groupColumn, ArrayList<ArrayList<Integer>> expectedResult)
             throws DbException, TransactionAbortedException, IOException {
         TransactionId tid = new TransactionId();

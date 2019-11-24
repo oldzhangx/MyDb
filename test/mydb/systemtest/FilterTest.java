@@ -1,8 +1,10 @@
-package simpledb.systemtest;
+package mydb.systemtest;
+
+import mydb.*;
 
 import java.io.IOException;
 import static org.junit.Assert.*;
-import simpledb.*;
+
 
 public class FilterTest extends FilterBase {
     @Override

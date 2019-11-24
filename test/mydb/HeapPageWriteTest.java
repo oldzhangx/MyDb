@@ -1,4 +1,4 @@
-package simpledb;
+package mydb;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -9,14 +9,14 @@ import java.util.LinkedList;
 
 import junit.framework.JUnit4TestAdapter;
 
+import mydb.TupleDetail.Tuple;
+import mydb.systemtest.MyDbTestBase;
+import mydb.systemtest.SystemTestUtil;
 import org.junit.Before;
 import org.junit.Test;
 
-import simpledb.TestUtil.SkeletonFile;
-import simpledb.systemtest.SimpleDbTestBase;
-import simpledb.systemtest.SystemTestUtil;
 
-public class HeapPageWriteTest extends SimpleDbTestBase {
+public class HeapPageWriteTest extends MyDbTestBase {
 
     private HeapPageId pid;
 
@@ -25,7 +25,7 @@ public class HeapPageWriteTest extends SimpleDbTestBase {
      */
     @Before public void addTable() throws IOException {
         this.pid = new HeapPageId(-1, -1);
-        Database.getCatalog().addTable(new SkeletonFile(-1, Utility.getTupleDesc(2)), SystemTestUtil.getUUID());
+        Database.getCatalog().addTable(new TestUtil.SkeletonFile(-1, Utility.getTupleDesc(2)), SystemTestUtil.getUUID());
     }
     
     /**

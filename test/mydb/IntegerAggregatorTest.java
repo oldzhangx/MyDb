@@ -1,4 +1,4 @@
-package simpledb;
+package mydb;
 
 import static org.junit.Assert.assertEquals;
 
@@ -6,12 +6,13 @@ import java.util.NoSuchElementException;
 
 import junit.framework.JUnit4TestAdapter;
 
+import mydb.DbIterator;
+import mydb.systemtest.MyDbTestBase;
 import org.junit.Before;
 import org.junit.Test;
 
-import simpledb.systemtest.SimpleDbTestBase;
 
-public class IntegerAggregatorTest extends SimpleDbTestBase {
+public class IntegerAggregatorTest extends MyDbTestBase {
 
   int width1 = 2;
   DbIterator scan1;

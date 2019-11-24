@@ -1,16 +1,18 @@
-package simpledb;
+package mydb;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import junit.framework.JUnit4TestAdapter;
 
+import mydb.TupleDetail.Tuple;
+import mydb.TupleDetail.TupleDetail;
+import mydb.systemtest.MyDbTestBase;
 import org.junit.Before;
 import org.junit.Test;
 
-import simpledb.systemtest.SimpleDbTestBase;
 
-public class FilterTest extends SimpleDbTestBase {
+public class FilterTest extends MyDbTestBase {
 
   int testWidth = 3;
   DbIterator scan;
@@ -26,10 +28,10 @@ public class FilterTest extends SimpleDbTestBase {
    * Unit test for Filter.getTupleDesc()
    */
   @Test public void getTupleDesc() {
-    Predicate pred = new Predicate(0, Predicate.Op.EQUALS, TestUtil.getField(0));
+    Predicate pred = new Predicate(0, Predicate.Operation.EQUALS, TestUtil.getField(0));
     Filter op = new Filter(pred, scan);
-    TupleDesc expected = Utility.getTupleDesc(testWidth);
-    TupleDesc actual = op.getTupleDesc();
+    TupleDetail expected = Utility.getTupleDesc(testWidth);
+    TupleDetail actual = op.getTupleDesc();
     assertEquals(expected, actual);
   }
 
@@ -37,7 +39,7 @@ public class FilterTest extends SimpleDbTestBase {
    * Unit test for Filter.rewind()
    */
   @Test public void rewind() throws Exception {
-    Predicate pred = new Predicate(0, Predicate.Op.EQUALS, TestUtil.getField(0));
+    Predicate pred = new Predicate(0, Predicate.Operation.EQUALS, TestUtil.getField(0));
     Filter op = new Filter(pred, scan);
     op.open();
     assertTrue(op.hasNext());
@@ -57,7 +59,7 @@ public class FilterTest extends SimpleDbTestBase {
    */
   @Test public void filterSomeLessThan() throws Exception {
     Predicate pred;
-    pred = new Predicate(0, Predicate.Op.LESS_THAN, TestUtil.getField(2));
+    pred = new Predicate(0, Predicate.Operation.LESS_THAN, TestUtil.getField(2));
     Filter op = new Filter(pred, scan);
     TestUtil.MockScan expectedOut = new TestUtil.MockScan(-5, 2, testWidth);
     op.open();
@@ -71,7 +73,7 @@ public class FilterTest extends SimpleDbTestBase {
    */
   @Test public void filterAllLessThan() throws Exception {
     Predicate pred;
-    pred = new Predicate(0, Predicate.Op.LESS_THAN, TestUtil.getField(-5));
+    pred = new Predicate(0, Predicate.Operation.LESS_THAN, TestUtil.getField(-5));
     Filter op = new Filter(pred, scan);
     op.open();
     assertTrue(TestUtil.checkExhausted(op));
@@ -84,7 +86,7 @@ public class FilterTest extends SimpleDbTestBase {
   @Test public void filterEqual() throws Exception {
     Predicate pred;
     this.scan = new TestUtil.MockScan(-5, 5, testWidth);
-    pred = new Predicate(0, Predicate.Op.EQUALS, TestUtil.getField(-5));
+    pred = new Predicate(0, Predicate.Operation.EQUALS, TestUtil.getField(-5));
     Filter op = new Filter(pred, scan);
     op.open();
     assertTrue(TestUtil.compareTuples(Utility.getHeapTuple(-5, testWidth),
@@ -92,7 +94,7 @@ public class FilterTest extends SimpleDbTestBase {
     op.close();
 
     this.scan = new TestUtil.MockScan(-5, 5, testWidth);
-    pred = new Predicate(0, Predicate.Op.EQUALS, TestUtil.getField(0));
+    pred = new Predicate(0, Predicate.Operation.EQUALS, TestUtil.getField(0));
     op = new Filter(pred, scan);
     op.open();
     assertTrue(TestUtil.compareTuples(Utility.getHeapTuple(0, testWidth),
@@ -100,7 +102,7 @@ public class FilterTest extends SimpleDbTestBase {
     op.close();
 
     this.scan = new TestUtil.MockScan(-5, 5, testWidth);
-    pred = new Predicate(0, Predicate.Op.EQUALS, TestUtil.getField(4));
+    pred = new Predicate(0, Predicate.Operation.EQUALS, TestUtil.getField(4));
     op = new Filter(pred, scan);
     op.open();
     assertTrue(TestUtil.compareTuples(Utility.getHeapTuple(4, testWidth),
@@ -113,7 +115,7 @@ public class FilterTest extends SimpleDbTestBase {
    */
   @Test public void filterEqualNoTuples() throws Exception {
     Predicate pred;
-    pred = new Predicate(0, Predicate.Op.EQUALS, TestUtil.getField(5));
+    pred = new Predicate(0, Predicate.Operation.EQUALS, TestUtil.getField(5));
     Filter op = new Filter(pred, scan);
     op.open();
     TestUtil.checkExhausted(op);

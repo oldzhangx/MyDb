@@ -1,13 +1,17 @@
-package simpledb.systemtest;
+package mydb.systemtest;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import simpledb.*;
+
+import mydb.*;
+import mydb.TupleDetail.Tuple;
+import mydb.systemtest.MyDbTestBase;
+
 
 import static org.junit.Assert.*;
 import org.junit.Test;
 
-public class InsertTest extends SimpleDbTestBase {
+public class InsertTest extends MyDbTestBase {
     private void validateInsert(int columns, int sourceRows, int destinationRows)
                 throws DbException, IOException, TransactionAbortedException {
         // Create the two tables

@@ -1,4 +1,4 @@
-package simpledb;
+package mydb;
 
 import org.junit.After;
 import org.junit.Before;

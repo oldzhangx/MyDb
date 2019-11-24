@@ -1,12 +1,14 @@
-package simpledb.systemtest;
+package mydb.systemtest;
+
+import mydb.*;
+import mydb.TupleDetail.Tuple;
 
 import static org.junit.Assert.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import simpledb.*;
 
-public class DeleteTest extends FilterBase {
+public class DeleteTest extends mydb.systemtest.FilterBase {
     ArrayList<ArrayList<Integer>> expectedTuples = null;
 
     @Override
