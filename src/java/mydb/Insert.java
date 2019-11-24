@@ -1,4 +1,7 @@
-package simpledb;
+package mydb;
+
+import mydb.TupleDetail.Tuple;
+import mydb.TupleDetail.TupleDetail;
 
 /**
  * Inserts tuples read from the child operator into the tableid specified in the
@@ -6,7 +9,7 @@ package simpledb;
  */
 public class Insert extends Operator {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1496330920324262913L;
 
     /**
      * Constructor.
@@ -26,7 +29,7 @@ public class Insert extends Operator {
         // some code goes here
     }
 
-    public TupleDesc getTupleDesc() {
+    public TupleDetail getTupleDesc() {
         // some code goes here
         return null;
     }

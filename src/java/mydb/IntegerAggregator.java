@@ -1,11 +1,14 @@
-package simpledb;
+package mydb;
+
+import mydb.TupleDetail.Tuple;
 
 /**
  * Knows how to compute some aggregate over a set of IntFields.
  */
 public class IntegerAggregator implements Aggregator {
 
-    private static final long serialVersionUID = 1L;
+
+    private static final long serialVersionUID = 587316638506548325L;
 
     /**
      * Aggregate constructor
