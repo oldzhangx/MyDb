@@ -287,8 +287,7 @@ public class HeapPage implements Page {
         // i/8 to calculate where section the data is
         int t = i/8;
         int d = i%8;
-
-        return (header[t] >> d) %2 ==1;
+        return (byte) (header[t] << (7 - d)) < 0;
     }
 
     /**
@@ -322,7 +321,8 @@ public class HeapPage implements Page {
             if(!hasNext()) throw new NoSuchElementException();
             while (!isSlotUsed(count)) count++;
             divide++;
-            return tuples[count];
+            //count = count +1;
+            return tuples[count++];
         }
 
     }
