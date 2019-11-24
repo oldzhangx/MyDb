@@ -1,4 +1,4 @@
-package simpledb;
+package mydb;
 
 /** A LogicalFilterNode represents the parameters of a filter in the WHERE clause of a query. 
     <p>
@@ -11,7 +11,7 @@ public class LogicalFilterNode {
     public String tableAlias;
 
     /** The predicate in the filter */
-    public Predicate.Op p;
+    public Predicate.Operation p;
     
     /* The constant on the right side of the filter */
     public String c;
@@ -21,7 +21,7 @@ public class LogicalFilterNode {
     
     public String fieldQuantifiedName;
     
-    public LogicalFilterNode(String table, String field, Predicate.Op pred, String constant) {
+    public LogicalFilterNode(String table, String field, Predicate.Operation pred, String constant) {
         tableAlias = table;
         p = pred;
         c = constant;
