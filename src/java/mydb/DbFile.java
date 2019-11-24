@@ -4,8 +4,10 @@ package mydb;
 import mydb.TupleDetail.Tuple;
 import mydb.TupleDetail.TupleDetail;
 
-import java.util.*;
-import java.io.*;
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.ArrayList;
+
 
 /**
  * The interface for database files on disk. Each table is represented by a
