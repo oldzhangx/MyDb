@@ -1,15 +1,15 @@
-package simpledb;
+package mydb;
 
 import java.util.*;
 
+import mydb.systemtest.MyDbTestBase;
 import org.junit.Before;
 import org.junit.Test;
 
-import simpledb.systemtest.SimpleDbTestBase;
 import static org.junit.Assert.assertEquals;
 import junit.framework.JUnit4TestAdapter;
 
-public class StringAggregatorTest extends SimpleDbTestBase {
+public class StringAggregatorTest extends MyDbTestBase {
 
   int width1 = 2;
   DbIterator scan1;
