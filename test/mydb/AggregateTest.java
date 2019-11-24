@@ -1,16 +1,17 @@
-package simpledb;
+package mydb;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import junit.framework.JUnit4TestAdapter;
 
+import mydb.TupleDetail.TupleDetail;
+import mydb.systemtest.MyDbTestBase;
 import org.junit.Before;
 import org.junit.Test;
 
-import simpledb.systemtest.SimpleDbTestBase;
 
-public class AggregateTest extends SimpleDbTestBase {
+public class AggregateTest extends MyDbTestBase {
 
   int width1 = 2;
   DbIterator scan1;
@@ -88,8 +89,8 @@ public class AggregateTest extends SimpleDbTestBase {
   @Test public void getTupleDesc() {
     Aggregate op = new Aggregate(scan1, 0, 0,
         Aggregator.Op.MIN);
-    TupleDesc expected = Utility.getTupleDesc(2);
-    TupleDesc actual = op.getTupleDesc();
+    TupleDetail expected = Utility.getTupleDesc(2);
+    TupleDetail actual = op.getTupleDesc();
     assertEquals(expected, actual);
   }
 

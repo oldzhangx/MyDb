@@ -15,7 +15,7 @@ public abstract class Operator implements DbIterator {
 
     private static final long serialVersionUID = 1L;
 
-    public boolean hasNext() throws DbException, TransactionAbortedException {
+    public boolean hasNext() throws DbException, TransactionAbortedException, IOException {
         if (!this.open)
             throw new IllegalStateException("Operator not yet open");
         
@@ -25,7 +25,7 @@ public abstract class Operator implements DbIterator {
     }
 
     public Tuple next() throws DbException, TransactionAbortedException,
-            NoSuchElementException {
+            NoSuchElementException, IOException {
         if (next == null) {
             next = fetchNext();
             if (next == null)
