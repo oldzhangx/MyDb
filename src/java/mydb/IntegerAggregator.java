@@ -25,8 +25,17 @@ public class IntegerAggregator implements Aggregator {
      *            the aggregation operator
      */
 
+    int gbfield;
+    Type gbfieldtype;
+    int afield;
+    Op what;
+
+
     public IntegerAggregator(int gbfield, Type gbfieldtype, int afield, Op what) {
-        // some code goes here
+        this.gbfield = gbfield;
+        this.gbfieldtype = gbfieldtype;
+        this.afield = afield;
+        this.what = what;
     }
 
     /**
@@ -37,7 +46,8 @@ public class IntegerAggregator implements Aggregator {
      *            the Tuple containing an aggregate field and a group-by field
      */
     public void mergeTupleIntoGroup(Tuple tup) {
-        // some code goes here
+        Tuple tuple = new Tuple();
+
     }
 
     /**
