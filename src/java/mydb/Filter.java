@@ -1,13 +1,18 @@
-package simpledb;
+package mydb;
 
-import java.util.*;
+
+import mydb.TupleDetail.Tuple;
+import mydb.TupleDetail.TupleDetail;
+
+import java.util.NoSuchElementException;
 
 /**
  * Filter is an operator that implements a relational select.
  */
 public class Filter extends Operator {
 
-    private static final long serialVersionUID = 1L;
+
+    private static final long serialVersionUID = 1644152417983932905L;
 
     /**
      * Constructor accepts a predicate to apply and a child operator to read
@@ -27,7 +32,7 @@ public class Filter extends Operator {
         return null;
     }
 
-    public TupleDesc getTupleDesc() {
+    public TupleDetail getTupleDesc() {
         // some code goes here
         return null;
     }
