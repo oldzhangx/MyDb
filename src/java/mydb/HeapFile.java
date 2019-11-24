@@ -3,8 +3,13 @@ package mydb;
 import mydb.TupleDetail.Tuple;
 import mydb.TupleDetail.TupleDetail;
 
-import java.io.*;
-import java.util.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.RandomAccessFile;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
 
 /**
  * HeapFile is an implementation of a DbFile that stores a collection of tuples
@@ -34,7 +39,7 @@ public class HeapFile implements DbFile {
     public HeapFile(File f, TupleDetail detail) {
         file =  f;
         tupleDetail = detail;
-        pageNumber = (int) (file.length() / BufferPool.PAGE_SIZE) +1 ;
+        pageNumber = (int) (file.length() / BufferPool.PAGE_SIZE);
     }
 
     /**
@@ -142,7 +147,7 @@ public class HeapFile implements DbFile {
             if (tuplesInPage == null) return false;
             if (tuplesInPage.hasNext()) return true;
             //TODO : page and iter relation
-            if(pageNum + 1 > numPages())
+            if(pageNum + 1 >= numPages())
                 return false;
             pageNum = pageNum+1;
             HeapPageId pid = new HeapPageId(getId(), pageNum);

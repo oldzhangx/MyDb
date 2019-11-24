@@ -47,7 +47,8 @@ public class LongField implements Field {
      * @throws IllegalArgumentException if val is not an IntField
      * @see Field#compareWith
      */
-    public boolean compareWith(Predicate.Op op, Field val) {
+//    public boolean compareWith(Predicate.Op op, Field val) {
+    public boolean compareWith(Predicate.Operation op, Field val) {
 
         LongField iVal = (LongField) val;
 

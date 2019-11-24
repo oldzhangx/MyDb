@@ -1,14 +1,12 @@
 package mydb;
 
+import java.io.DataInputStream;
+import java.io.IOException;
+import java.io.Serializable;
 import java.text.ParseException;
-import java.io.*;
 
-/**
- * Class representing a type in SimpleDB.
- * Types are static objects defined by this class; hence, the Type
- * constructor is private.
- */
 public enum Type implements Serializable {
+
     INT_TYPE() {
         @Override
         public int getLen() {
@@ -16,15 +14,16 @@ public enum Type implements Serializable {
         }
 
         @Override
-        public Field parse(DataInputStream dis) throws ParseException {
-            try {
-                return new IntField(dis.readInt());
-            }  catch (IOException e) {
-                throw new ParseException("parse error", 0);
+        public Field parse (DataInputStream dataInputStream) throws ParseException {
+            try{
+                return new IntField(dataInputStream.readInt());
+            } catch (IOException e) {
+                e.printStackTrace();
+                throw new ParseException("int parse error", 0);
             }
         }
-
     },
+
     LONG_TYPE() {
         @Override
         public int getLen() {
@@ -32,14 +31,16 @@ public enum Type implements Serializable {
         }
 
         @Override
-        public Field parse(DataInputStream dis) throws ParseException {
-            try {
-                return new LongField(dis.readLong());
+        public Field parse (DataInputStream dataInputStream) throws ParseException {
+            try{
+                return new LongField(dataInputStream.readLong());
             } catch (IOException e) {
-                throw new ParseException("parse error", 0);
+                e.printStackTrace();
+                throw new ParseException("long parse error", 0);
             }
         }
     },
+
     STRING_TYPE() {
         @Override
         public int getLen() {
@@ -47,34 +48,30 @@ public enum Type implements Serializable {
         }
 
         @Override
-        public Field parse(DataInputStream dis) throws ParseException {
-            try {
-                int strLen = dis.readInt();
-                byte[] bs = new byte[strLen];
+        public Field parse(DataInputStream dataInputStream) throws ParseException {
 
-                dis.read(bs);
-                dis.skipBytes(STRING_LEN - strLen);
-                return new StringField( new String(bs), STRING_LEN);
+            try{
+                // read first four is string's length
+                int length = dataInputStream.readInt();
+                byte[] bytes = new byte[length];
+
+                dataInputStream.read(bytes);
+                dataInputStream.skipBytes(STRING_LEN -length);
+
+                return new StringField(new String(bytes), STRING_LEN);
             } catch (IOException e) {
-                throw new ParseException("parse error", 0);
+                e.printStackTrace();
+                throw new ParseException("String parse error", 0);
             }
+
         }
     };
     
     public static final int STRING_LEN = 128;
 
-  /**
-   * @return the number of bytes required to store a field of this type.
-   */
     public abstract int getLen();
 
-  /**
-   * @return a Field object of the same type as this object that has contents
-   *   read from the specified DataInputStream.
-   * @param dis The input stream to read from
-   * @throws ParseException if the data read from the input stream is not
-   *   of the appropriate type.
-   */
+    // read
     public abstract Field parse(DataInputStream dis) throws ParseException;
 
 }

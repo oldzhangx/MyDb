@@ -3,26 +3,19 @@ package mydb.TupleDetail;
 import mydb.Type;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 
-/**
- * TupleDesc describes the schema of a tuple.
- */
+// fields are in one tuple
 public class TupleDetail implements Serializable {
 
     private static final long serialVersionUID = 7041402579811379073L;
 
-
-    //field name
+    //field size/number
     private Integer fieldNumber;
 
-    private TupleCell[] tdAr;
+    private TupleCell[] tupleCells;
 
-    /**
-     * @return
-     *        An iterator which iterates over all the field TDItems
-     *        that are included in this TupleDesc
-     * */
     public Iterator<TupleCell> iterator() {
         return new TDItemIterator();
     }
@@ -33,7 +26,7 @@ public class TupleDetail implements Serializable {
 
         @Override
         public boolean hasNext() {
-            return tdAr.length > pos;
+            return tupleCells.length > pos;
         }
 
         @Override
@@ -41,7 +34,7 @@ public class TupleDetail implements Serializable {
             if (!hasNext()) {
                 throw new NoSuchElementException();
             }
-            return tdAr[pos++];
+            return tupleCells[pos++];
         }
     }
 
@@ -62,7 +55,7 @@ public class TupleDetail implements Serializable {
         if(tupleCells.length == 0) throw new IllegalArgumentException("tdItems length 0 tuple error");
 
         fieldNumber = tupleCells.length;
-        tdAr = tupleCells;
+        this.tupleCells = tupleCells;
     }
 
     /**
@@ -82,10 +75,10 @@ public class TupleDetail implements Serializable {
         if(typeAr.length != fieldAr.length) throw new IllegalArgumentException("typeAr length has to be equal to fieldAr");
 
         fieldNumber = typeAr.length;
-        tdAr = new TupleCell[fieldNumber];
+        tupleCells = new TupleCell[fieldNumber];
 
         for(int i = 0; i < fieldNumber; i++) {
-            tdAr[i] = new TupleCell(typeAr[i], fieldAr[i]);
+            tupleCells[i] = new TupleCell(typeAr[i], fieldAr[i]);
         }
     }
 
@@ -107,7 +100,7 @@ public class TupleDetail implements Serializable {
      */
     public String getFieldName(int i) throws NoSuchElementException {
         if (i < 0 || i> fieldNumber) throw new NoSuchElementException();
-        return tdAr[i].fieldName;
+        return tupleCells[i].fieldName;
     }
 
     /**
@@ -122,7 +115,7 @@ public class TupleDetail implements Serializable {
      */
     public Type getFieldType(int i) throws NoSuchElementException {
         if (i < 0 || i> this.fieldNumber) throw new NoSuchElementException();
-        return tdAr[i].fieldType;
+        return tupleCells[i].fieldType;
     }
 
     /**
@@ -136,8 +129,8 @@ public class TupleDetail implements Serializable {
      */
     public int fieldNameToIndex(String name) throws NoSuchElementException {
         if(name == null) throw new NoSuchElementException();
-        for(int i = 0;i< tdAr.length;i++){
-            if (name.equals(tdAr[i].fieldName))
+        for(int i = 0; i< tupleCells.length; i++){
+            if (name.equals(tupleCells[i].fieldName))
                 return i;
         }
         throw new NoSuchElementException();
@@ -149,7 +142,7 @@ public class TupleDetail implements Serializable {
      */
     public int getSize() {
         int totalSize = 0;
-        for (TupleCell tupleCell : tdAr) {
+        for (TupleCell tupleCell : tupleCells) {
             totalSize = totalSize + tupleCell.fieldType.getLen();
         }
         return totalSize;
@@ -168,12 +161,12 @@ public class TupleDetail implements Serializable {
     public static TupleDetail merge(TupleDetail td1, TupleDetail td2) {
         if(td1 == null) return td2;
         if(td2 == null) return td1;
-        TupleCell[] tupleCells = new TupleCell[td1.tdAr.length+ td2.tdAr.length];
-        for(int i = 0; i< td1.tdAr.length;i++){
-            tupleCells[i] = td1.tdAr[i];
+        TupleCell[] tupleCells = new TupleCell[td1.tupleCells.length+ td2.tupleCells.length];
+        for(int i = 0; i< td1.tupleCells.length; i++){
+            tupleCells[i] = td1.tupleCells[i];
         }
-        for(int i = 0; i< td2.tdAr.length;i++){
-            tupleCells[i+ td1.tdAr.length] = td2.tdAr[i];
+        for(int i = 0; i< td2.tupleCells.length; i++){
+            tupleCells[i+ td1.tupleCells.length] = td2.tupleCells[i];
         }
         return new TupleDetail(tupleCells);
     }
@@ -194,7 +187,7 @@ public class TupleDetail implements Serializable {
             TupleDetail tupleDetail = (TupleDetail) o;
             if (!tupleDetail.fieldNumber.equals(this.fieldNumber)) return false;
             for(int i = 0; i< tupleDetail.fieldNumber; i++)
-                if(!tupleDetail.tdAr[i].equals(this.tdAr[i]))
+                if(!tupleDetail.tupleCells[i].equals(this.tupleCells[i]))
                     return false;
             return true;
         }
@@ -215,7 +208,7 @@ public class TupleDetail implements Serializable {
      * @return String describing this descriptor.
      */
     public String toString() {
-        TupleCell[] tupleCells = this.tdAr;
+        TupleCell[] tupleCells = this.tupleCells;
         StringBuilder result = new StringBuilder();
         for(TupleCell tupleCell : tupleCells)
             result.append(" ").append(tupleCell.toString());

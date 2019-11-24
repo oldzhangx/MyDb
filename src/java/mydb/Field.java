@@ -13,8 +13,12 @@ public interface Field extends Serializable {
     // define hashCode of tuples to compare value
     int hashCode();
 
+//    // deine value compare
+//    boolean compareWith(Predicate.Op op, Field value);
+
+
     // deine value compare
-    boolean compareWith(Predicate.Op op, Field value);
+    boolean compareWith(Predicate.Operation op, Field value);
 
     boolean equals(Object field);
 

@@ -12,10 +12,10 @@ public class Predicate implements Serializable {
     private static final long serialVersionUID = 1L;
 
     int field;
-    Op op;
+    Operation operation;
     Field operand;
     /** Constants used for return codes in Field.compare */
-    public enum Op implements Serializable {
+    public enum Operation implements Serializable {
         EQUALS, GREATER_THAN, LESS_THAN, LESS_THAN_OR_EQ, GREATER_THAN_OR_EQ, LIKE, NOT_EQUALS;
 
         /**
@@ -25,7 +25,7 @@ public class Predicate implements Serializable {
          * @param s
          *            a string containing a valid integer Op index
          */
-        public static Op getOp(String s) {
+        public static Operation getOp(String s) {
             return getOp(Integer.parseInt(s));
         }
 
@@ -36,7 +36,7 @@ public class Predicate implements Serializable {
          * @param i
          *            a valid integer Op index
          */
-        public static Op getOp(int i) {
+        public static Operation getOp(int i) {
             return values()[i];
         }
 
@@ -64,15 +64,15 @@ public class Predicate implements Serializable {
      *
      * @param field
      *            field number of passed in tuples to compare against.
-     * @param op
+     * @param operation
      *            operation to use for comparison
      * @param operand
      *            field value to compare passed in tuples to
      */
-    public Predicate(int field, Op op, Field operand) {
+    public Predicate(int field, Operation operation, Field operand) {
         // some code goes here
         this.field = field;
-        this.op = op;
+        this.operation = operation;
         this.operand = operand;
     }
 
@@ -88,10 +88,10 @@ public class Predicate implements Serializable {
     /**
      * @return the operator
      */
-    public Op getOp()
+    public Operation getOperation()
     {
         // some code goes here
-        return op;
+        return operation;
     }
 
     /**
@@ -119,7 +119,7 @@ public class Predicate implements Serializable {
         // some code goes here
         if (t == null) return false;
         //like the t > operand
-        if (t.getField(field).compare(op, operand)) return true;
+        if (t.getField(field).compareWith(operation, operand)) return true;
         else return false;
     }
 
@@ -131,6 +131,6 @@ public class Predicate implements Serializable {
      */
     public String toString() {
 
-        return ""+"field = "+field+" op = "+op.toString()+" operand"+operand.toString();
+        return ""+"field = "+field+" op = "+ operation.toString()+" operand"+operand.toString();
     }
 }
