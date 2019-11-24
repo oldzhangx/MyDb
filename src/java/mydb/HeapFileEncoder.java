@@ -2,6 +2,7 @@ package mydb;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * HeapFileEncoder reads a comma delimited text file or accepts
@@ -54,9 +55,7 @@ public class HeapFileEncoder {
       public static void convert(File inFile, File outFile, int npagebytes,
                  int numFields) throws IOException {
       Type[] ts = new Type[numFields];
-      for (int i = 0; i < ts.length; i++) {
-          ts[i] = Type.INT_TYPE;
-      }
+          Arrays.fill(ts, Type.INT_TYPE);
       convert(inFile,outFile,npagebytes,numFields,ts);
       }
 
@@ -108,7 +107,7 @@ public class HeapFileEncoder {
     FileOutputStream os = new FileOutputStream(outFile);
 
     // our numbers probably won't be much larger than 1024 digits
-    char buf[] = new char[1024];
+    char[] buf = new char[1024];
 
     int curpos = 0;
     int recordcount = 0;
@@ -136,7 +135,7 @@ public class HeapFileEncoder {
             first = true;
         } else
             first = false;
-        if (c == fieldSeparator || c == '\n' || c == '\r') {
+        if (c == fieldSeparator || c == '\n') {
             String s = new String(buf, 0, curpos);
             if (typeAr[fieldNo] == Type.INT_TYPE) {
                 try {
