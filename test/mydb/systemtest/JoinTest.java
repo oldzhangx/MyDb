@@ -1,14 +1,15 @@
-package simpledb.systemtest;
+package mydb.systemtest;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import mydb.*;
+import mydb.systemtest.MyDbTestBase;
 import org.junit.Test;
 
-import simpledb.*;
 
-public class JoinTest extends SimpleDbTestBase {
+public class JoinTest extends MyDbTestBase {
     private static final int COLUMNS = 2;
     public void validateJoin(int table1ColumnValue, int table1Rows, int table2ColumnValue,
             int table2Rows)
@@ -44,7 +45,7 @@ public class JoinTest extends SimpleDbTestBase {
         TransactionId tid = new TransactionId();
         SeqScan ss1 = new SeqScan(tid, table1.getId(), "");
         SeqScan ss2 = new SeqScan(tid, table2.getId(), "");
-        JoinPredicate p = new JoinPredicate(0, Predicate.Op.EQUALS, 0);
+        JoinPredicate p = new JoinPredicate(0, Predicate.Operation.EQUALS, 0);
         Join joinOp = new Join(p, ss1, ss2);
 
         // test the join results
