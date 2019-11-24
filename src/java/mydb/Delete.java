@@ -1,4 +1,7 @@
-package simpledb;
+package mydb;
+
+import mydb.TupleDetail.Tuple;
+import mydb.TupleDetail.TupleDetail;
 
 /**
  * The delete operator. Delete reads tuples from its child operator and removes
@@ -21,7 +24,7 @@ public class Delete extends Operator {
         // some code goes here
     }
 
-    public TupleDesc getTupleDesc() {
+    public TupleDetail getTupleDesc() {
         // some code goes here
         return null;
     }
