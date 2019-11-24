@@ -1,6 +1,10 @@
-package simpledb;
+package mydb;
 
-import java.util.*;
+
+import mydb.TupleDetail.Tuple;
+import mydb.TupleDetail.TupleDetail;
+
+import java.util.NoSuchElementException;
 
 /**
  * The Aggregation operator that computes an aggregate (e.g., sum, avg, max,
@@ -114,7 +118,7 @@ public class Aggregate extends Operator {
      * given in the constructor, and child_td is the TupleDesc of the child
      * iterator.
      */
-    public TupleDesc getTupleDesc() {
+    public TupleDetail getTupleDesc() {
 	// some code goes here
 	return null;
     }

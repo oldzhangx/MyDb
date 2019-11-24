@@ -1,4 +1,6 @@
-package simpledb;
+package mydb;
+
+import mydb.TupleDetail.Tuple;
 
 import java.io.Serializable;
 
@@ -57,10 +59,6 @@ public interface Aggregator extends Serializable {
      */
     public void mergeTupleIntoGroup(Tuple tup);
 
-    /**
-     * Create a DbIterator over group aggregate results.
-     * @see simpledb.TupleIterator for a possible helper
-     */
     public DbIterator iterator();
     
 }
