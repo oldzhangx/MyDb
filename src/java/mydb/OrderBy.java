@@ -1,5 +1,9 @@
-package simpledb;
+package mydb;
 
+import mydb.TupleDetail.Tuple;
+import mydb.TupleDetail.TupleDetail;
+
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -7,9 +11,9 @@ import java.util.*;
  */
 public class OrderBy extends Operator {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1236724521661547763L;
     private DbIterator child;
-    private TupleDesc td;
+    private TupleDetail td;
     private ArrayList<Tuple> childTups = new ArrayList<Tuple>();
     private int orderByField;
     private String orderByFieldName;
@@ -49,12 +53,12 @@ public class OrderBy extends Operator {
 	return this.orderByFieldName;
     }
     
-    public TupleDesc getTupleDesc() {
+    public TupleDetail getTupleDesc() {
         return td;
     }
 
     public void open() throws DbException, NoSuchElementException,
-            TransactionAbortedException {
+            TransactionAbortedException, IOException {
         child.open();
         // load all the tuples in a collection, and sort it
         while (child.hasNext())
@@ -112,9 +116,9 @@ class TupleComparator implements Comparator<Tuple> {
     public int compare(Tuple o1, Tuple o2) {
         Field t1 = (o1).getField(field);
         Field t2 = (o2).getField(field);
-        if (t1.compare(Predicate.Op.EQUALS, t2))
+        if (t1.compareWith(Predicate.Operation.EQUALS, t2))
             return 0;
-        if (t1.compare(Predicate.Op.GREATER_THAN, t2))
+        if (t1.compareWith(Predicate.Operation.GREATER_THAN, t2))
             return asc ? 1 : -1;
         else
             return asc ? -1 : 1;

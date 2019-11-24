@@ -3,7 +3,8 @@ package mydb;
 import mydb.TupleDetail.Tuple;
 import mydb.TupleDetail.TupleDetail;
 
-import java.util.*;
+import java.util.Iterator;
+
 
 /**
  * Implements a DbIterator by wrapping an Iterable<Tuple>.

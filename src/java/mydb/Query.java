@@ -1,4 +1,7 @@
-package simpledb;
+package mydb;
+
+import mydb.TupleDetail.Tuple;
+import mydb.TupleDetail.TupleDetail;
 
 import java.io.*;
 import java.util.*;
@@ -57,12 +60,12 @@ public class Query implements Serializable {
         started = true;
     }
 
-    public TupleDesc getOutputTupleDesc() {
+    public TupleDetail getOutputTupleDesc() {
         return this.op.getTupleDesc();
     }
 
     /** @return true if there are more tuples remaining. */
-    public boolean hasNext() throws DbException, TransactionAbortedException {
+    public boolean hasNext() throws DbException, TransactionAbortedException, IOException {
         return op.hasNext();
     }
 
@@ -79,7 +82,7 @@ public class Query implements Serializable {
      *             If the transaction is aborted (e.g., due to a deadlock)
      */
     public Tuple next() throws DbException, NoSuchElementException,
-            TransactionAbortedException {
+            TransactionAbortedException, IOException {
         if (!started)
             throw new DbException("Database not started.");
 
@@ -93,14 +96,14 @@ public class Query implements Serializable {
     }
 
     public void execute() throws IOException, DbException, TransactionAbortedException {
-        TupleDesc td = this.getOutputTupleDesc();
+        TupleDetail td = this.getOutputTupleDesc();
 
         String names = "";
-        for (int i = 0; i < td.numFields(); i++) {
+        for (int i = 0; i < td.fieldNumber(); i++) {
             names += td.getFieldName(i) + "\t";
         }
         System.out.println(names);
-        for (int i = 0; i < names.length() + td.numFields() * 4; i++) {
+        for (int i = 0; i < names.length() + td.fieldNumber() * 4; i++) {
             System.out.print("-");
         }
         System.out.println("");

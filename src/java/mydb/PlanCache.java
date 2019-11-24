@@ -1,4 +1,4 @@
-package simpledb;
+package mydb;
 import java.util.HashMap;
 import java.util.Set;
 import java.util.Vector;

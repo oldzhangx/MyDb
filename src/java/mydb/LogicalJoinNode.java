@@ -26,7 +26,7 @@ public class LogicalJoinNode {
     public LogicalJoinNode() {
     }
 
-    public LogicalJoinNode(String table1, String table2, String joinField1, String joinField2, Predicate.Op pred) {
+    public LogicalJoinNode(String table1, String table2, String joinField1, String joinField2, Predicate.Operation pred) {
         t1Alias = table1;
         t2Alias = table2;
         String[] tmps = joinField1.split("[.]");

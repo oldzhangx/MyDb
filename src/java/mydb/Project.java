@@ -1,6 +1,11 @@
-package simpledb;
+package mydb;
 
-import java.util.*;
+import mydb.TupleDetail.Tuple;
+import mydb.TupleDetail.TupleDetail;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.NoSuchElementException;
 
 /**
  * Project is an operator that implements a relational projection.
@@ -9,7 +14,7 @@ public class Project extends Operator {
 
     private static final long serialVersionUID = 1L;
     private DbIterator child;
-    private TupleDesc td;
+    private TupleDetail td;
     private ArrayList<Integer> outFieldIds;
 
     /**
@@ -33,20 +38,20 @@ public class Project extends Operator {
         this.child = child;
         outFieldIds = fieldList;
         String[] fieldAr = new String[fieldList.size()];
-        TupleDesc childtd = child.getTupleDesc();
+        TupleDetail childtd = child.getTupleDesc();
 
         for (int i = 0; i < fieldAr.length; i++) {
             fieldAr[i] = childtd.getFieldName(fieldList.get(i));
         }
-        td = new TupleDesc(types, fieldAr);
+        td = new TupleDetail(types, fieldAr);
     }
 
-    public TupleDesc getTupleDesc() {
+    public TupleDetail getTupleDesc() {
         return td;
     }
 
     public void open() throws DbException, NoSuchElementException,
-            TransactionAbortedException {
+            TransactionAbortedException, IOException {
         child.open();
         super.open();
     }
@@ -56,7 +61,7 @@ public class Project extends Operator {
         child.close();
     }
 
-    public void rewind() throws DbException, TransactionAbortedException {
+    public void rewind() throws DbException, TransactionAbortedException, IOException {
         child.rewind();
     }
 
@@ -67,12 +72,12 @@ public class Project extends Operator {
      * @return The next tuple, or null if there are no more tuples
      */
     protected Tuple fetchNext() throws NoSuchElementException,
-            TransactionAbortedException, DbException {
+            TransactionAbortedException, DbException, IOException {
         while (child.hasNext()) {
             Tuple t = child.next();
             Tuple newTuple = new Tuple(td);
             newTuple.setRecordId(t.getRecordId());
-            for (int i = 0; i < td.numFields(); i++) {
+            for (int i = 0; i < td.fieldNumber(); i++) {
                 newTuple.setField(i, t.getField(outFieldIds.get(i)));
             }
             return newTuple;

@@ -1,4 +1,4 @@
-package simpledb;
+package mydb;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -128,7 +128,7 @@ public class TableStats {
      * tuple, of which we do not know the value of the field, return the
      * expected selectivity. You may estimate this value from the histograms.
      * */
-    public double avgSelectivity(int field, Predicate.Op op) {
+    public double avgSelectivity(int field, Predicate.Operation op) {
         // some code goes here
         return 1.0;
     }
@@ -146,7 +146,7 @@ public class TableStats {
      * @return The estimated selectivity (fraction of tuples that satisfy) the
      *         predicate
      */
-    public double estimateSelectivity(int field, Predicate.Op op, Field constant) {
+    public double estimateSelectivity(int field, Predicate.Operation op, Field constant) {
         // some code goes here
         return 1.0;
     }

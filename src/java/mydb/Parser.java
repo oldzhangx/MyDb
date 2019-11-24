@@ -1,42 +1,41 @@
-package simpledb;
+package mydb;
 
 import Zql.*;
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
-import jline.ArgumentCompletor;
-import jline.ConsoleReader;
-import jline.SimpleCompletor;
+import mydb.TupleDetail.Tuple;
+import mydb.TupleDetail.TupleDetail;
 
 public class Parser {
     static boolean explain = false;
 
-    public static Predicate.Op getOp(String s) throws simpledb.ParsingException {
+    public static Predicate.Operation getOp(String s) throws mydb.ParsingException, ParsingException {
         if (s.equals("="))
-            return Predicate.Op.EQUALS;
+            return Predicate.Operation.EQUALS;
         if (s.equals(">"))
-            return Predicate.Op.GREATER_THAN;
+            return Predicate.Operation.GREATER_THAN;
         if (s.equals(">="))
-            return Predicate.Op.GREATER_THAN_OR_EQ;
+            return Predicate.Operation.GREATER_THAN_OR_EQ;
         if (s.equals("<"))
-            return Predicate.Op.LESS_THAN;
+            return Predicate.Operation.LESS_THAN;
         if (s.equals("<="))
-            return Predicate.Op.LESS_THAN_OR_EQ;
+            return Predicate.Operation.LESS_THAN_OR_EQ;
         if (s.equals("LIKE"))
-            return Predicate.Op.LIKE;
+            return Predicate.Operation.LIKE;
         if (s.equals("~"))
-            return Predicate.Op.LIKE;
+            return Predicate.Operation.LIKE;
         if (s.equals("<>"))
-            return Predicate.Op.NOT_EQUALS;
+            return Predicate.Operation.NOT_EQUALS;
         if (s.equals("!="))
-            return Predicate.Op.NOT_EQUALS;
+            return Predicate.Operation.NOT_EQUALS;
 
-        throw new simpledb.ParsingException("Unknown predicate " + s);
+        throw new mydb.ParsingException("Unknown predicate " + s);
     }
 
     void processExpression(TransactionId tid, ZExpression wx, LogicalPlan lp)
-            throws simpledb.ParsingException {
+            throws mydb.ParsingException {
         if (wx.getOperator().equals("AND")) {
             for (int i = 0; i < wx.nbOperands(); i++) {
                 if (!(wx.getOperand(i) instanceof ZExpression)) {
@@ -741,7 +740,7 @@ class TupleArrayIterator implements DbIterator {
     /**
      * Returns the TupleDesc associated with this DbIterator.
      */
-    public TupleDesc getTupleDesc() {
+    public TupleDetail getTupleDesc() {
         return tups.get(0).getTupleDesc();
     }
 

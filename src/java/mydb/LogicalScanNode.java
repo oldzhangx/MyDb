@@ -1,4 +1,4 @@
-package simpledb;
+package mydb;
 
 /** A LogicalScanNode represents table in the FROM list in a
  * LogicalQueryPlan */

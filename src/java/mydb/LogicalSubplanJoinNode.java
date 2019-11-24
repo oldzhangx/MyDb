@@ -1,4 +1,4 @@
-package simpledb;
+package mydb;
 
 /** A LogicalSubplanJoinNode represens the state needed of a join of a
  * table to a subplan in a LogicalQueryPlan -- inherits state from
@@ -9,7 +9,7 @@ public class LogicalSubplanJoinNode extends LogicalJoinNode {
     /** The subplan (used on the inner) of the join */
     DbIterator subPlan;
     
-    public LogicalSubplanJoinNode(String table1, String joinField1, DbIterator sp, Predicate.Op pred) {
+    public LogicalSubplanJoinNode(String table1, String joinField1, DbIterator sp, Predicate.Operation pred) {
         t1Alias = table1;
         String[] tmps = joinField1.split("[.]");
         if (tmps.length>1)

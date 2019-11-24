@@ -1,7 +1,8 @@
 package mydb;
 import mydb.TupleDetail.Tuple;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 
 public class MyDb {
     public static void main (String args[])

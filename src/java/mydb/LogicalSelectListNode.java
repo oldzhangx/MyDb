@@ -1,4 +1,4 @@
-package simpledb;
+package mydb;
 
 /** A LogicalSelectListNode represents a clause in the select list in
  * a LogicalQueryPlan

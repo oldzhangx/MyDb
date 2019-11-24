@@ -3,6 +3,7 @@ package mydb;
 import mydb.TupleDetail.Tuple;
 import mydb.TupleDetail.TupleDetail;
 
+import java.io.IOException;
 import java.util.NoSuchElementException;
 
 /**
@@ -45,7 +46,7 @@ public abstract class Operator implements DbIterator {
      *         finished.
      */
     protected abstract Tuple fetchNext() throws DbException,
-            TransactionAbortedException;
+            TransactionAbortedException, IOException;
 
     /**
      * Closes this iterator. If overridden by a subclass, they should call
@@ -61,7 +62,7 @@ public abstract class Operator implements DbIterator {
     private boolean open = false;
     private int estimatedCardinality = 0;
 
-    public void open() throws DbException, TransactionAbortedException {
+    public void open() throws DbException, TransactionAbortedException, IOException {
         this.open = true;
     }
 

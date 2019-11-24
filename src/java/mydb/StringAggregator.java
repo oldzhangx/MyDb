@@ -1,4 +1,6 @@
-package simpledb;
+package mydb;
+
+import mydb.TupleDetail.Tuple;
 
 /**
  * Knows how to compute some aggregate over a set of StringFields.
