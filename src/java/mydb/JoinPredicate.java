@@ -1,4 +1,6 @@
-package simpledb;
+package mydb;
+
+import mydb.TupleDetail.Tuple;
 
 import java.io.Serializable;
 
@@ -24,7 +26,7 @@ public class JoinPredicate implements Serializable {
      *            Predicate.Op.LESS_THAN_OR_EQ
      * @see Predicate
      */
-    public JoinPredicate(int field1, Predicate.Op op, int field2) {
+    public JoinPredicate(int field1, Predicate.Operation op, int field2) {
         // some code goes here
     }
 
@@ -51,7 +53,7 @@ public class JoinPredicate implements Serializable {
         return -1;
     }
     
-    public Predicate.Op getOperator()
+    public Predicate.Operation getOperator()
     {
         // some code goes here
         return null;

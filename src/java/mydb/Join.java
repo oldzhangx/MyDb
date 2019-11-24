@@ -1,4 +1,7 @@
-package simpledb;
+package mydb;
+
+import mydb.TupleDetail.Tuple;
+import mydb.TupleDetail.TupleDetail;
 
 import java.util.*;
 
@@ -20,7 +23,7 @@ public class Join extends Operator {
      * @param child2
      *            Iterator for the right(inner) relation to join
      */
-    public Join(JoinPredicate p, DbIterator child1, DbIterator child2) {
+    public Join(Predicate p, DbIterator child1, DbIterator child2) {
         // some code goes here
     }
 
@@ -53,7 +56,7 @@ public class Join extends Operator {
      * @see simpledb.TupleDesc#merge(TupleDesc, TupleDesc) for possible
      *      implementation logic.
      */
-    public TupleDesc getTupleDesc() {
+    public TupleDetail getTupleDesc() {
         // some code goes here
         return null;
     }
