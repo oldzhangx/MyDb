@@ -46,7 +46,6 @@ public class IntegerAggregator implements Aggregator {
      *            the Tuple containing an aggregate field and a group-by field
      */
     public void mergeTupleIntoGroup(Tuple tup) {
-        Tuple tuple = new Tuple();
 
     }
 

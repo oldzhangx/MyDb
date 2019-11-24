@@ -487,7 +487,7 @@ public class LogicalPlan {
         Type[] types = new Type[]{ Type.INT_TYPE, Type.INT_TYPE, Type.INT_TYPE };
         String[] names = new String[]{ "field0", "field1", "field2" };
 
-        UsedTuplesIterator td = new UsedTuplesIterator(types, names);
+        TupleDetail td = new TupleDetail(types, names);
         TableStats ts;
         HashMap<String, TableStats> tableMap = new HashMap<String,TableStats>();
 
