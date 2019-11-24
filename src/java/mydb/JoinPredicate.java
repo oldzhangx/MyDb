@@ -10,7 +10,7 @@ import java.io.Serializable;
  */
 public class JoinPredicate implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = -3101979353238255211L;
 
     /**
      * Constructor -- create a new predicate over two fields of two tuples.
