@@ -5,6 +5,8 @@ import mydb.TupleDetail.Tuple;
 /**
  * Knows how to compute some aggregate over a set of IntFields.
  */
+
+// COUNT，  SUM，  AVG，  MIN，  MAX
 public class IntegerAggregator implements Aggregator {
 
     private static final long serialVersionUID = 587316638506548325L;
@@ -24,10 +26,15 @@ public class IntegerAggregator implements Aggregator {
      *            the aggregation operator
      */
 
+    // a group-by field
     int gbfield;
     Type gbfieldtype;
+
+    // an aggregate field
     int afield;
     Op what;
+
+    Tuple tuple;
 
 
     public IntegerAggregator(int gbfield, Type gbfieldtype, int afield, Op what) {
