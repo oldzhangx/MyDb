@@ -11,7 +11,7 @@ public class TupleDetail implements Serializable {
 
     private static final long serialVersionUID = 7041402579811379073L;
 
-    //field size/number
+    //length of tuplecells
     private Integer fieldNumber;
 
     private TupleCell[] tupleCells;
@@ -22,6 +22,7 @@ public class TupleDetail implements Serializable {
 
     private class TDItemIterator implements Iterator<TupleCell> {
 
+        //max.pos +1 = length
         int pos = 0;
 
         @Override
@@ -31,23 +32,9 @@ public class TupleDetail implements Serializable {
 
         @Override
         public TupleCell next() {
-            if (!hasNext()) {
-                throw new NoSuchElementException();
-            }
-            return tupleCells[pos++];
+            if(hasNext()) return tupleCells[pos++];
+            throw  new NoSuchElementException();
         }
-    }
-
-    /**
-     * Constructor. Create a new tuple desc with typeAr.length fields with
-     * fields of the specified types, with anonymous (unnamed) fields.
-     *
-     * @param typeAr
-     *            array specifying the number of and types of fields in this
-     *            TupleDesc. It must contain at least one entry.
-     */
-    public TupleDetail(Type[] typeAr) {
-        this(typeAr, new String[typeAr.length]);
     }
 
     public TupleDetail(TupleCell[] tupleCells) {
@@ -56,6 +43,9 @@ public class TupleDetail implements Serializable {
 
         fieldNumber = tupleCells.length;
         this.tupleCells = tupleCells;
+    }
+    public TupleDetail(Type[] typeAr) {
+        this(typeAr, new String[typeAr.length]);
     }
 
     /**
@@ -75,7 +65,7 @@ public class TupleDetail implements Serializable {
         if(typeAr.length != fieldAr.length) throw new IllegalArgumentException("typeAr length has to be equal to fieldAr");
 
         fieldNumber = typeAr.length;
-        tupleCells = new TupleCell[fieldNumber];
+        tupleCells = new TupleCell[typeAr.length];
 
         for(int i = 0; i < fieldNumber; i++) {
             tupleCells[i] = new TupleCell(typeAr[i], fieldAr[i]);
@@ -103,16 +93,7 @@ public class TupleDetail implements Serializable {
         return tupleCells[i].fieldName;
     }
 
-    /**
-     * Gets the type of the ith field of this TupleDesc.
-     * 
-     * @param i
-     *            The index of the field to get the type of. It must be a valid
-     *            index.
-     * @return the type of the ith field
-     * @throws NoSuchElementException
-     *             if i is not a valid field reference.
-     */
+
     public Type getFieldType(int i) throws NoSuchElementException {
         if (i < 0 || i> this.fieldNumber) throw new NoSuchElementException();
         return tupleCells[i].fieldType;
