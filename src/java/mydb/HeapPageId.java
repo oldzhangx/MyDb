@@ -55,7 +55,7 @@ public class HeapPageId implements PageId {
         if(o == null) return false;
         if(! (o instanceof PageId)) return false;
         PageId pageId = (PageId) o;
-        return this.pageNumber == pageId.pageNumber() && this.tableId == pageId.getTableId();
+        return pageNumber == pageId.pageNumber() && tableId == pageId.getTableId();
     }
 
     /**
@@ -65,11 +65,7 @@ public class HeapPageId implements PageId {
      *  constructors.
      */
     public int[] serialize() {
-        int[] data = new int[2];
-
-        data[0] = getTableId();
-        data[1] = pageNumber();
-        return data;
+        return new int[]{tableId, pageNumber};
     }
 
 }

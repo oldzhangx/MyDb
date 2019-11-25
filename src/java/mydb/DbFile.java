@@ -72,7 +72,7 @@ public interface DbFile extends Serializable {
     /**
      * Returns a unique ID used to identify this DbFile in the Catalog. This id
      * can be used to look up the table via {@link Catalog#getDbFile} and
-     * {@link Catalog#getTupleDesc}.
+     * {@link Catalog#getTupleDetail}.
      * <p>
      * Implementation note:  you will need to generate this tableid somewhere,
      * ensure that each HeapFile has a "unique id," and that you always

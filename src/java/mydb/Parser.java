@@ -337,7 +337,7 @@ public class Parser {
                     + s.getTable());
         }
 
-        TupleDetail td = Database.getCatalog().getTupleDesc(tableId);
+        TupleDetail td = Database.getCatalog().getTupleDetail(tableId);
 
         Tuple t = new Tuple(td);
         int i = 0;

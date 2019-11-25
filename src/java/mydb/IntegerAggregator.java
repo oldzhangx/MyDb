@@ -7,7 +7,6 @@ import mydb.TupleDetail.Tuple;
  */
 public class IntegerAggregator implements Aggregator {
 
-
     private static final long serialVersionUID = 587316638506548325L;
 
     /**

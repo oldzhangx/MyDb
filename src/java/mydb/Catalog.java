@@ -15,7 +15,6 @@ import java.util.*;
 
 public class Catalog {
 
-
     private HashMap<String, Integer> tableNameIdMap;
 
     private HashMap<Integer, DbFile> tableIdFileMap;
@@ -84,7 +83,7 @@ public class Catalog {
      *     function passed to addTable
      * @throws NoSuchElementException if the table doesn't exist
      */
-    public TupleDetail getTupleDesc(int tableid) throws NoSuchElementException {
+    public TupleDetail getTupleDetail(int tableid) throws NoSuchElementException {
         DbFile result = tableIdFileMap.get(tableid);
         if(result!=null) return result.getTupleDesc();
         throw new NoSuchElementException();

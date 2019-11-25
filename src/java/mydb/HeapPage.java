@@ -33,18 +33,18 @@ public class HeapPage implements Page {
      *  Specifically, the number of tuples is equal to: <p>
      *          floor((BufferPool.PAGE_SIZE*8) / (tuple size * 8 + 1))
      * <p> where tuple size is the size of tuples in this
-     * database table, which can be determined via {@link Catalog#getTupleDesc}.
+     * database table, which can be determined via {@link Catalog#getTupleDetail}.
      * The number of 8-bit header words is equal to:
      * <p>
      *      ceiling(no. tuple slots / 8)
      * <p>
      * @see Database#getCatalog
-     * @see Catalog#getTupleDesc
+     * @see Catalog#getTupleDetail
      * @see BufferPool#PAGE_SIZE
      */
     public HeapPage(HeapPageId id, byte[] data) throws IOException {
         this.heapPageId = id;
-        this.tupleDetail = Database.getCatalog().getTupleDesc(id.getTableId());
+        this.tupleDetail = Database.getCatalog().getTupleDetail(id.getTableId());
         this.numSlots = getNumTuples();
         DataInputStream dataInputStream = new DataInputStream(new ByteArrayInputStream(data));
 
