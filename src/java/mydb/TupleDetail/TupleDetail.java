@@ -47,17 +47,7 @@ public class TupleDetail implements Serializable {
         this(typeAr, new String[typeAr.length]);
     }
 
-    /**
-     * Create a new TupleDesc with typeAr.length fields with fields of the
-     * specified types, with associated named fields.
-     * 
-     * @param typeAr
-     *            array specifying the number of and types of fields in this
-     *            TupleDesc. It must contain at least one entry.
-     * @param fieldAr
-     *            array specifying the names of the fields. Note that names may
-     *            be null.
-     */
+
     public TupleDetail(Type[] typeAr, String[] fieldAr) {
         if(typeAr == null) throw new IllegalArgumentException("typeAr null error");
         if(typeAr.length == 0) throw new IllegalArgumentException("typeAr length 0 tuple error");
