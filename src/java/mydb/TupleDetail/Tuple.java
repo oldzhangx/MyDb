@@ -20,93 +20,10 @@ public class Tuple implements Serializable {
     private RecordId recordId;
     private Field[] fields;
 
-    /**
-     * Create a new tuple with the specified schema (type).
-     * 
-     * @param td
-     *            the schema of this tuple. It must be a valid TupleDesc
-     *            instance with at least one field.
-     */
-    public Tuple(TupleDetail td) {
-        tupleDetail = td;
-        fields = new Field[td.fieldNumber()];
-    }
-
-    /**
-     * @return The TupleDesc representing the schema of this tuple.
-     */
-    public TupleDetail getTupleDesc() {
-        return tupleDetail;
-    }
-
-    /**
-     * @return The RecordId representing the location of this tuple on disk. May
-     *         be null.
-     */
-    public RecordId getRecordId() {
-        return recordId;
-    }
-
-    /**
-     * Set the RecordId information for this tuple.
-     * 
-     * @param redId
-     *            the new RecordId for this tuple.
-     */
-    public void setRecordId(RecordId redId) {
-        recordId = redId;
-    }
-
-    /**
-     * Change the value of the ith field of this tuple.
-     * 
-     * @param index
-     *            index of the field to change. It must be a valid index.
-     * @param field
-     *            new value for the field.
-     */
-    public void setField(int index, Field field) {
-        if (index < 0 || index > fields.length)  throw new IllegalArgumentException("field index out error");
-        fields[index] = field;
-    }
-
-    /**
-     * @return the value of the ith field, or null if it has not been set.
-     * 
-     * @param index
-     *            field index to return. Must be a valid index.
-     */
-    public Field getField(int index) {
-        if (index < 0 || index > fields.length)  throw new IllegalArgumentException("field index out error");
-        return fields[index];
-    }
-
-    /**
-     * Returns the contents of this Tuple as a string. Note that to pass the
-     * system tests, the format needs to be as follows:
-     * 
-     * column1\tcolumn2\tcolumn3\t...\tcolumnN\n
-     * 
-     * where \t is any whitespace, except newline, and \n is a newline
-     */
-    public String toString() {
-        StringBuilder result = new StringBuilder();
-        for (Field field : fields) {
-            result.append(field).append(" ");
-        }
-        result.append("\n");
-        return result.toString();
-    }
-    
-    /**
-     * @return
-     *        An iterator which iterates over all the fields of this tuple
-     * */
     public Iterator<Field> fields() {
-        return new FieldRow();
+        return new FieldsIterator();
     }
-
-    private class FieldRow implements Iterator<Field> {
+    private class FieldsIterator implements Iterator<Field> {
         private int num = 0;
 
         @Override
@@ -120,4 +37,41 @@ public class Tuple implements Serializable {
             return fields[num++];
         }
     }
+
+    public Tuple(TupleDetail td) {
+        tupleDetail = td;
+        fields = new Field[td.fieldNumber()];
+    }
+
+    public TupleDetail getTupleDetail() {
+        return tupleDetail;
+    }
+
+    public RecordId getRecordId() {
+        return recordId;
+    }
+
+    public void setRecordId(RecordId redId) {
+        recordId = redId;
+    }
+
+    public void setField(int index, Field field) {
+        if (index < 0 || index > fields.length)  throw new IllegalArgumentException("field index out error");
+        fields[index] = field;
+    }
+
+    public Field getField(int index) {
+        if (index < 0 || index > fields.length)  throw new IllegalArgumentException("field index out error");
+        return fields[index];
+    }
+
+    public String toString() {
+        StringBuilder result = new StringBuilder();
+        for (Field field : fields) {
+            result.append(field).append(" ");
+        }
+        result.append("\n");
+        return result.toString();
+    }
+
 }

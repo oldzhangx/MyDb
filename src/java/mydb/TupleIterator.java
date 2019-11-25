@@ -29,7 +29,7 @@ public class TupleIterator implements DbIterator {
 
         // check that all tuples are the right TupleDesc
         for (Tuple t : tuples) {
-            if (!t.getTupleDesc().equals(td))
+            if (!t.getTupleDetail().equals(td))
                 throw new IllegalArgumentException(
                         "incompatible tuple in tuple set");
         }

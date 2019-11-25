@@ -54,7 +54,7 @@ public class EvictionTest extends MyDbTestBase {
         Insert insert = new Insert(t.getId(), insertRow, f.getId());
         insert.open();
         Tuple result = insert.next();
-        assertEquals(SystemTestUtil.SINGLE_INT_DESCRIPTOR, result.getTupleDesc());
+        assertEquals(SystemTestUtil.SINGLE_INT_DESCRIPTOR, result.getTupleDetail());
         assertEquals(1, ((IntField)result.getField(0)).getValue());
         assertFalse(insert.hasNext());
         insert.close();

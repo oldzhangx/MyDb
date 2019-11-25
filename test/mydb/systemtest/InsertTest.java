@@ -5,7 +5,6 @@ import java.util.ArrayList;
 
 import mydb.*;
 import mydb.TupleDetail.Tuple;
-import mydb.systemtest.MyDbTestBase;
 
 
 import static org.junit.Assert.*;
@@ -36,7 +35,7 @@ public class InsertTest extends MyDbTestBase {
             Tuple tup = insOp.next();
             assertFalse(hasResult);
             hasResult = true;
-            assertEquals(SystemTestUtil.SINGLE_INT_DESCRIPTOR, tup.getTupleDesc());
+            assertEquals(SystemTestUtil.SINGLE_INT_DESCRIPTOR, tup.getTupleDetail());
             assertEquals(sourceRows, ((IntField) tup.getField(0)).getValue());
         }
         assertTrue(hasResult);

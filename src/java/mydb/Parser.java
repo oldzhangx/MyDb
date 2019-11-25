@@ -732,7 +732,7 @@ class TupleArrayIterator implements DbIterator {
      * Returns the TupleDesc associated with this DbIterator.
      */
     public TupleDetail getTupleDesc() {
-        return tups.get(0).getTupleDesc();
+        return tups.get(0).getTupleDetail();
     }
 
     /**

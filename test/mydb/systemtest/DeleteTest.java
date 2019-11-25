@@ -27,7 +27,7 @@ public class DeleteTest extends mydb.systemtest.FilterBase {
             Tuple t = deleteOperator.next();
             assertFalse(hasResult);
             hasResult = true;
-            assertEquals(SystemTestUtil.SINGLE_INT_DESCRIPTOR, t.getTupleDesc());
+            assertEquals(SystemTestUtil.SINGLE_INT_DESCRIPTOR, t.getTupleDetail());
             result = ((IntField) t.getField(0)).getValue();
         }
         assertTrue(hasResult);

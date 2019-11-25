@@ -37,7 +37,7 @@ public class TupleTest extends MyDbTestBase {
     @Test public void getTupleDesc() {
         TupleDetail td = Utility.getTupleDesc(5);
         Tuple tup = new Tuple(td);
-        assertEquals(td, tup.getTupleDesc());
+        assertEquals(td, tup.getTupleDetail());
     }
 
     /**
