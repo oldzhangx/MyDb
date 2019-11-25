@@ -16,6 +16,7 @@ import java.util.HashMap;
  * locks to read/write the page.
  */
 public class BufferPool {
+
     /** Bytes per page, including header. */
     public static final int PAGE_SIZE = 4096;
 
@@ -24,7 +25,6 @@ public class BufferPool {
     constructor instead. */
     public static final int DEFAULT_PAGES = 50;
 
-    public static int NUM_PAGES;
     private HashMap<PageId, Page> pages;
 
     /**
@@ -33,11 +33,8 @@ public class BufferPool {
      * @param numPages maximum number of pages in this buffer pool.
      */
     public BufferPool(int numPages) {
-        NUM_PAGES = numPages;
-        pages = new HashMap<PageId, Page>(NUM_PAGES);
+        pages = new HashMap<>(numPages);
     }
-
-
 
     /**
      * Retrieve the specified page with the associated permissions.
