@@ -1,6 +1,5 @@
 package mydb;
 
-/** Unique identifier for HeapPage objects. */
 public class HeapPageId implements PageId {
 
     private int tableId;
@@ -18,15 +17,11 @@ public class HeapPageId implements PageId {
         pageNumber = pgNo;
     }
 
-    /** @return the table associated with this PageId */
     public int getTableId() {
         return tableId;
     }
 
-    /**
-     * @return the page number in the table getTableId() associated with
-     *   this PageId
-     */
+    //the page number in the table getTableId() associated with this PageId
     public int pageNumber() {
         return pageNumber;
     }
@@ -41,13 +36,6 @@ public class HeapPageId implements PageId {
         return 31 * tableId + pageNumber;
     }
 
-    /**
-     * Compares one PageId to another.
-     *
-     * @param o The object to compare against (must be a PageId)
-     * @return true if the objects are equal (e.g., page numbers and table
-     *   ids are the same)
-     */
     public boolean equals(Object o) {
         if(this == o) return true;
         if(o == null) return false;
