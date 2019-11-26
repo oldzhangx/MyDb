@@ -3,7 +3,12 @@ package mydb;
 import mydb.TupleDetail.Tuple;
 import mydb.TupleDetail.TupleDetail;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+
+import static mydb.Aggregator.Opertion.*;
+import static mydb.Type.INT_TYPE;
+
 
 /**
  * Knows how to compute some aggregate over a set of IntFields.
@@ -28,6 +33,8 @@ public class IntegerAggregator implements Aggregator {
 
     HashMap<Field, Integer> countResult ;
 
+    HashMap<Field, Integer> sumResult ;
+
     TupleDetail tupleDetail;
 
 
@@ -37,6 +44,7 @@ public class IntegerAggregator implements Aggregator {
         this.aggregateFieldIndex = aggregateFieldIndex;
         this.opertion = what;
         countResult = new HashMap<>();
+        sumResult = new HashMap<>();
     }
 
     /**
@@ -48,6 +56,35 @@ public class IntegerAggregator implements Aggregator {
      */
     public void mergeTupleIntoGroup(Tuple tup) {
 
+        if(tup == null ) throw new IllegalArgumentException("tup null error");
+        int length = tup.getTupleDetail().fieldNumber();
+        if(aggregateFieldIndex >= length || aggregateFieldIndex < 0)
+            throw new IllegalArgumentException("aggregateFieldIndex out of field index");
+        tupleDetail = tup.getTupleDetail();
+
+        Field aggregateField = tup.getField(aggregateFieldIndex);
+        if (aggregateField.getType() != INT_TYPE) throw new IllegalArgumentException("aggregateField type isn't integer_type");
+        int aggregateFieldValue = ((IntField)aggregateField).getValue();
+
+        Field groupByField = groupByFieldIndex== NO_GROUPING? null: tup.getField(groupByFieldIndex);
+
+        if( (groupByField==null && groupByFieldType== null ) ||
+                (groupByField!= null && groupByFieldType!=null && groupByField.getType().equals(groupByFieldType)) ){
+
+            if(opertion == MIN){
+                int min = countResult.getOrDefault(groupByField,Integer.MAX_VALUE);
+                if(aggregateFieldValue< min) countResult.put(groupByField,aggregateFieldValue);
+            }else if(opertion == MAX){
+                int max = countResult.getOrDefault(groupByField,Integer.MIN_VALUE);
+                if(aggregateFieldValue> max) countResult.put(groupByField,aggregateFieldValue);
+            }else if(opertion == SUM || opertion == AVG || opertion == COUNT){
+                int sum = sumResult.getOrDefault(groupByField,0);
+                sumResult.put(groupByField,aggregateFieldValue + sum);
+                int count = countResult.getOrDefault(groupByField,0);
+                countResult.put(groupByField,1+count);
+            }else throw new IllegalArgumentException("operation type not right");
+
+        }else throw new IllegalArgumentException("groupByFieldType not equal");
     }
 
     /**
@@ -59,9 +96,34 @@ public class IntegerAggregator implements Aggregator {
      *         the constructor.
      */
     public DbIterator iterator() {
-        // some code goes here
-        throw new
-        UnsupportedOperationException("please implement me for proj2");
+        Type[] fieldType = groupByFieldType==null? new Type[]{INT_TYPE}:
+                new Type[]{groupByFieldType, INT_TYPE};
+
+        String[] fieldName = groupByFieldType==null? new String[]{tupleDetail.getFieldName(aggregateFieldIndex)}:
+                new String[]{tupleDetail.getFieldName(groupByFieldIndex), tupleDetail.getFieldName(aggregateFieldIndex)};
+
+        TupleDetail tupleDetail = new TupleDetail(fieldType, fieldName);
+
+        ArrayList<Tuple> tuples = new ArrayList<>();
+
+        for(Field field: countResult.keySet()){
+            Tuple tuple = new Tuple(tupleDetail);
+            double result;
+            if(opertion == SUM)
+                result = sumResult.get(field);
+            else if(opertion == AVG)
+                result = (double)sumResult.get(field)/countResult.get(field);
+            else result = countResult.get(field);
+
+            if(field == null) tuple.setField(0, new IntField((int)result));
+            else {
+                tuple.setField(0,field);
+                tuple.setField(1,new IntField((int)result));
+            }
+            tuples.add(tuple);
+        }
+
+        return new TupleIterator(tupleDetail, tuples);
     }
 
 }
