@@ -1,6 +1,9 @@
 package mydb;
 
 import mydb.TupleDetail.Tuple;
+import mydb.TupleDetail.TupleDetail;
+
+import java.util.HashMap;
 
 /**
  * Knows how to compute some aggregate over a set of IntFields.
@@ -11,37 +14,29 @@ public class IntegerAggregator implements Aggregator {
 
     private static final long serialVersionUID = 587316638506548325L;
 
-    /**
-     * Aggregate constructor
-     * 
-     * @param gbfield
-     *            the 0-based index of the group-by field in the tuple, or
-     *            NO_GROUPING if there is no grouping
-     * @param gbfieldtype
-     *            the type of the group by field (e.g., Type.INT_TYPE), or null
-     *            if there is no grouping
-     * @param afield
-     *            the 0-based index of the aggregate field in the tuple
-     * @param what
-     *            the aggregation operator
-     */
+    //the 0-based index of the group-by field in the tuple, or NO_GROUPING if there is no grouping
+    int groupByFieldIndex = NO_GROUPING;
 
-    // a group-by field
-    int gbfield;
-    Type gbfieldtype;
+    //the type of the group by field (e.g., Type.INT_TYPE), or null if there is no grouping
+    Type groupByFieldType = null;
 
-    // an aggregate field
-    int afield;
-    Opertion what;
+    //the 0-based index of the aggregate field in the tuple
+    int aggregateFieldIndex;
 
-    Tuple tuple;
+    //the aggregation operator
+    Opertion opertion;
+
+    HashMap<Field, Integer> countResult ;
+
+    TupleDetail tupleDetail;
 
 
-    public IntegerAggregator(int gbfield, Type gbfieldtype, int afield, Opertion what) {
-        this.gbfield = gbfield;
-        this.gbfieldtype = gbfieldtype;
-        this.afield = afield;
-        this.what = what;
+    public IntegerAggregator(int groupByFieldIndex, Type groupByFieldType, int aggregateFieldIndex, Opertion what) {
+        this.groupByFieldIndex = groupByFieldIndex;
+        this.groupByFieldType = groupByFieldType;
+        this.aggregateFieldIndex = aggregateFieldIndex;
+        this.opertion = what;
+        countResult = new HashMap<>();
     }
 
     /**
