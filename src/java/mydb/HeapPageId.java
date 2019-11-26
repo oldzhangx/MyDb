@@ -16,7 +16,6 @@ public class HeapPageId implements PageId {
     public HeapPageId(int tId, int pgNo) {
         tableId = tId;
         pageNumber = pgNo;
-
     }
 
     /** @return the table associated with this PageId */
@@ -40,7 +39,6 @@ public class HeapPageId implements PageId {
      */
     public int hashCode() {
         return 31 * tableId + pageNumber;
-        //throw new UnsupportedOperationException("implement this");
     }
 
     /**
