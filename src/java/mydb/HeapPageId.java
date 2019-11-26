@@ -3,18 +3,18 @@ package mydb;
 public class HeapPageId implements PageId {
 
     private int tableId;
-    private int pageNumber;
+    private int pageNo;
 
     /**
      * Constructor. Create a page id structure for a specific page of a
      * specific table.
      *
      * @param tId The table that is being referenced
-     * @param pgNo The page number in that table.
+     * @param pageNo The page number in that table.
      */
-    public HeapPageId(int tId, int pgNo) {
+    public HeapPageId(int tId, int pageNo) {
         tableId = tId;
-        pageNumber = pgNo;
+        this.pageNo = pageNo;
     }
 
     public int getTableId() {
@@ -23,7 +23,7 @@ public class HeapPageId implements PageId {
 
     //the page number in the table getTableId() associated with this PageId
     public int pageNumber() {
-        return pageNumber;
+        return pageNo;
     }
 
     /**
@@ -33,7 +33,7 @@ public class HeapPageId implements PageId {
      * @see BufferPool
      */
     public int hashCode() {
-        return 31 * tableId + pageNumber;
+        return 31 * tableId + pageNo;
     }
 
     public boolean equals(Object o) {
@@ -41,7 +41,7 @@ public class HeapPageId implements PageId {
         if(o == null) return false;
         if(! (o instanceof PageId)) return false;
         PageId pageId = (PageId) o;
-        return pageNumber == pageId.pageNumber() && tableId == pageId.getTableId();
+        return pageNo == pageId.pageNumber() && tableId == pageId.getTableId();
     }
 
     /**
@@ -51,7 +51,7 @@ public class HeapPageId implements PageId {
      *  constructors.
      */
     public int[] serialize() {
-        return new int[]{tableId, pageNumber};
+        return new int[]{tableId, pageNo};
     }
 
 }
