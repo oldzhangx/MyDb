@@ -21,6 +21,7 @@ public class HeapPage implements Page {
     private HeapPageId heapPageId;
     private TupleDetail tupleDetail;
     private byte[] header;
+    private int headerSize;
     private Tuple[] tuples;
     private int numSlots;
 
@@ -42,14 +43,21 @@ public class HeapPage implements Page {
      * @see Catalog#getTupleDetail
      * @see BufferPool#PAGE_SIZE
      */
+    //read from which page and table
+    //download data
     public HeapPage(HeapPageId id, byte[] data) throws IOException {
+        //get page id
         this.heapPageId = id;
-        this.tupleDetail = Database.getCatalog().getTupleDetail(id.getTableId());
-        this.numSlots = getNumTuples();
+        //get tuple detail : by get table info  in catalog
+        this.tupleDetail = Database.getCatalog().getTupleDetail(heapPageId.getTableId());
+        // define : tuple number = floor((BufferPool.PAGE_SIZE*8) / (tuple size * 8 + 1))
+        numSlots = (BufferPool.PAGE_SIZE * 8 )/ (tupleDetail.getSize() * 8 + 1);
+        // read data by bytes
         DataInputStream dataInputStream = new DataInputStream(new ByteArrayInputStream(data));
 
         // allocate and read the header slots of this page
-        header = new byte[getHeaderSize()];
+        headerSize = (int) Math.ceil(((double)numSlots)/8.0);
+        header = new byte[headerSize];
         for (int i=0; i<header.length; i++)
             header[i] = dataInputStream.readByte();
 
@@ -65,23 +73,14 @@ public class HeapPage implements Page {
         setBeforeImage();
     }
 
-    /** Retrieve the number of tuples on this page.
-        @return the number of tuples on this page
-    */
-    private int getNumTuples() {        
-        if(numSlots != 0 ) return numSlots;
-        //todo: not clear about the number of tuples
-        return (BufferPool.PAGE_SIZE * 8 )/ (tupleDetail.getSize() * 8 + 1);
-
-    }
 
     /**
      * Computes the number of bytes in the header of a page in a HeapFile with each tuple occupying tupleSize bytes
      * @return the number of bytes in the header of a page in a HeapFile with each tuple occupying tupleSize bytes
      */
-    private int getHeaderSize() {
-        return (int)Math.ceil((double)getNumTuples()/8.0);
-    }
+//    private int getHeaderSize() {
+//        return (int)Math.ceil((double)getNumTuples()/8.0);
+//    }
     
     /** Return a view of this page before it was modified
         -- used by recovery */
@@ -274,7 +273,7 @@ public class HeapPage implements Page {
      */
     public int getNumEmptySlots() {
         int result = 0;
-        for(int i = 0; i< getNumTuples(); i++){
+        for(int i = 0; i< numSlots; i++){
             result = isSlotUsed(i)? result:result+1;
         }
         return result;
@@ -313,7 +312,7 @@ public class HeapPage implements Page {
 
         @Override
         public boolean hasNext() {
-            return getNumTuples()> count && divide < getNumTuples() - getNumEmptySlots();
+            return numSlots> count && divide < numSlots - getNumEmptySlots();
         }
 
         @Override
