@@ -7,7 +7,12 @@ import mydb.TupleDetail.Tuple;
  */
 public class StringAggregator implements Aggregator {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = -4031860107066192469L;
+
+    int gbfield;
+    Type gbfieldtype;
+    int afield;
+    Op what;
 
     /**
      * Aggregate constructor
@@ -19,7 +24,12 @@ public class StringAggregator implements Aggregator {
      */
 
     public StringAggregator(int gbfield, Type gbfieldtype, int afield, Op what) {
-        // some code goes here
+        if (what!= Op.COUNT) throw new IllegalArgumentException("string can only deal with the COUNT case");
+        this.gbfield = gbfield;
+        this.gbfieldtype = gbfieldtype;
+        this.afield = afield;
+        this.what = what;
+
     }
 
     /**
