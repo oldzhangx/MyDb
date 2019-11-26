@@ -1,9 +1,12 @@
 package mydb;
 
 import mydb.TupleDetail.Tuple;
+import mydb.TupleDetail.TupleDetail;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
+import static mydb.Type.INT_TYPE;
 import static mydb.Type.STRING_TYPE;
 
 /**
@@ -14,10 +17,10 @@ public class StringAggregator implements Aggregator {
     private static final long serialVersionUID = -4031860107066192469L;
 
     //the 0-based index of the group-by field in the tuple, or NO_GROUPING if there is no grouping
-    int groupByFieldIndex;
+    int groupByFieldIndex = NO_GROUPING;
 
     //the type of the group by field (e.g., Type.INT_TYPE), or null if there is no grouping
-    Type groupByFieldType;
+    Type groupByFieldType = null;
 
     //the 0-based index of the aggregate field in the tuple
     int aggregateFieldIndex;
@@ -26,6 +29,8 @@ public class StringAggregator implements Aggregator {
     Opertion opertion;
 
     HashMap<Field, Integer> countResult ;
+
+    TupleDetail tupleDetail;
 
     /**
      * Aggregate constructor
@@ -50,11 +55,12 @@ public class StringAggregator implements Aggregator {
         int length = tup.getTupleDetail().fieldNumber();
         if(aggregateFieldIndex >= length || aggregateFieldIndex < 0)
             throw new IllegalArgumentException("aggregateFieldIndex out of field index");
+        tupleDetail = tup.getTupleDetail();
         Field aggregateField = tup.getField(aggregateFieldIndex);
         if (aggregateField.getType() != STRING_TYPE) throw new IllegalArgumentException("aggregateField type isn't string_type");
-        Field groupByField = groupByFieldIndex== NO_GROUPING? null: tup.getField(aggregateFieldIndex);
-        if((groupByField==null && groupByFieldType== null ) ||
-                (groupByField!= null && groupByFieldType!=null && groupByField.getType().equals(groupByFieldType))){
+        Field groupByField = groupByFieldIndex== NO_GROUPING? null: tup.getField(groupByFieldIndex);
+        if( (groupByField==null && groupByFieldType== null ) ||
+                (groupByField!= null && groupByFieldType!=null && groupByField.getType().equals(groupByFieldType)) ){
             Integer result = countResult.getOrDefault(groupByField,0);
             countResult.put(groupByField,result+1);
         }else throw new IllegalArgumentException("groupByFieldType not equal");
@@ -69,8 +75,25 @@ public class StringAggregator implements Aggregator {
      *   aggregate specified in the constructor.
      */
     public DbIterator iterator() {
+        Type[] fieldType = groupByFieldType==null? new Type[]{INT_TYPE}:
+                new Type[]{groupByFieldType, INT_TYPE};
+        String[] fieldName = groupByFieldType==null? new String[]{tupleDetail.getFieldName(aggregateFieldIndex)}:
+                new String[]{tupleDetail.getFieldName(groupByFieldIndex), tupleDetail.getFieldName(aggregateFieldIndex)};
+        TupleDetail tupleDetail = new TupleDetail(fieldType, fieldName);
 
-        throw new UnsupportedOperationException("please implement me for proj2");
+        ArrayList<Tuple> tuples = new ArrayList<>();
+
+        for(Field field: countResult.keySet()){
+            Tuple tuple = new Tuple(tupleDetail);
+            if(field == null) tuple.setField(0, new IntField(countResult.get(null)));
+            else {
+                tuple.setField(0,field);
+                tuple.setField(1,new IntField(countResult.get(field)));
+            }
+            tuples.add(tuple);
+        }
+
+        return new TupleIterator(tupleDetail, tuples);
     }
 
 }
