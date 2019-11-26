@@ -4,14 +4,13 @@ import mydb.TupleDetail.Tuple;
 
 import java.io.Serializable;
 
-/**
- * The common interface for any class that can compute an aggregate over a
- * list of Tuples.
- */
-public interface Aggregator extends Serializable {
-    static final int NO_GROUPING = -1;
 
-    public enum Op implements Serializable {
+public interface Aggregator extends Serializable {
+
+    // other index means 0-based index
+    int NO_GROUPING = -1;
+
+    enum Opertion implements Serializable {
         MIN, MAX, SUM, AVG, COUNT;
 
         /**
@@ -20,7 +19,7 @@ public interface Aggregator extends Serializable {
          *
          * @param s a string containing a valid integer Op index
          */
-        public static Op getOp(String s) {
+        public static Opertion getOp(String s) {
             return getOp(Integer.parseInt(s));
         }
 
@@ -30,7 +29,7 @@ public interface Aggregator extends Serializable {
          *
          * @param i a valid integer Op index
          */
-        public static Op getOp(int i) {
+        public static Opertion getOp(int i) {
             return values()[i];
         }
         

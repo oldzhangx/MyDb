@@ -88,7 +88,7 @@ public class AggregateTest extends MyDbTestBase {
    */
   @Test public void getTupleDesc() {
     Aggregate op = new Aggregate(scan1, 0, 0,
-        Aggregator.Op.MIN);
+        Aggregator.Opertion.MIN);
     TupleDetail expected = Utility.getTupleDesc(2);
     TupleDetail actual = op.getTupleDesc();
     assertEquals(expected, actual);
@@ -99,7 +99,7 @@ public class AggregateTest extends MyDbTestBase {
    */
   @Test public void rewind() throws Exception {
     Aggregate op = new Aggregate(scan1, 1, 0,
-        Aggregator.Op.MIN);
+        Aggregator.Opertion.MIN);
     op.open();
     while (op.hasNext()) {
       assertNotNull(op.next());
@@ -116,7 +116,7 @@ public class AggregateTest extends MyDbTestBase {
    */
   @Test public void countStringAggregate() throws Exception {
     Aggregate op = new Aggregate(scan2, 1, 0,
-        Aggregator.Op.COUNT);
+        Aggregator.Opertion.COUNT);
     op.open();
     count.open();
     TestUtil.matchAllTuples(count, op);
@@ -127,7 +127,7 @@ public class AggregateTest extends MyDbTestBase {
    */
   @Test public void sumStringGroupBy() throws Exception {
     Aggregate op = new Aggregate(scan3, 1, 0,
-        Aggregator.Op.SUM);
+        Aggregator.Opertion.SUM);
     op.open();
     sumstring.open();
     TestUtil.matchAllTuples(sumstring, op);
@@ -138,7 +138,7 @@ public class AggregateTest extends MyDbTestBase {
    */
   @Test public void sumAggregate() throws Exception {
     Aggregate op = new Aggregate(scan1, 1, 0,
-        Aggregator.Op.SUM);
+        Aggregator.Opertion.SUM);
     op.open();
     sum.open();
     TestUtil.matchAllTuples(sum, op);
@@ -149,7 +149,7 @@ public class AggregateTest extends MyDbTestBase {
    */
   @Test public void avgAggregate() throws Exception {
     Aggregate op = new Aggregate(scan1, 1, 0,
-       Aggregator.Op.AVG);
+       Aggregator.Opertion.AVG);
     op.open();
     avg.open();
     TestUtil.matchAllTuples(avg, op);
@@ -160,7 +160,7 @@ public class AggregateTest extends MyDbTestBase {
    */
   @Test public void maxAggregate() throws Exception {
     Aggregate op = new Aggregate(scan1, 1, 0,
-        Aggregator.Op.MAX);
+        Aggregator.Opertion.MAX);
     op.open();
     max.open();
     TestUtil.matchAllTuples(max, op);
@@ -171,7 +171,7 @@ public class AggregateTest extends MyDbTestBase {
    */
   @Test public void minAggregate() throws Exception {
     Aggregate op = new Aggregate(scan1, 1, 0,
-       Aggregator.Op.MIN);
+       Aggregator.Opertion.MIN);
     op.open();
     min.open();
     TestUtil.matchAllTuples(min, op);

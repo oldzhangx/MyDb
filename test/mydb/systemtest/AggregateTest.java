@@ -6,12 +6,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import mydb.*;
-import mydb.systemtest.MyDbTestBase;
 
 import org.junit.Test;
 
 public class AggregateTest extends MyDbTestBase {
-    public void validateAggregate(DbFile table, Aggregator.Op operation, int aggregateColumn, int groupColumn, ArrayList<ArrayList<Integer>> expectedResult)
+    public void validateAggregate(DbFile table, Aggregator.Opertion operation, int aggregateColumn, int groupColumn, ArrayList<ArrayList<Integer>> expectedResult)
             throws DbException, TransactionAbortedException, IOException {
         TransactionId tid = new TransactionId();
         SeqScan ss = new SeqScan(tid, table.getId(), "");
@@ -21,12 +20,12 @@ public class AggregateTest extends MyDbTestBase {
         Database.getBufferPool().transactionComplete(tid);
     }
 
-    private int computeAggregate(ArrayList<Integer> values, Aggregator.Op operation) {
-        if (operation == Aggregator.Op.COUNT) return values.size();
+    private int computeAggregate(ArrayList<Integer> values, Aggregator.Opertion operation) {
+        if (operation == Aggregator.Opertion.COUNT) return values.size();
 
         int value = 0;
-        if (operation == Aggregator.Op.MIN) value = Integer.MAX_VALUE;
-        else if (operation == Aggregator.Op.MAX) value = Integer.MIN_VALUE;
+        if (operation == Aggregator.Opertion.MIN) value = Integer.MAX_VALUE;
+        else if (operation == Aggregator.Opertion.MAX) value = Integer.MIN_VALUE;
 
         for (int v : values) {
             switch (operation) {
@@ -45,11 +44,11 @@ public class AggregateTest extends MyDbTestBase {
             }
         }
 
-        if (operation == Aggregator.Op.AVG) value /= values.size();
+        if (operation == Aggregator.Opertion.AVG) value /= values.size();
         return value;
     }
 
-    private ArrayList<ArrayList<Integer>> aggregate(ArrayList<ArrayList<Integer>> tuples, Aggregator.Op operation, int aggregateColumn, int groupColumn) {
+    private ArrayList<ArrayList<Integer>> aggregate(ArrayList<ArrayList<Integer>> tuples, Aggregator.Opertion operation, int aggregateColumn, int groupColumn) {
         // Group the values
         HashMap<Integer, ArrayList<Integer>> values = new HashMap<Integer, ArrayList<Integer>>();
         for (ArrayList<Integer> t : tuples) {
@@ -74,7 +73,7 @@ public class AggregateTest extends MyDbTestBase {
     private final static int ROWS = 1024;
     private final static int MAX_VALUE = 64;
     private final static int COLUMNS = 3;
-    private void doAggregate(Aggregator.Op operation, int groupColumn)
+    private void doAggregate(Aggregator.Opertion operation, int groupColumn)
             throws IOException, DbException, TransactionAbortedException {
         // Create the table
         ArrayList<ArrayList<Integer>> createdTuples = new ArrayList<ArrayList<Integer>>();
@@ -90,28 +89,28 @@ public class AggregateTest extends MyDbTestBase {
     }
 
     @Test public void testSum() throws IOException, DbException, TransactionAbortedException {
-        doAggregate(Aggregator.Op.SUM, 0);
+        doAggregate(Aggregator.Opertion.SUM, 0);
     }
 
     @Test public void testMin() throws IOException, DbException, TransactionAbortedException {
-        doAggregate(Aggregator.Op.MIN, 0);
+        doAggregate(Aggregator.Opertion.MIN, 0);
     }
 
     @Test public void testMax() throws IOException, DbException, TransactionAbortedException {
-        doAggregate(Aggregator.Op.MAX, 0);
+        doAggregate(Aggregator.Opertion.MAX, 0);
     }
 
     @Test public void testCount() throws IOException, DbException, TransactionAbortedException {
-        doAggregate(Aggregator.Op.COUNT, 0);
+        doAggregate(Aggregator.Opertion.COUNT, 0);
     }
 
     @Test public void testAverage() throws IOException, DbException, TransactionAbortedException {
-        doAggregate(Aggregator.Op.AVG, 0);
+        doAggregate(Aggregator.Opertion.AVG, 0);
     }
 
     @Test public void testAverageNoGroup()
             throws IOException, DbException, TransactionAbortedException {
-        doAggregate(Aggregator.Op.AVG, Aggregator.NO_GROUPING);
+        doAggregate(Aggregator.Opertion.AVG, Aggregator.NO_GROUPING);
     }
 
     /** Make test compatible with older version of ant. */

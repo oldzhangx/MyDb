@@ -264,13 +264,13 @@ public class LogicalPlan {
     /** Convert the aggregate operator name s into an Aggregator.op operation.
      *  @throws ParsingException if s is not a valid operator name 
      */
-    static Aggregator.Op getAggOp(String s) throws ParsingException {
+    static Aggregator.Opertion getAggOp(String s) throws ParsingException {
         s = s.toUpperCase();
-        if (s.equals("AVG")) return Aggregator.Op.AVG;
-        if (s.equals("SUM")) return Aggregator.Op.SUM;
-        if (s.equals("COUNT")) return Aggregator.Op.COUNT;
-        if (s.equals("MIN")) return Aggregator.Op.MIN;
-        if (s.equals("MAX")) return Aggregator.Op.MAX;
+        if (s.equals("AVG")) return Aggregator.Opertion.AVG;
+        if (s.equals("SUM")) return Aggregator.Opertion.SUM;
+        if (s.equals("COUNT")) return Aggregator.Opertion.COUNT;
+        if (s.equals("MIN")) return Aggregator.Opertion.MIN;
+        if (s.equals("MAX")) return Aggregator.Opertion.MAX;
         throw new ParsingException("Unknown predicate " + s);
     }
 

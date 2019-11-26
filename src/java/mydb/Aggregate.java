@@ -36,10 +36,10 @@ public class Aggregate extends Operator {
     DbIterator child;
     int afield;
     int gfield;
-    Aggregator.Op aop;
+    Aggregator.Opertion aop;
 
 
-    public Aggregate(DbIterator child, int afield, int gfield, Aggregator.Op aop) {
+    public Aggregate(DbIterator child, int afield, int gfield, Aggregator.Opertion aop) {
 	// some code goes here
     }
 
@@ -83,12 +83,12 @@ public class Aggregate extends Operator {
     /**
      * @return return the aggregate operator
      * */
-    public Aggregator.Op aggregateOp() {
+    public Aggregator.Opertion aggregateOp() {
 	// some code goes here
 	return null;
     }
 
-    public static String nameOfAggregatorOp(Aggregator.Op aop) {
+    public static String nameOfAggregatorOp(Aggregator.Opertion aop) {
 	return aop.toString();
     }
 

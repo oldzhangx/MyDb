@@ -32,12 +32,12 @@ public class IntegerAggregator implements Aggregator {
 
     // an aggregate field
     int afield;
-    Op what;
+    Opertion what;
 
     Tuple tuple;
 
 
-    public IntegerAggregator(int gbfield, Type gbfieldtype, int afield, Op what) {
+    public IntegerAggregator(int gbfield, Type gbfieldtype, int afield, Opertion what) {
         this.gbfield = gbfield;
         this.gbfieldtype = gbfieldtype;
         this.afield = afield;
