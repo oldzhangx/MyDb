@@ -211,9 +211,10 @@ public class HeapPage implements Page {
      *
      * @return The returned ByteArray.
      */
+    // create the empty bytes
+    // write in the page
     public static byte[] createEmptyPageData() {
-        int len = BufferPool.PAGE_SIZE;
-        return new byte[len]; //all 0
+        return new byte[BufferPool.PAGE_SIZE]; //all 0
     }
 
     /**

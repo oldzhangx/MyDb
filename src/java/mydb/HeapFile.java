@@ -103,6 +103,7 @@ public class HeapFile implements DbFile {
             throws DbException, IOException, TransactionAbortedException {
         if(tuple == null) throw new DbException("Page insert error tuple is null");
         ArrayList<Page> pageArrayList = new ArrayList<>();
+        boolean mark  = false;
         //find pages can be inserted
         for(int i = 0; i< pageCount; i++){
             // read the database by the ids
@@ -112,13 +113,20 @@ public class HeapFile implements DbFile {
             if(page == null) throw new DbException("heapPage page is not found error");
             if(page.getNumEmptySlots() == 0) continue;
             page.insertTuple(tuple);
-
-
+            page.markDirty(true,transactionId);
+            pageArrayList.add(page);
+            mark = true;
         }
-
-
+        if(mark) return pageArrayList;
+        // page is full to insert more tuples
+        // create a new page and download it
+        HeapPageId heapPageId = new HeapPageId(getId(),pageCount);
+        // use the function
+        HeapPage heapPage = new HeapPage(heapPageId, HeapPage.createEmptyPageData());
+        heapPage.insertTuple(tuple);
+        heapPage.markDirty(true,transactionId);
+        pageArrayList.add(heapPage);
         return pageArrayList;
-
     }
 
     // see DbFile.java for javadocs
