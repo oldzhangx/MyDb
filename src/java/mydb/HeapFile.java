@@ -101,7 +101,20 @@ public class HeapFile implements DbFile {
     // see DbFile.java for javadocs
     public ArrayList<Page> insertTuple(TransactionId transactionId, Tuple tuple)
             throws DbException, IOException, TransactionAbortedException {
+        if(tuple == null) throw new DbException("Page insert error tuple is null");
         ArrayList<Page> pageArrayList = new ArrayList<>();
+        //find pages can be inserted
+        for(int i = 0; i< pageCount; i++){
+            // read the database by the ids
+            HeapPage page = (HeapPage) Database.getBufferPool().
+                    // heapPage is creates by hashcode and i in pageNo
+                    getPage(transactionId, new HeapPageId(getId(),i), Permissions.READ_WRITE);
+            if(page == null) throw new DbException("heapPage page is not found error");
+            if(page.getNumEmptySlots() == 0) continue;
+            page.insertTuple(tuple);
+
+
+        }
 
 
         return pageArrayList;
