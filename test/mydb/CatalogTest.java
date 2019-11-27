@@ -31,7 +31,7 @@ public class CatalogTest extends MyDbTestBase {
      */
     @Test public void getTupleDesc() throws Exception {
         TupleDetail expected = Utility.getTupleDesc(2);
-        TupleDetail actual = Database.getCatalog().getTupleDesc(-1);
+        TupleDetail actual = Database.getCatalog().getTupleDetail(-1);
 
         assertEquals(expected, actual);
     }

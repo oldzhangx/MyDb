@@ -1,9 +1,6 @@
 
 package mydb;
 
-import java.io.*;
-import java.util.*;
-import java.lang.reflect.*;
 
 /**
 LogFile implements the recovery subsystem of SimpleDb.  This class is
@@ -33,6 +30,17 @@ must not be declared synchronized and must begin with a block like:
     }
 </pre>
 */
+
+import java.io.EOFException;
+import java.io.File;
+import java.io.IOException;
+import java.io.RandomAccessFile;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+import java.util.Set;
 
 /**
 <p> The format of the log file is as follows:

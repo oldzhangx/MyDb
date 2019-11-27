@@ -91,11 +91,11 @@ public class TestUtil {
      *   corresponding fields in the two Tuples are all equal.
      */
     public static boolean compareTuples(Tuple t1, Tuple t2) {
-        if (t1.getTupleDesc().fieldNumber() != t2.getTupleDesc().fieldNumber())
+        if (t1.getTupleDetail().fieldNumber() != t2.getTupleDetail().fieldNumber())
             return false;
 
-        for (int i = 0; i < t1.getTupleDesc().fieldNumber(); ++i) {
-            if (!(t1.getTupleDesc().getFieldType(i).equals(t2.getTupleDesc().getFieldType(i))))
+        for (int i = 0; i < t1.getTupleDetail().fieldNumber(); ++i) {
+            if (!(t1.getTupleDetail().getFieldType(i).equals(t2.getTupleDetail().getFieldType(i))))
                 return false;
             if (!(t1.getField(i).equals(t2.getField(i))))
                 return false;
@@ -239,7 +239,7 @@ public class TestUtil {
             throw new RuntimeException("not implemented");
         }
 
-		public TupleDetail getTupleDesc() {
+		public TupleDetail getTupleDetail() {
 			return td;
 		}
     }

@@ -2,10 +2,7 @@ package mydb;
 
 import mydb.TupleDetail.TupleDetail;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 
 /**
@@ -17,7 +14,6 @@ import java.util.*;
  */
 
 public class Catalog {
-
 
     private HashMap<String, Integer> tableNameIdMap;
 
@@ -87,9 +83,9 @@ public class Catalog {
      *     function passed to addTable
      * @throws NoSuchElementException if the table doesn't exist
      */
-    public TupleDetail getTupleDesc(int tableid) throws NoSuchElementException {
+    public TupleDetail getTupleDetail(int tableid) throws NoSuchElementException {
         DbFile result = tableIdFileMap.get(tableid);
-        if(result!=null) return result.getTupleDesc();
+        if(result!=null) return result.getTupleDetail();
         throw new NoSuchElementException();
     }
 

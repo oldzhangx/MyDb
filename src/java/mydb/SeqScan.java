@@ -92,7 +92,7 @@ public class SeqScan implements DbIterator {
      *         prefixed with the tableAlias string from the constructor.
      */
     public TupleDetail getTupleDesc() {
-        TupleDetail desc = Database.getCatalog().getTupleDesc(tableId);
+        TupleDetail desc = Database.getCatalog().getTupleDetail(tableId);
         int fieldNumber = desc.fieldNumber();
         Type[] types = new Type[fieldNumber];
         String[] names = new String[fieldNumber];

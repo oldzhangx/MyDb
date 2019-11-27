@@ -4,8 +4,10 @@ package mydb;
 import mydb.TupleDetail.Tuple;
 import mydb.TupleDetail.TupleDetail;
 
-import java.util.*;
-import java.io.*;
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.ArrayList;
+
 
 /**
  * The interface for database files on disk. Each table is represented by a
@@ -20,7 +22,7 @@ public interface DbFile extends Serializable {
      *
      * @throws IllegalArgumentException if the page does not exist in this file.
      */
-    public Page readPage(PageId id) throws IOException;
+    public Page readPage(PageId id) throws IOException, DbException;
 
     /**
      * Push the specified page to disk.
@@ -29,7 +31,7 @@ public interface DbFile extends Serializable {
      * @throws IOException if the write fails
      *
      */
-    public void writePage(Page p) throws IOException;
+    public void writePage(Page p) throws IOException, DbException;
 
     /**
      * Inserts the specified tuple to the file on behalf of transaction.
@@ -70,7 +72,7 @@ public interface DbFile extends Serializable {
     /**
      * Returns a unique ID used to identify this DbFile in the Catalog. This id
      * can be used to look up the table via {@link Catalog#getDbFile} and
-     * {@link Catalog#getTupleDesc}.
+     * {@link Catalog#getTupleDetail}.
      * <p>
      * Implementation note:  you will need to generate this tableid somewhere,
      * ensure that each HeapFile has a "unique id," and that you always
@@ -86,5 +88,5 @@ public interface DbFile extends Serializable {
      * Returns the TupleDesc of the table stored in this DbFile.
      * @return TupleDesc of this DbFile.
      */
-    public TupleDetail getTupleDesc();
+    public TupleDetail getTupleDetail();
 }

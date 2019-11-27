@@ -4,7 +4,7 @@ import mydb.TupleDetail.TupleDetail;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.*;
+import java.util.NoSuchElementException;
 
 /**
  * DbIterator is the iterator interface that all SimpleDB operators should

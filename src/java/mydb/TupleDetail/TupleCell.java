@@ -5,17 +5,13 @@ import mydb.Type;
 import java.io.Serializable;
 import java.util.Objects;
 
-/**
- * A help class to facilitate organizing the information of each field
- * */
+// define name and type
 public class TupleCell implements Serializable {
 
     private static final long serialVersionUID = -8419977542514739836L;
-    //field type
-    Type fieldType;
 
-    //field name
     String fieldName;
+    Type fieldType;
 
     public TupleCell(Type type, String name) {
         this.fieldName = name;
@@ -24,7 +20,7 @@ public class TupleCell implements Serializable {
 
     @Override
     public String toString() {
-        return fieldName + "(" + fieldType + ")";
+        return fieldName + " (" + fieldType.name() + ")";
     }
 
     @Override
@@ -36,10 +32,9 @@ public class TupleCell implements Serializable {
         if(this == o) {
             return true;
         }
-        if (o instanceof TupleCell) {
-            TupleCell item = (TupleCell) o;
-            return Objects.equals(fieldName, item.fieldName) && Objects.equals(fieldType, item.fieldType);
-        } else return false;
+        if(o.getClass() != this.getClass()) return false;
+        TupleCell item = (TupleCell) o;
+        return Objects.equals(fieldName, item.fieldName) && Objects.equals(fieldType, item.fieldType);
     }
 
 }

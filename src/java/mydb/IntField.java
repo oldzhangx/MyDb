@@ -1,6 +1,7 @@
 package mydb;
 
-import java.io.*;
+import java.io.DataOutputStream;
+import java.io.IOException;
 
 // Last Change: 11/23
 
@@ -11,17 +12,13 @@ public class IntField implements Field {
 
 
     private static final long serialVersionUID = 4662232909262937129L;
+
     private int value;
 
     public int getValue() {
         return value;
     }
 
-    /**
-     * Constructor.
-     *
-     * @param i The value of this field.
-     */
     public IntField(int i) {
         value = i;
     }
@@ -49,12 +46,12 @@ public class IntField implements Field {
      * @throws IllegalArgumentException if val is not an IntField
      * @see Field#compareWith
      */
-//    public boolean compareWith(Predicate.Op op, Field val) {
     public boolean compareWith(Predicate.Operation op, Field val) {
 
         IntField iVal = (IntField) val;
 
         switch (op) {
+
         case EQUALS:
         case LIKE:
             return value == iVal.value;
@@ -77,10 +74,6 @@ public class IntField implements Field {
         throw new IllegalArgumentException("int tuple compare error");
     }
 
-    /**
-     * Return the Type of this field.
-     * @return Type.INT_TYPE
-     */
 	public Type getType() {
 		return Type.INT_TYPE;
 	}

@@ -89,7 +89,7 @@ public class SystemTestUtil {
 
     public static ArrayList<Integer> tupleToList(Tuple tuple) {
         ArrayList<Integer> list = new ArrayList<Integer>();
-        for (int i = 0; i < tuple.getTupleDesc().fieldNumber(); ++i) {
+        for (int i = 0; i < tuple.getTupleDetail().fieldNumber(); ++i) {
             int value = ((IntField)tuple.getField(i)).getValue();
             list.add(value);
         }
