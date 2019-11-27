@@ -123,18 +123,25 @@ public class HeapFile implements DbFile {
         HeapPageId heapPageId = new HeapPageId(getId(),pageCount);
         // use the function
         HeapPage heapPage = new HeapPage(heapPageId, HeapPage.createEmptyPageData());
-        heapPage.insertTuple(tuple);
-        heapPage.markDirty(true,transactionId);
-        pageArrayList.add(heapPage);
+        writePage(heapPage);
+
+        HeapPage page = (HeapPage) Database.getBufferPool().
+                // heapPage is creates by hashcode and pageCount in pageNo
+                        getPage(transactionId, new HeapPageId(getId(),pageCount), Permissions.READ_WRITE);
+        page.insertTuple(tuple);
+        page.markDirty(true,transactionId);
+        pageArrayList.add(page);
+        pageCount++;
         return pageArrayList;
     }
 
     // see DbFile.java for javadocs
-    public Page deleteTuple(TransactionId tid, Tuple t) throws DbException,
+    public Page deleteTuple(TransactionId transactionId, Tuple tuple) throws DbException,
             TransactionAbortedException {
-        // some code goes here
-        return null;
-        // not necessary for proj1
+        if(tuple == null) throw new DbException("Page delete error tuple is null");
+
+
+
     }
 
     // see DbFile.java for javadocs
