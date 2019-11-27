@@ -137,11 +137,16 @@ public class HeapFile implements DbFile {
 
     // see DbFile.java for javadocs
     public Page deleteTuple(TransactionId transactionId, Tuple tuple) throws DbException,
-            TransactionAbortedException {
+            TransactionAbortedException, IOException {
         if(tuple == null) throw new DbException("Page delete error tuple is null");
-
-
-
+        PageId pageId = tuple.getRecordId().getPageId();
+        if(pageId.pageNumber()<pageCount) {
+            HeapPage page = (HeapPage) Database.getBufferPool().
+                    // heapPage is creates by hashcode and i in pageNo
+                            getPage(transactionId, pageId, Permissions.READ_WRITE);
+            page.deleteTuple(tuple);
+            return page;
+        }else return null;
     }
 
     // see DbFile.java for javadocs
