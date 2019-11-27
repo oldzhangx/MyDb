@@ -27,6 +27,8 @@ public class HeapPage implements Page {
 
     private byte[] oldData;
 
+    private TransactionId transactionId;
+
     /**
      * Create a HeapPage from a set of bytes of data read from disk.
      * The format of a HeapPage is a set of header bytes indicating
@@ -253,17 +255,14 @@ public class HeapPage implements Page {
      * that did the dirtying
      */
     public void markDirty(boolean dirty, TransactionId tid) {
-        // some code goes here
-	// not necessary for lab1
+        transactionId = dirty? tid:null;
     }
 
     /**
      * Returns the tid of the transaction that last dirtied this page, or null if the page is not dirty
      */
     public TransactionId isDirty() {
-        // some code goes here
-	// Not necessary for lab1
-        return null;      
+        return transactionId;
     }
 
     /**
@@ -292,8 +291,8 @@ public class HeapPage implements Page {
      * Abstraction to fill or clear a slot on this page.
      */
     private void markSlotUsed(int i, boolean value) {
-        // some code goes here
-        // not necessary for lab1
+        int t = i/8;
+        int d = i%8;
     }
 
     /**
@@ -322,7 +321,6 @@ public class HeapPage implements Page {
             //count = count +1;
             return tuples[count++];
         }
-
     }
 
     public static void main(String[] args) {
