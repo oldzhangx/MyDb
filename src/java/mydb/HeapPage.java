@@ -218,11 +218,14 @@ public class HeapPage implements Page {
      *   that it is no longer stored on any page.
      * @throws DbException if this tuple is not on this page, or tuple slot is
      *         already empty.
-     * @param t The tuple to delete
      */
-    public void deleteTuple(Tuple t) throws DbException {
-        // some code goes here
-        // not necessary for lab1
+    public void deleteTuple(Tuple tuple) throws DbException {
+        if(tuple ==null) throw new DbException("delete tuple is invalid");
+        if(!(tuple.getRecordId().getPageId()).equals(heapPageId)) throw new DbException("delete tuple heappageId not equal");
+        int TupleNo = tuple.getRecordId().tupleno();
+        if(!isSlotUsed(TupleNo)) throw new DbException("tuple slot is already empty");
+        tuples[TupleNo] = null;
+        markSlotUsed(TupleNo, false);
     }
 
     /**
