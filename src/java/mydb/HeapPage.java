@@ -4,6 +4,7 @@ import mydb.TupleDetail.Tuple;
 import mydb.TupleDetail.TupleDetail;
 
 import java.io.*;
+import java.text.ParseException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -68,7 +69,7 @@ public class HeapPage implements Page {
             for (int i=0; i<numSlots; i++)
                 tuples[i] = readNextTuple(dataInputStream,i);
 
-        }catch(NoSuchElementException e){
+        }catch(NoSuchElementException | ParseException e){
             e.printStackTrace();
         }
         dataInputStream.close();
@@ -111,35 +112,19 @@ public class HeapPage implements Page {
     /**
      * Suck up tuples from the source file.
      */
-    private Tuple readNextTuple(DataInputStream dataInputStream, int slotId) throws NoSuchElementException {
+    private Tuple readNextTuple(DataInputStream dataInputStream, int slotId)
+            throws NoSuchElementException, ParseException, IOException {
         // if associated bit is not set, read forward to the next tuple, and return null
-
-        if (!isSlotUsed(slotId)) {
-            for (int i = 0; i< numSlots; i++) {
-                try {
-                    dataInputStream.readByte();
-                } catch (IOException e) {
-                    throw new NoSuchElementException("error reading empty tuple");
-                }
-            }
-            return null;
+        Tuple tuple = null;
+        if(isSlotUsed(slotId)){
+            tuple = new Tuple(tupleDetail);
+            for(int i = 0; i< tupleDetail.fieldNumber();i++)
+                tuple.setField(i,tupleDetail.getFieldType(i).parse(dataInputStream));
+        }else {
+            for(int i = 0; i< tupleDetail.getSize(); i++)
+                dataInputStream.readByte();
         }
-
-        // read fields in the tuple
-        Tuple tuple = new Tuple(tupleDetail);
-        RecordId recordId = new RecordId(heapPageId, slotId);
-        tuple.setRecordId(recordId);
-        try {
-            for (int j = 0; j< tupleDetail.fieldNumber(); j++) {
-                Field f = tupleDetail.getFieldType(j).parse(dataInputStream);
-                tuple.setField(j, f);
-            }
-        } catch (java.text.ParseException e) {
-            e.printStackTrace();
-            throw new NoSuchElementException("parsing error!");
-        }
-
-        return t;
+        return tuple;
     }
 
     /**
