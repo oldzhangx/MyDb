@@ -21,7 +21,6 @@ public class HeapPage implements Page {
     private HeapPageId heapPageId;
     private TupleDetail tupleDetail;
     private byte[] header;
-    private int headerSize;
     private Tuple[] tuples;
     private int numSlots;
 
@@ -46,9 +45,9 @@ public class HeapPage implements Page {
     //read from which page and table
     //download data
     public HeapPage(HeapPageId id, byte[] data) throws IOException {
-        //get page id
+        // get page id
         this.heapPageId = id;
-        //get tuple detail : by get table info  in catalog
+        // get tuple detail : by get table info  in catalog
         this.tupleDetail = Database.getCatalog().getTupleDetail(heapPageId.getTableId());
         // define : tuple number = floor((BufferPool.PAGE_SIZE*8) / (tuple size * 8 + 1))
         numSlots = (BufferPool.PAGE_SIZE * 8 )/ (tupleDetail.getSize() * 8 + 1);
@@ -56,16 +55,19 @@ public class HeapPage implements Page {
         DataInputStream dataInputStream = new DataInputStream(new ByteArrayInputStream(data));
 
         // allocate and read the header slots of this page
-        headerSize = (int) Math.ceil(((double)numSlots)/8.0);
+        int headerSize = (int) Math.ceil(((double) numSlots) / 8.0);
+
+        // put data into head
         header = new byte[headerSize];
-        for (int i=0; i<header.length; i++)
+        for (int i = 0; i< headerSize; i++)
             header[i] = dataInputStream.readByte();
 
         try{
             // allocate and read the actual records of this page
             tuples = new Tuple[numSlots];
-            for (int i=0; i<tuples.length; i++)
+            for (int i=0; i<numSlots; i++)
                 tuples[i] = readNextTuple(dataInputStream,i);
+
         }catch(NoSuchElementException e){
             e.printStackTrace();
         }
@@ -110,10 +112,10 @@ public class HeapPage implements Page {
      * Suck up tuples from the source file.
      */
     private Tuple readNextTuple(DataInputStream dataInputStream, int slotId) throws NoSuchElementException {
-        // if associated bit is not set, read forward to the next tuple, and
-        // return null.
+        // if associated bit is not set, read forward to the next tuple, and return null
+
         if (!isSlotUsed(slotId)) {
-            for (int i = 0; i< tupleDetail.getSize(); i++) {
+            for (int i = 0; i< numSlots; i++) {
                 try {
                     dataInputStream.readByte();
                 } catch (IOException e) {
@@ -124,13 +126,13 @@ public class HeapPage implements Page {
         }
 
         // read fields in the tuple
-        Tuple t = new Tuple(tupleDetail);
-        RecordId rid = new RecordId(heapPageId, slotId);
-        t.setRecordId(rid);
+        Tuple tuple = new Tuple(tupleDetail);
+        RecordId recordId = new RecordId(heapPageId, slotId);
+        tuple.setRecordId(recordId);
         try {
             for (int j = 0; j< tupleDetail.fieldNumber(); j++) {
                 Field f = tupleDetail.getFieldType(j).parse(dataInputStream);
-                t.setField(j, f);
+                tuple.setField(j, f);
             }
         } catch (java.text.ParseException e) {
             e.printStackTrace();
@@ -286,6 +288,7 @@ public class HeapPage implements Page {
         // i/8 to calculate where section the data is
         int t = i/8;
         int d = i%8;
+        // if head[i] == 1 return true
         return (byte) (header[t] << (7 - d)) < 0;
     }
 
@@ -324,6 +327,14 @@ public class HeapPage implements Page {
             return tuples[count++];
         }
 
+    }
+
+    public static void main(String[] args) {
+        byte b = (byte) 1;
+        System.out.println(Integer.toBinaryString(b));
+        int a = b << 7;
+        System.out.println(Integer.toBinaryString(a));
+        System.out.println((byte) a);
     }
 
 }
