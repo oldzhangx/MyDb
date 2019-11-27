@@ -13,12 +13,18 @@ public class Insert extends Operator {
 
     private static final long serialVersionUID = 1496330920324262913L;
 
-    //The transaction running the insert.
+    // The transaction running the insert.
     TransactionId transactionId;
-    //The child operator from which to read tuples to be inserted.
+    // The child operator from which to read tuples to be inserted.
     DbIterator child;
-    //The table in which to insert tuples.
+    // The table in which to insert tuples.
     int tableId;
+    // lines of insert tuples
+    int countInsert;
+
+    TupleDetail tupleDetail;
+
+    boolean action;
 
     /**
      * Constructor.
@@ -38,23 +44,33 @@ public class Insert extends Operator {
         this.transactionId=  transactionId;
         this.child  =child;
         this.tableId = tableId;
-
+        countInsert = 0;
+        tupleDetail = new TupleDetail(new Type[]{Type.INT_TYPE}, new String[]{null});
     }
 
     public TupleDetail getTupleDetail() {
-        return child.getTupleDetail();
+        return tupleDetail;
     }
 
-    public void open() throws DbException, TransactionAbortedException {
-        // some code goes here
+    public void open() throws DbException, TransactionAbortedException, IOException {
+        super.open();
+        child.open();
+
+        while (child.hasNext()) {
+            Tuple next = child.next();
+            Database.getBufferPool().insertTuple(transactionId, tableId, next);
+            countInsert++;
+        }
+        action = false;
     }
 
     public void close() {
-        // some code goes here
+        super.close();
+        child.close();
     }
 
     public void rewind() throws DbException, TransactionAbortedException {
-        // some code goes here
+        action = false;
     }
 
     /**
@@ -71,18 +87,21 @@ public class Insert extends Operator {
      * @see BufferPool#insertTuple
      */
     protected Tuple fetchNext() throws TransactionAbortedException, DbException {
-        // some code goes here
-        return null;
+        if (action) return null;
+
+        Tuple insertedTuple = new Tuple(tupleDetail);
+        insertedTuple.setField(0,new IntField(countInsert));
+        action = true;
+        return insertedTuple;
     }
 
     @Override
     public DbIterator[] getChildren() throws IOException, TransactionAbortedException, DbException {
-        DbIterator[] result = new DbIterator[getTupleDetail().getSize()];
-        if(hasNext())
+        return new DbIterator[]{child};
     }
 
     @Override
     public void setChildren(DbIterator[] children) {
-        // some code goes here
+        child = children[0];
     }
 }
