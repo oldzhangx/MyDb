@@ -122,6 +122,7 @@ public class HeapPage implements Page {
             tuple = new Tuple(tupleDetail);
             for(int i = 0; i< tupleDetail.fieldNumber();i++)
                 tuple.setField(i,tupleDetail.getFieldType(i).parse(dataInputStream));
+            tuple.setRecordId( new RecordId(heapPageId, slotId));
         }else {
             for(int i = 0; i< tupleDetail.getSize(); i++)
                 dataInputStream.readByte();
