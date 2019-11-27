@@ -272,14 +272,14 @@ public class TestUtil {
             cur = low;
         }
 
-        public TupleDetail getTupleDesc() {
+        public TupleDetail getTupleDetail() {
             return Utility.getTupleDesc(width);
         }
 
         protected Tuple readNext() {
             if (cur >= high) return null;
 
-            Tuple tup = new Tuple(getTupleDesc());
+            Tuple tup = new Tuple(getTupleDetail());
             for (int i = 0; i < width; ++i)
                 tup.setField(i, new IntField(cur));
             cur++;
@@ -293,7 +293,7 @@ public class TestUtil {
 
 		public Tuple next() throws DbException, TransactionAbortedException, NoSuchElementException {
 			if(cur >= high) throw new NoSuchElementException();
-            Tuple tup = new Tuple(getTupleDesc());
+            Tuple tup = new Tuple(getTupleDetail());
             for (int i = 0; i < width; ++i)
                 tup.setField(i, new IntField(cur));
             cur++;

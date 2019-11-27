@@ -32,7 +32,7 @@ public class OrderBy extends Operator {
      */
     public OrderBy(int orderbyField, boolean asc, DbIterator child) {
         this.child = child;
-        td = child.getTupleDesc();
+        td = child.getTupleDetail();
         this.orderByField = orderbyField;
         this.orderByFieldName = td.getFieldName(orderbyField);
         this.asc = asc;
@@ -53,7 +53,7 @@ public class OrderBy extends Operator {
 	return this.orderByFieldName;
     }
     
-    public TupleDetail getTupleDesc() {
+    public TupleDetail getTupleDetail() {
         return td;
     }
 

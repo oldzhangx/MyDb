@@ -24,7 +24,7 @@ public class Delete extends Operator {
         // some code goes here
     }
 
-    public TupleDetail getTupleDesc() {
+    public TupleDetail getTupleDetail() {
         // some code goes here
         return null;
     }

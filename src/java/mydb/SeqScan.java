@@ -91,7 +91,7 @@ public class SeqScan implements DbIterator {
      * @return the TupleDesc with field names from the underlying HeapFile,
      *         prefixed with the tableAlias string from the constructor.
      */
-    public TupleDetail getTupleDesc() {
+    public TupleDetail getTupleDetail() {
         TupleDetail desc = Database.getCatalog().getTupleDetail(tableId);
         int fieldNumber = desc.fieldNumber();
         Type[] types = new Type[fieldNumber];

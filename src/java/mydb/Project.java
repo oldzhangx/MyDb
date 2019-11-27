@@ -38,7 +38,7 @@ public class Project extends Operator {
         this.child = child;
         outFieldIds = fieldList;
         String[] fieldAr = new String[fieldList.size()];
-        TupleDetail childtd = child.getTupleDesc();
+        TupleDetail childtd = child.getTupleDetail();
 
         for (int i = 0; i < fieldAr.length; i++) {
             fieldAr[i] = childtd.getFieldName(fieldList.get(i));
@@ -46,7 +46,7 @@ public class Project extends Operator {
         td = new TupleDetail(types, fieldAr);
     }
 
-    public TupleDetail getTupleDesc() {
+    public TupleDetail getTupleDetail() {
         return td;
     }
 

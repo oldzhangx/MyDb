@@ -34,9 +34,9 @@ public class Filter extends Operator {
         return m_pred;
     }
 
-    public TupleDetail getTupleDesc() {
+    public TupleDetail getTupleDetail() {
         // some code goes here
-        return m_it.getTupleDesc();
+        return m_it.getTupleDetail();
     }
 
     public void open() throws DbException, NoSuchElementException,

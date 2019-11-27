@@ -319,7 +319,7 @@ public class LogicalPlan {
 
             Field f;
             Type ftyp;
-            TupleDetail td = subplanMap.get(lf.tableAlias).getTupleDesc();
+            TupleDetail td = subplanMap.get(lf.tableAlias).getTupleDetail();
             
             try {//td.fieldNameToIndex(disambiguateName(lf.fieldPureName))
                 ftyp = td.getFieldType(td.fieldNameToIndex(lf.fieldQuantifiedName));
@@ -333,7 +333,7 @@ public class LogicalPlan {
 
             Predicate p = null;
             try {
-                p = new Predicate(subplan.getTupleDesc().fieldNameToIndex(lf.fieldQuantifiedName), lf.p,f);
+                p = new Predicate(subplan.getTupleDetail().fieldNameToIndex(lf.fieldQuantifiedName), lf.p,f);
             } catch (NoSuchElementException e) {
                 throw new ParsingException("Unknown field " + lf.fieldQuantifiedName);
             }
@@ -341,7 +341,7 @@ public class LogicalPlan {
 
             TableStats s = statsMap.get(Database.getCatalog().getTableName(this.getTableId(lf.tableAlias)));
             
-            double sel= s.estimateSelectivity(subplan.getTupleDesc().fieldNameToIndex(lf.fieldQuantifiedName), lf.p, f);
+            double sel= s.estimateSelectivity(subplan.getTupleDetail().fieldNameToIndex(lf.fieldQuantifiedName), lf.p, f);
             filterSelectivities.put(lf.tableAlias, filterSelectivities.get(lf.tableAlias) * sel);
 
             //s.addSelectivityFactor(estimateFilterSelectivity(lf,statsMap));
@@ -418,7 +418,7 @@ public class LogicalPlan {
             LogicalSelectListNode si = selectList.elementAt(i);
             if (si.aggOp != null) {
                 outFields.add(groupByField!=null?1:0);
-                TupleDetail td = node.getTupleDesc();
+                TupleDetail td = node.getTupleDetail();
 //                int  id;
                 try {
 //                    id = 
@@ -433,7 +433,7 @@ public class LogicalPlan {
                         throw new ParsingException("Field " + si.fname + " does not appear in GROUP BY list");
                     }
                     outFields.add(0);
-                    TupleDetail td = node.getTupleDesc();
+                    TupleDetail td = node.getTupleDetail();
                     int  id;
                     try {
                         id = td.fieldNameToIndex(groupByField);
@@ -442,13 +442,13 @@ public class LogicalPlan {
                     }
                     outTypes.add(td.getFieldType(id));
             } else if (si.fname.equals("null.*")) {
-                    TupleDetail td = node.getTupleDesc();
+                    TupleDetail td = node.getTupleDetail();
                     for ( i = 0; i < td.fieldNumber(); i++) {
                         outFields.add(i);
                         outTypes.add(td.getFieldType(i));
                     }
             } else  {
-                    TupleDetail td = node.getTupleDesc();
+                    TupleDetail td = node.getTupleDetail();
                     int id;
                     try {
                         id = td.fieldNameToIndex(si.fname);
@@ -462,7 +462,7 @@ public class LogicalPlan {
         }
 
         if (hasAgg) {
-            TupleDetail td = node.getTupleDesc();
+            TupleDetail td = node.getTupleDetail();
             Aggregate aggNode;
             try {
                 aggNode = new Aggregate(node,
@@ -476,7 +476,7 @@ public class LogicalPlan {
         }
 
         if (hasOrderBy) {
-            node = new OrderBy(node.getTupleDesc().fieldNameToIndex(oByField), oByAsc, node);
+            node = new OrderBy(node.getTupleDetail().fieldNameToIndex(oByField), oByAsc, node);
         }
 
         return new Project(outFields, outTypes, node);

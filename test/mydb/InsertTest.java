@@ -39,7 +39,7 @@ public class InsertTest extends TestUtil.CreateHeapFile {
   @Test public void getTupleDesc() throws Exception {
     Insert op = new Insert(tid,scan1, empty.getId());
     TupleDetail expected = Utility.getTupleDesc(1);
-    TupleDetail actual = op.getTupleDesc();
+    TupleDetail actual = op.getTupleDetail();
     assertEquals(expected, actual);
   }
 

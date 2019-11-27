@@ -62,7 +62,7 @@ public class JoinTest extends MyDbTestBase {
     JoinPredicate pred = new JoinPredicate(0, Predicate.Operation.EQUALS, 0);
     Join op = new Join(pred, scan1, scan2);
     TupleDetail expected = Utility.getTupleDesc(width1 + width2);
-    TupleDetail actual = op.getTupleDesc();
+    TupleDetail actual = op.getTupleDetail();
     assertEquals(expected, actual);
   }
 

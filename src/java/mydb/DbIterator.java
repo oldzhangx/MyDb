@@ -49,7 +49,7 @@ public interface DbIterator extends Serializable{
    * Returns the TupleDesc associated with this DbIterator. 
    * @return the TupleDesc associated with this DbIterator.
    */
-  public TupleDetail getTupleDesc();
+  public TupleDetail getTupleDetail();
 
   /**
    * Closes the iterator. When the iterator is closed, calling next(),

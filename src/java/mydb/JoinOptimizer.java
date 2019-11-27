@@ -49,7 +49,7 @@ public class JoinOptimizer {
         DbIterator j;
 
         try {
-            t1id = plan1.getTupleDesc().fieldNameToIndex(lj.f1QuantifiedName);
+            t1id = plan1.getTupleDetail().fieldNameToIndex(lj.f1QuantifiedName);
         } catch (NoSuchElementException e) {
             throw new ParsingException("Unknown field " + lj.f1QuantifiedName);
         }
@@ -58,7 +58,7 @@ public class JoinOptimizer {
             t2id = 0;
         } else {
             try {
-                t2id = plan2.getTupleDesc().fieldNameToIndex(
+                t2id = plan2.getTupleDetail().fieldNameToIndex(
                         lj.f2QuantifiedName);
             } catch (NoSuchElementException e) {
                 throw new ParsingException("Unknown field "

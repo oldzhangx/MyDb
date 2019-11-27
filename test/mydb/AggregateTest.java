@@ -90,7 +90,7 @@ public class AggregateTest extends MyDbTestBase {
     Aggregate op = new Aggregate(scan1, 0, 0,
         Aggregator.Opertion.MIN);
     TupleDetail expected = Utility.getTupleDesc(2);
-    TupleDetail actual = op.getTupleDesc();
+    TupleDetail actual = op.getTupleDetail();
     assertEquals(expected, actual);
   }
 

@@ -75,7 +75,7 @@ public abstract class Operator implements DbIterator {
      *         operators, the order of the children is not important. But they
      *         should be consistent among multiple calls.
      * */
-    public abstract DbIterator[] getChildren();
+    public abstract DbIterator[] getChildren() throws IOException, TransactionAbortedException, DbException;
 
     /**
      * Set the children(child) of this operator. If the operator has only one
@@ -92,7 +92,7 @@ public abstract class Operator implements DbIterator {
     /**
      * @return return the TupleDesc of the output tuples of this operator
      * */
-    public abstract TupleDetail getTupleDesc();
+    public abstract TupleDetail getTupleDetail();
 
     /**
      * @return The estimated cardinality of this operator.

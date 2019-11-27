@@ -31,7 +31,7 @@ public class FilterTest extends MyDbTestBase {
     Predicate pred = new Predicate(0, Predicate.Operation.EQUALS, TestUtil.getField(0));
     Filter op = new Filter(pred, scan);
     TupleDetail expected = Utility.getTupleDesc(testWidth);
-    TupleDetail actual = op.getTupleDesc();
+    TupleDetail actual = op.getTupleDetail();
     assertEquals(expected, actual);
   }
 

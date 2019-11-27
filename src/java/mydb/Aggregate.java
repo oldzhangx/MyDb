@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.NoSuchElementException;
 
-import static mydb.Aggregator.NO_GROUPING;
 import static mydb.Type.INT_TYPE;
 
 // TODO: 没用可删除
@@ -45,10 +44,10 @@ public class Aggregate extends Operator {
         this.aggregateFieldIndex = aggregateFieldIndex;
         this.groupByFieldIndex = groupByFieldIndex;
         opertion = aop;
-        tupleDetail = child.getTupleDesc();
-        Type aggreType = child.getTupleDesc().getFieldType(aggregateFieldIndex);
+        tupleDetail = child.getTupleDetail();
+        Type aggreType = child.getTupleDetail().getFieldType(aggregateFieldIndex);
         //根据进行聚合的列的类型来判断aggreator的类型
-        groupByFieldType = groupByFieldIndex == Aggregator.NO_GROUPING ? null : child.getTupleDesc().getFieldType(groupByFieldIndex);
+        groupByFieldType = groupByFieldIndex == Aggregator.NO_GROUPING ? null : child.getTupleDetail().getFieldType(groupByFieldIndex);
         if (aggreType == Type.INT_TYPE) {
             aggregator = new IntegerAggregator(groupByFieldIndex, groupByFieldType, aggregateFieldIndex, aop);
         } else if (aggreType == Type.STRING_TYPE) {
@@ -140,7 +139,7 @@ public class Aggregate extends Operator {
      * given in the constructor, and child_td is the TupleDesc of the child
      * iterator.
      */
-    public TupleDetail getTupleDesc() {
+    public TupleDetail getTupleDetail() {
         Type[] fieldType = groupByFieldType==null? new Type[]{INT_TYPE}:
                 new Type[]{groupByFieldType, INT_TYPE};
         String[] fieldName = groupByFieldType==null? new String[]{tupleDetail.getFieldName(aggregateFieldIndex)}:

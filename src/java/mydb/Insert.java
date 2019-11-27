@@ -3,6 +3,8 @@ package mydb;
 import mydb.TupleDetail.Tuple;
 import mydb.TupleDetail.TupleDetail;
 
+import java.io.IOException;
+
 /**
  * Inserts tuples read from the child operator into the tableid specified in the
  * constructor
@@ -11,27 +13,36 @@ public class Insert extends Operator {
 
     private static final long serialVersionUID = 1496330920324262913L;
 
+    //The transaction running the insert.
+    TransactionId transactionId;
+    //The child operator from which to read tuples to be inserted.
+    DbIterator child;
+    //The table in which to insert tuples.
+    int tableId;
+
     /**
      * Constructor.
      * 
-     * @param t
+     * @param transactionId
      *            The transaction running the insert.
      * @param child
      *            The child operator from which to read tuples to be inserted.
-     * @param tableid
+     * @param tableId
      *            The table in which to insert tuples.
      * @throws DbException
      *             if TupleDesc of child differs from table into which we are to
      *             insert.
      */
-    public Insert(TransactionId t,DbIterator child, int tableid)
+    public Insert(TransactionId transactionId,DbIterator child, int tableId)
             throws DbException {
-        // some code goes here
+        this.transactionId=  transactionId;
+        this.child  =child;
+        this.tableId = tableId;
+
     }
 
-    public TupleDetail getTupleDesc() {
-        // some code goes here
-        return null;
+    public TupleDetail getTupleDetail() {
+        return child.getTupleDetail();
     }
 
     public void open() throws DbException, TransactionAbortedException {
@@ -65,9 +76,9 @@ public class Insert extends Operator {
     }
 
     @Override
-    public DbIterator[] getChildren() {
-        // some code goes here
-        return null;
+    public DbIterator[] getChildren() throws IOException, TransactionAbortedException, DbException {
+        DbIterator[] result = new DbIterator[getTupleDetail().getSize()];
+        if(hasNext())
     }
 
     @Override

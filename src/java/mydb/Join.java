@@ -66,10 +66,10 @@ public class Join extends Operator {
     }
 
 
-    public TupleDetail getTupleDesc() {
+    public TupleDetail getTupleDetail() {
         // some code goes here
-        TupleDetail td1 = child1.getTupleDesc();
-        TupleDetail td2 = child2.getTupleDesc();
+        TupleDetail td1 = child1.getTupleDetail();
+        TupleDetail td2 = child2.getTupleDetail();
         return TupleDetail.merge(td1, td2);
     }
 
@@ -132,13 +132,13 @@ public class Join extends Operator {
      *    之后使用java内置的sort速度明显提高，第一个0.40s，第二个2.30s，第三个6.28s
      */
     private Iterator<Tuple> getAllFetchNext() throws TransactionAbortedException, DbException, IOException {
-        int tpSize1 = child1.getTupleDesc().fieldNumber();
-        int tpSize2 = child2.getTupleDesc().fieldNumber();
+        int tpSize1 = child1.getTupleDetail().fieldNumber();
+        int tpSize2 = child2.getTupleDetail().fieldNumber();
         tempTps = new ArrayList<Tuple>();
 
         //use sorted-merge algorithm
-        int leftBufferSize = BLOCKMEMORY / child1.getTupleDesc().getSize();
-        int rightBufferSize = BLOCKMEMORY / child2.getTupleDesc().getSize();
+        int leftBufferSize = BLOCKMEMORY / child1.getTupleDetail().getSize();
+        int rightBufferSize = BLOCKMEMORY / child2.getTupleDetail().getSize();
 
         leftBuffer = new Tuple[leftBufferSize];
         rightBuffer = new Tuple[rightBufferSize];
@@ -383,7 +383,7 @@ public class Join extends Operator {
         int tpSize1 = tp1.getTupleDetail().fieldNumber();
         int tpSize2 = tp2.getTupleDetail().fieldNumber();
 
-        Tuple tempTp = new Tuple(getTupleDesc());
+        Tuple tempTp = new Tuple(getTupleDetail());
         int i = 0;
         for (; i < tpSize1; i++){
             tempTp.setField(i, tp1.getField(i));

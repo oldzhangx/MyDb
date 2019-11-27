@@ -52,7 +52,7 @@ public class TupleIterator implements DbIterator {
         open();
     }
 
-    public TupleDetail getTupleDesc() {
+    public TupleDetail getTupleDetail() {
         return td;
     }
 

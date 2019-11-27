@@ -61,7 +61,7 @@ public class Query implements Serializable {
     }
 
     public TupleDetail getOutputTupleDesc() {
-        return this.op.getTupleDesc();
+        return this.op.getTupleDetail();
     }
 
     /** @return true if there are more tuples remaining. */
