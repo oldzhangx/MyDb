@@ -3,6 +3,7 @@ package mydb;
 import mydb.TupleDetail.Tuple;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 
@@ -119,14 +120,16 @@ public class BufferPool {
      * their markDirty bit, and updates cached versions of any pages that have 
      * been dirtied so that future requests see up-to-date pages. 
      *
-     * @param tid the transaction adding the tuple
-     * @param tableId the table to add the tuple to
-     * @param t the tuple to add
      */
-    public void insertTuple(TransactionId tid, int tableId, Tuple t)
+    public void insertTuple(TransactionId transactionId, int tableId, Tuple tuple)
         throws DbException, IOException, TransactionAbortedException {
-        // some code goes here
-        // not necessary for proj1
+
+        HeapFile table = (HeapFile) Database.getCatalog().getDbFile(tableId);
+        table.insertTuple(transactionId, tuple);
+        //ArrayList<Page> pageArrayList = table.insertTuple(transactionId, tuple);
+//        for (Page page : pageArrayList) {
+//            page.markDirty(true, tid);
+//        }
     }
 
     /**
@@ -139,13 +142,13 @@ public class BufferPool {
      * been dirtied, as it is not possible that a new page was created during the deletion
      * (note difference from addTuple).
      *
-     * @param tid the transaction adding the tuple.
-     * @param t the tuple to add
      */
-    public  void deleteTuple(TransactionId tid, Tuple t)
-        throws DbException, TransactionAbortedException {
-        // some code goes here
-        // not necessary for proj1
+    public  void deleteTuple(TransactionId transactionId, Tuple tuple)
+            throws DbException, TransactionAbortedException, IOException {
+        int tableId=tuple.getRecordId().getPageId().getTableId();
+        HeapFile table = (HeapFile) Database.getCatalog().getDbFile(tableId);
+        table.deleteTuple(transactionId, tuple);
+        //Page affectedPage = table.deleteTuple(tid, t);
     }
 
     /**

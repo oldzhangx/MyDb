@@ -145,6 +145,7 @@ public class HeapFile implements DbFile {
                     // heapPage is creates by hashcode and i in pageNo
                             getPage(transactionId, pageId, Permissions.READ_WRITE);
             page.deleteTuple(tuple);
+            page.markDirty(true,transactionId);
             return page;
         }else return null;
     }
