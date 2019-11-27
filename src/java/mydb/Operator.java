@@ -1,6 +1,8 @@
 package mydb;
 import mydb.TupleDetail.Tuple;
 import mydb.TupleDetail.TupleDetail;
+
+import java.io.IOException;
 import java.util.NoSuchElementException;
 
 //Last Change: 11/23
@@ -16,7 +18,7 @@ public abstract class Operator implements DbIterator {
 
     private static final long serialVersionUID = -8386431487731922691L;
 
-    public boolean hasNext() throws DbException, TransactionAbortedException{
+    public boolean hasNext() throws DbException, TransactionAbortedException, IOException {
         if (!this.open)
             throw new IllegalStateException("Operator not yet open");
 
@@ -26,7 +28,7 @@ public abstract class Operator implements DbIterator {
     }
 
     public Tuple next() throws DbException, TransactionAbortedException,
-            NoSuchElementException{
+            NoSuchElementException, IOException {
         if (next == null) {
             next = fetchNext();
             if (next == null)
@@ -47,7 +49,7 @@ public abstract class Operator implements DbIterator {
      *         finished.
      */
     protected abstract Tuple fetchNext() throws DbException,
-            TransactionAbortedException;
+            TransactionAbortedException, IOException;
 
     /**
      * Closes this iterator. If overridden by a subclass, they should call
@@ -63,7 +65,7 @@ public abstract class Operator implements DbIterator {
     private boolean open = false;
     private int estimatedCardinality = 0;
 
-    public void open() throws DbException, TransactionAbortedException{
+    public void open() throws DbException, TransactionAbortedException, IOException {
         this.open = true;
     }
 
