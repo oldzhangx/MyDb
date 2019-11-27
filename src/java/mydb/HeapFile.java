@@ -43,8 +43,6 @@ public class HeapFile implements DbFile {
     }
 
     /**
-     * Returns the File backing this HeapFile on disk.
-     * 
      * @return the File backing this HeapFile on disk.
      */
     public File getFile() {
@@ -81,18 +79,22 @@ public class HeapFile implements DbFile {
     }
 
     // see DbFile.java for javadocs
-    public Page readPage(PageId pid) throws IOException {
+    public Page readPage(PageId pid) throws IOException, DbException {
+        if(pid == null) throw new DbException("invalid page info");
         byte[] data = new byte[BufferPool.PAGE_SIZE];
         RandomAccessFile randomAccessFile = new RandomAccessFile(getFile(), "r");
         randomAccessFile.seek(pid.pageNumber() * BufferPool.PAGE_SIZE);
-        randomAccessFile.read(data, 0, data.length);
+        randomAccessFile.read(data, 0, BufferPool.PAGE_SIZE);
         return new HeapPage((HeapPageId) pid, data);
     }
 
     // see DbFile.java for javadocs
-    public void writePage(Page page) throws IOException {
-        // some code goes here
-        // not necessary for proj1
+    public void writePage(Page page) throws IOException, DbException {
+        if(page == null) throw new DbException("invalid page info");
+        RandomAccessFile randomAccessFile = new RandomAccessFile(file, "rw");
+        randomAccessFile.seek(page.getId().pageNumber() * BufferPool.PAGE_SIZE);
+        byte[] data = page.getPageData();
+        randomAccessFile.write(data);
     }
 
 
@@ -170,6 +172,12 @@ public class HeapFile implements DbFile {
             pageNum = 0;
             tuplesInPage = null;
         }
+    }
+
+    public static void main(String[] args) {
+        byte[] data = new byte[BufferPool.PAGE_SIZE];
+        System.out.println(data.length);
+        System.out.println(BufferPool.PAGE_SIZE);
     }
 
 

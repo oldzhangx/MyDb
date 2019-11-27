@@ -22,7 +22,7 @@ public interface DbFile extends Serializable {
      *
      * @throws IllegalArgumentException if the page does not exist in this file.
      */
-    public Page readPage(PageId id) throws IOException;
+    public Page readPage(PageId id) throws IOException, DbException;
 
     /**
      * Push the specified page to disk.
@@ -31,7 +31,7 @@ public interface DbFile extends Serializable {
      * @throws IOException if the write fails
      *
      */
-    public void writePage(Page p) throws IOException;
+    public void writePage(Page p) throws IOException, DbException;
 
     /**
      * Inserts the specified tuple to the file on behalf of transaction.
