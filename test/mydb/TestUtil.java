@@ -239,7 +239,7 @@ public class TestUtil {
             throw new RuntimeException("not implemented");
         }
 
-		public TupleDetail getTupleDesc() {
+		public TupleDetail getTupleDetail() {
 			return td;
 		}
     }

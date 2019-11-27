@@ -242,7 +242,7 @@ public class LogicalPlan {
         while (tableIt.hasNext()) {
             LogicalScanNode table = tableIt.next();
             try {
-                TupleDetail td = Database.getCatalog().getDbFile(table.t).getTupleDesc();
+                TupleDetail td = Database.getCatalog().getDbFile(table.t).getTupleDetail();
 //                int id = 
                   td.fieldNameToIndex(name);
                 if (tableName == null) {

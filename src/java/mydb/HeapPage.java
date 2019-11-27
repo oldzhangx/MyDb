@@ -290,9 +290,12 @@ public class HeapPage implements Page {
     /**
      * Abstraction to fill or clear a slot on this page.
      */
+    // TODO: site: 补位
     private void markSlotUsed(int i, boolean value) {
         int t = i/8;
         int d = i%8;
+        byte a = (byte) ((byte)1 << d);
+        header[t] = value? (byte)(header[t] | a): (byte) (header[t] & ~a);
     }
 
     /**

@@ -85,7 +85,7 @@ public class Catalog {
      */
     public TupleDetail getTupleDetail(int tableid) throws NoSuchElementException {
         DbFile result = tableIdFileMap.get(tableid);
-        if(result!=null) return result.getTupleDesc();
+        if(result!=null) return result.getTupleDetail();
         throw new NoSuchElementException();
     }
 

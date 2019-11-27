@@ -88,5 +88,5 @@ public interface DbFile extends Serializable {
      * Returns the TupleDesc of the table stored in this DbFile.
      * @return TupleDesc of this DbFile.
      */
-    public TupleDetail getTupleDesc();
+    public TupleDetail getTupleDetail();
 }

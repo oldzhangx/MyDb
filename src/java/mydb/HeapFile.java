@@ -62,7 +62,6 @@ public class HeapFile implements DbFile {
      */
     public int getId() {
         return file.getAbsoluteFile().hashCode();
-        //throw new UnsupportedOperationException("get hash table id fail");
     }
 
     /**
@@ -77,9 +76,8 @@ public class HeapFile implements DbFile {
      * 
      * @return TupleDesc of this DbFile.
      */
-    public TupleDetail getTupleDesc() {
+    public TupleDetail getTupleDetail() {
         return tupleDetail;
-        //throw new UnsupportedOperationException("implement this");
     }
 
     // see DbFile.java for javadocs
