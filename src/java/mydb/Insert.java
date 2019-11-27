@@ -20,7 +20,7 @@ public class Insert extends Operator {
     // The table in which to insert tuples.
     int tableId;
     // lines of insert tuples
-    int countInsert;
+    int insertCount;
 
     TupleDetail tupleDetail;
 
@@ -44,7 +44,7 @@ public class Insert extends Operator {
         this.transactionId=  transactionId;
         this.child  =child;
         this.tableId = tableId;
-        countInsert = 0;
+        insertCount = 0;
         tupleDetail = new TupleDetail(new Type[]{Type.INT_TYPE}, new String[]{null});
     }
 
@@ -59,7 +59,7 @@ public class Insert extends Operator {
         while (child.hasNext()) {
             Tuple next = child.next();
             Database.getBufferPool().insertTuple(transactionId, tableId, next);
-            countInsert++;
+            insertCount++;
         }
         action = false;
     }
@@ -90,7 +90,7 @@ public class Insert extends Operator {
         if (action) return null;
 
         Tuple insertedTuple = new Tuple(tupleDetail);
-        insertedTuple.setField(0,new IntField(countInsert));
+        insertedTuple.setField(0,new IntField(insertCount));
         action = true;
         return insertedTuple;
     }
