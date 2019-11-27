@@ -27,7 +27,7 @@ public class HeapFile implements DbFile {
 
     private TupleDetail tupleDetail;
     private File file;
-    private int pageNumber;
+    private int pageCount;
 
     /**
      * Constructs a heap file backed by the specified file.
@@ -39,7 +39,7 @@ public class HeapFile implements DbFile {
     public HeapFile(File f, TupleDetail detail) {
         file =  f;
         tupleDetail = detail;
-        pageNumber = (int) (file.length() / BufferPool.PAGE_SIZE);
+        pageCount = (int) (file.length() / BufferPool.PAGE_SIZE);
     }
 
     /**
@@ -65,8 +65,8 @@ public class HeapFile implements DbFile {
     /**
      * Returns the number of pages in this HeapFile.
      */
-    public int numPages() {
-        return pageNumber;
+    public int pageCount() {
+        return pageCount;
     }
 
     /**
@@ -99,11 +99,13 @@ public class HeapFile implements DbFile {
 
 
     // see DbFile.java for javadocs
-    public ArrayList<Page> insertTuple(TransactionId tid, Tuple t)
+    public ArrayList<Page> insertTuple(TransactionId transactionId, Tuple tuple)
             throws DbException, IOException, TransactionAbortedException {
-        // some code goes here
-        return null;
-        // not necessary for proj1
+        ArrayList<Page> pageArrayList = new ArrayList<>();
+
+
+        return pageArrayList;
+
     }
 
     // see DbFile.java for javadocs
@@ -122,7 +124,7 @@ public class HeapFile implements DbFile {
     public class HeapFileIterator implements DbFileIterator{
         private static final long serialVersionUID = 5179878128589131222L;
 
-        private int pageNum;
+        private int pageNo;
         private Iterator<Tuple> tuplesInPage;
         private TransactionId tid;
 
@@ -136,8 +138,8 @@ public class HeapFile implements DbFile {
 
         @Override
         public void open() throws DbException, TransactionAbortedException, IOException {
-            pageNum = 0;
-            HeapPageId pid = new HeapPageId(getId(), pageNum);
+            pageNo = 0;
+            HeapPageId pid = new HeapPageId(getId(), pageNo);
             tuplesInPage = getTuplesInPage(pid);
         }
 
@@ -146,10 +148,10 @@ public class HeapFile implements DbFile {
             if (tuplesInPage == null) return false;
             if (tuplesInPage.hasNext()) return true;
             //TODO : page and iter relation
-            if(pageNum + 1 >= numPages())
+            if(pageNo + 1 >= pageCount())
                 return false;
-            pageNum = pageNum+1;
-            HeapPageId pid = new HeapPageId(getId(), pageNum);
+            pageNo = pageNo +1;
+            HeapPageId pid = new HeapPageId(getId(), pageNo);
             tuplesInPage = getTuplesInPage(pid);
             return tuplesInPage.hasNext();
         }
@@ -168,7 +170,7 @@ public class HeapFile implements DbFile {
 
         @Override
         public void close() {
-            pageNum = 0;
+            pageNo = 0;
             tuplesInPage = null;
         }
     }
