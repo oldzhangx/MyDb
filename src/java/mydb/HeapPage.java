@@ -23,7 +23,7 @@ public class HeapPage implements Page {
     private TupleDetail tupleDetail;
     private byte[] header;
     private Tuple[] tuples;
-    private int numSlots;
+    private int tupleNumbersInPage;
 
     private byte[] oldData;
 
@@ -51,12 +51,12 @@ public class HeapPage implements Page {
         // get tuple detail : by get table info  in catalog
         this.tupleDetail = Database.getCatalog().getTupleDetail(heapPageId.getTableId());
         // define : tuple number = floor((BufferPool.PAGE_SIZE*8) / (tuple size * 8 + 1))
-        numSlots = (BufferPool.PAGE_SIZE * 8 )/ (tupleDetail.getSize() * 8 + 1);
+        tupleNumbersInPage = (BufferPool.PAGE_SIZE * 8 )/ (tupleDetail.getSize() * 8 + 1);
         // read data by bytes
         DataInputStream dataInputStream = new DataInputStream(new ByteArrayInputStream(data));
 
         // allocate and read the header slots of this page
-        int headerSize = (int) Math.ceil(((double) numSlots) / 8.0);
+        int headerSize = (int) Math.ceil(((double) tupleNumbersInPage) / 8.0);
 
         // put data into head
         header = new byte[headerSize];
@@ -65,8 +65,8 @@ public class HeapPage implements Page {
 
         try{
             // allocate and read the actual records of this page
-            tuples = new Tuple[numSlots];
-            for (int i=0; i<numSlots; i++)
+            tuples = new Tuple[tupleNumbersInPage];
+            for (int i = 0; i< tupleNumbersInPage; i++)
                 tuples[i] = readNextTuple(dataInputStream,i);
 
         }catch(NoSuchElementException | ParseException e){
@@ -233,11 +233,19 @@ public class HeapPage implements Page {
      *  that it is now stored on this page.
      * @throws DbException if the page is full (no empty slots) or tupledesc
      *         is mismatch.
-     * @param t The tuple to add.
      */
-    public void insertTuple(Tuple t) throws DbException {
-        // some code goes here
-        // not necessary for lab1
+    public void insertTuple(Tuple tuple) throws DbException {
+        if (tuple == null) throw new DbException("insert tuple is invalid");
+        if (!tuple.getTupleDetail().equals(tupleDetail)) throw new DbException("insert error: tupledetail not match");
+        for (int i = 0; i < tupleNumbersInPage; i++){
+            if (isSlotUsed(i)) continue;
+            tuples[i] = tuple;
+            markSlotUsed(i, true);
+            RecordId recordId = new RecordId(heapPageId,i);
+            tuple.setRecordId(recordId);
+            return;
+        }
+        throw new DbException("insert error: page cannot be inserted tuples");
     }
 
     /**
@@ -263,7 +271,7 @@ public class HeapPage implements Page {
      */
     public int getNumEmptySlots() {
         int result = 0;
-        for(int i = 0; i< numSlots; i++){
+        for(int i = 0; i< tupleNumbersInPage; i++){
             result = isSlotUsed(i)? result:result+1;
         }
         return result;
@@ -303,7 +311,7 @@ public class HeapPage implements Page {
 
         @Override
         public boolean hasNext() {
-            return numSlots> count && divide < numSlots - getNumEmptySlots();
+            return tupleNumbersInPage > count && divide < tupleNumbersInPage - getNumEmptySlots();
         }
 
         @Override
