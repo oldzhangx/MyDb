@@ -9,7 +9,8 @@ import mydb.TupleDetail.TupleDetail;
  */
 public class Delete extends Operator {
 
-    private static final long serialVersionUID = 1L;
+
+    private static final long serialVersionUID = -2713633299969413734L;
 
     /**
      * Constructor specifying the transaction that this delete belongs to as
