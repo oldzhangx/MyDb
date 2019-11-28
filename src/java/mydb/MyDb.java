@@ -5,7 +5,7 @@ import java.io.File;
 import java.io.IOException;
 
 public class MyDb {
-    public static void main (String args[])
+    public static void main (String[] args)
             throws DbException, TransactionAbortedException, IOException {
         // convert a file
         switch (args[0]) {
@@ -98,5 +98,6 @@ public class MyDb {
                 System.exit(1);
         }
     }
+
 
 }

@@ -741,4 +741,11 @@ class TupleArrayIterator implements DbIterator {
     public void close() {
     }
 
+    public static void main(String args[]) {
+        System.out.println("args[] = "+ args);
+        for(int i = 0;i< args.length;i++)
+            System.out.println("args["+ i + "] =" + args[i]);
+
+    }
+
 }
