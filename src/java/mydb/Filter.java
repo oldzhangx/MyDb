@@ -3,7 +3,7 @@ import mydb.TupleDetail.Tuple;
 import mydb.TupleDetail.TupleDetail;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.NoSuchElementException;
 
 /**
  * Filter is an operator that implements a relational select.

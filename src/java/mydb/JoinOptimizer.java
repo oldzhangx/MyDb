@@ -299,7 +299,7 @@ public class JoinOptimizer {
             t2card = table2Alias == null ? 0 : stats.get(table2Name)
                     .estimateTableCardinality(
                             filterSelectivities.get(j.t2Alias));
-            rightPkey = table2Alias == null ? false : isPkey(table2Alias,
+            rightPkey = table2Alias != null && isPkey(table2Alias,
                     j.f2PureName);
         } else {
             // news is not empty -- figure best way to join j to news
