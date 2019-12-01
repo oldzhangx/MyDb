@@ -419,14 +419,14 @@ public class Parser {
 
     }
 
+    // TODO : delete? tranction didn't show in the code
     public void handleTransactStatement(ZTransactStmt s)
             throws TransactionAbortedException, DbException, IOException,
             mydb.ParsingException, Zql.ParseException {
         switch (s.getStmtType()) {
             case "COMMIT":
                 if (curtrans == null)
-                    throw new ParsingException(
-                            "No transaction is currently running");
+                    throw new ParsingException("No transaction is currently running");
                 curtrans.commit();
                 curtrans = null;
                 inUserTrans = false;
@@ -435,8 +435,7 @@ public class Parser {
                 break;
             case "ROLLBACK":
                 if (curtrans == null)
-                    throw new ParsingException(
-                            "No transaction is currently running");
+                    throw new ParsingException( "No transaction is currently running");
                 curtrans.abort();
                 curtrans = null;
                 inUserTrans = false;
@@ -446,8 +445,8 @@ public class Parser {
                 break;
             case "SET TRANSACTION":
                 if (curtrans != null)
-                    throw new ParsingException(
-                            "Can't start new transactions until current transaction has been committed or rolledback.");
+                    throw new ParsingException("Can't start new transactions " +
+                            "until current transaction has been committed or rolledback.");
                 curtrans = new Transaction();
                 curtrans.start();
                 inUserTrans = true;
@@ -499,9 +498,10 @@ public class Parser {
 
             Query query = null;
             if (s instanceof ZTransactStmt)
+                //TODO : COMMIT / ROLLBACK
                 handleTransactStatement((ZTransactStmt) s);
             else {
-                if (!this.inUserTrans) {
+                if (!inUserTrans) {
                     curtrans = new Transaction();
                     curtrans.start();
                     System.out.println("Started a new transaction tid = "

@@ -1,6 +1,6 @@
 package mydb;
 
-import java.io.*;
+import java.io.IOException;
 
 /**
  * Transaction encapsulates information about the state of
