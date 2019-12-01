@@ -372,12 +372,12 @@ public class Parser {
 
                 i++;
             }
-            ArrayList<Tuple> tups = new ArrayList<Tuple>();
+            ArrayList<Tuple> tups = new ArrayList<>();
             tups.add(t);
             newTups = new TupleArrayIterator(tups);
 
         } else {
-            ZQuery zq = (ZQuery) s.getQuery();
+            ZQuery zq = s.getQuery();
             LogicalPlan lp = parseQueryLogicalPlan(tId, zq);
             newTups = lp.physicalPlan(tId, TableStats.getStatsMap(), explain);
         }
@@ -492,7 +492,8 @@ public class Parser {
     }
 
     public void processNextStatement(InputStream is) {
-        try {
+
+        try{
             ZqlParser p = new ZqlParser(is);
             ZStatement s = p.readStatement();
 
@@ -502,13 +503,14 @@ public class Parser {
                 handleTransactStatement((ZTransactStmt) s);
             else {
                 if (!inUserTrans) {
+                    // a transaction and manages transaction commit / abort.
                     curtrans = new Transaction();
                     curtrans.start();
                     System.out.println("Started a new transaction tid = "
                             + curtrans.getId().getId());
                 }
-                try {
-                    if (s instanceof ZInsert)
+                try{
+                    if(s instanceof ZInsert)
                         query = handleInsertStatement((ZInsert) s,
                                 curtrans.getId());
                     else if (s instanceof ZDelete)
@@ -517,9 +519,8 @@ public class Parser {
                     else if (s instanceof ZQuery)
                         query = handleQueryStatement((ZQuery) s,
                                 curtrans.getId());
-                    else {
-                        System.out
-                                .println("Can't parse "
+                    else{
+                        System.out.println("Can't parse "
                                         + s
                                         + "\n -- parser only handles SQL transactions, insert, delete, and select statements");
                     }
