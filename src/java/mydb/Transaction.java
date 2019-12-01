@@ -8,25 +8,21 @@ import java.io.IOException;
  */
 
 public class Transaction {
-    private final TransactionId tid;
+    private final TransactionId transactionId;
     volatile boolean started = false;
 
     public Transaction() {
-        tid = new TransactionId();
+        transactionId = new TransactionId();
     }
 
     /** Start the transaction running */
-    public void start() {
+    public void start() throws IOException {
         started = true;
-        try {
-            Database.getLogFile().logXactionBegin(tid);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        Database.getLogFile().logXactionBegin(transactionId);
     }
 
     public TransactionId getId() {
-        return tid;
+        return transactionId;
     }
 
     /** Finish the transaction */
@@ -41,29 +37,15 @@ public class Transaction {
 
     /** Handle the details of transaction commit / abort */
     public void transactionComplete(boolean abort) throws IOException {
-
-        if (started) {
-            //write commit / abort records
-            if (abort) {
-                Database.getLogFile().logAbort(tid); //does rollback too
-            } else {
-                //write all the dirty pages for this transaction out
-                Database.getBufferPool().flushPages(tid);
-                Database.getLogFile().logCommit(tid);
-            }
-
-            try {
-
-                Database.getBufferPool().transactionComplete(tid, !abort); // release locks
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            //setting this here means we could possibly write multiple abort records -- OK?
-            started = false;
+        if(!started)
+            return;
+        if(abort) Database.getLogFile().logAbort(transactionId); //does rollback too
+        else{
+            Database.getBufferPool().flushPages(transactionId);
+            Database.getLogFile().logCommit(transactionId);
         }
-
+        Database.getBufferPool().transactionComplete(transactionId, !abort); // release locks
+        started = false;
     }
 
 }
