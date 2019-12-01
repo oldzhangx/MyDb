@@ -2,11 +2,7 @@ package mydb;
 
 import java.io.IOException;
 
-/**
- * Transaction encapsulates information about the state of
- * a transaction and manages transaction commit / abort.
- */
-
+//a transaction and manages transaction commit / abort.
 public class Transaction {
     private final TransactionId transactionId;
     volatile boolean started = false;
