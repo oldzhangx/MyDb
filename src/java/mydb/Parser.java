@@ -422,36 +422,40 @@ public class Parser {
     public void handleTransactStatement(ZTransactStmt s)
             throws TransactionAbortedException, DbException, IOException,
             mydb.ParsingException, Zql.ParseException {
-        if (s.getStmtType().equals("COMMIT")) {
-            if (curtrans == null)
-                throw new mydb.ParsingException(
-                        "No transaction is currently running");
-            curtrans.commit();
-            curtrans = null;
-            inUserTrans = false;
-            System.out.println("Transaction " + curtrans.getId().getId()
-                    + " committed.");
-        } else if (s.getStmtType().equals("ROLLBACK")) {
-            if (curtrans == null)
-                throw new mydb.ParsingException(
-                        "No transaction is currently running");
-            curtrans.abort();
-            curtrans = null;
-            inUserTrans = false;
-            System.out.println("Transaction " + curtrans.getId().getId()
-                    + " aborted.");
+        switch (s.getStmtType()) {
+            case "COMMIT":
+                if (curtrans == null)
+                    throw new ParsingException(
+                            "No transaction is currently running");
+                curtrans.commit();
+                curtrans = null;
+                inUserTrans = false;
+                System.out.println("Transaction " + curtrans.getId().getId()
+                        + " committed.");
+                break;
+            case "ROLLBACK":
+                if (curtrans == null)
+                    throw new ParsingException(
+                            "No transaction is currently running");
+                curtrans.abort();
+                curtrans = null;
+                inUserTrans = false;
+                System.out.println("Transaction " + curtrans.getId().getId()
+                        + " aborted.");
 
-        } else if (s.getStmtType().equals("SET TRANSACTION")) {
-            if (curtrans != null)
-                throw new mydb.ParsingException(
-                        "Can't start new transactions until current transaction has been committed or rolledback.");
-            curtrans = new Transaction();
-            curtrans.start();
-            inUserTrans = true;
-            System.out.println("Started a new transaction tid = "
-                    + curtrans.getId().getId());
-        } else {
-            throw new mydb.ParsingException("Unsupported operation");
+                break;
+            case "SET TRANSACTION":
+                if (curtrans != null)
+                    throw new ParsingException(
+                            "Can't start new transactions until current transaction has been committed or rolledback.");
+                curtrans = new Transaction();
+                curtrans.start();
+                inUserTrans = true;
+                System.out.println("Started a new transaction tid = "
+                        + curtrans.getId().getId());
+                break;
+            default:
+                throw new ParsingException("Unsupported operation");
         }
     }
 
