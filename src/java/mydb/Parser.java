@@ -303,17 +303,8 @@ public class Parser {
                 m = c.getMethod(
                         "printQueryPlanTree", DbIterator.class, System.out.getClass());
                 m.invoke(c.newInstance(), physicalPlan,System.out);
-            } catch (ClassNotFoundException e) {
-            } catch (SecurityException e) {
-            } catch (NoSuchMethodException e) {
-                e.printStackTrace();
-            } catch (IllegalArgumentException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            } catch (InvocationTargetException e) {
-                e.printStackTrace();
-            } catch (InstantiationException e) {
+            } catch (ClassNotFoundException | SecurityException ignored) {
+            } catch (NoSuchMethodException | IllegalArgumentException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
                 e.printStackTrace();
             }
         }
@@ -573,7 +564,7 @@ public class Parser {
             "group by", "max(", "min(", "avg(", "count", "rollback", "commit",
             "insert", "delete", "values", "into" };
 
-    public static void main(String argv[]) throws IOException {
+    public static void main(String[] argv) throws IOException {
 
         if (argv.length < 1 || argv.length > 4) {
             System.out.println("Invalid number of arguments.\n" + usage);
@@ -583,6 +574,9 @@ public class Parser {
         Parser p = new Parser();
 
         p.start(argv);
+
+
+
     }
 
     static final String usage = "Usage: parser catalogFile [-explain] [-f queryFile]";
@@ -596,10 +590,14 @@ public class Parser {
     protected void start(String[] argv) throws IOException {
         // first add tables to database
         Database.getCatalog().loadSchema(argv[0]);
+        // TODO: class TableStats  delete?
         TableStats.computeStatistics();
 
         String queryFile = null;
 
+
+
+        // TODO: explain part delete
         if (argv.length > 1) {
             for (int i = 1; i < argv.length; i++) {
                 if (argv[i].equals("-explain")) {
@@ -620,11 +618,13 @@ public class Parser {
                 }
             }
         }
+
         if (!interactive) {
             try {
                 // curtrans = new Transaction();
                 // curtrans.start();
                 long startTime = System.currentTimeMillis();
+                assert queryFile != null;
                 processNextStatement(new FileInputStream(new File(queryFile)));
                 long time = System.currentTimeMillis() - startTime;
                 System.out.printf("----------------\n%.2f seconds\n\n",
@@ -654,10 +654,11 @@ public class Parser {
                 // statement spread across many lines
                 while (line.indexOf(';') >= 0) {
                     int split = line.indexOf(';');
-                    buffer.append(line.substring(0, split + 1));
+                    buffer.append(line, 0, split + 1);
+                    // find what the cmd is
                     String cmd = buffer.toString().trim();
                     cmd = cmd.substring(0, cmd.length() - 1).trim() + ";";
-                    byte[] statementBytes = cmd.getBytes("UTF-8");
+                    byte[] statementBytes = cmd.getBytes(StandardCharsets.UTF_8);
                     if (cmd.equalsIgnoreCase("quit;")
                             || cmd.equalsIgnoreCase("exit;")) {
                         shutdown();
@@ -666,8 +667,8 @@ public class Parser {
                     }
 
                     long startTime = System.currentTimeMillis();
-                    processNextStatement(new ByteArrayInputStream(
-                            statementBytes));
+                    // start sql process
+                    processNextStatement(new ByteArrayInputStream(statementBytes));
                     long time = System.currentTimeMillis() - startTime;
                     System.out.printf("----------------\n%.2f seconds\n\n",
                             ((double) time / 1000.0));
@@ -741,11 +742,11 @@ class TupleArrayIterator implements DbIterator {
     public void close() {
     }
 
-    public static void main(String args[]) {
-        System.out.println("args[] = "+ args);
-        for(int i = 0;i< args.length;i++)
-            System.out.println("args["+ i + "] =" + args[i]);
-
-    }
+//    public static void main(String args[]) {
+//        System.out.println("args[] = "+ args);
+//        for(int i = 0;i< args.length;i++)
+//            System.out.println("args["+ i + "] =" + args[i]);
+//
+//    }
 
 }

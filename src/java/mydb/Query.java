@@ -3,8 +3,9 @@ package mydb;
 import mydb.TupleDetail.Tuple;
 import mydb.TupleDetail.TupleDetail;
 
-import java.io.*;
-import java.util.*;
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.NoSuchElementException;
 
 /**
  * Query is a wrapper class to manage the execution of queries. It takes a query
@@ -17,8 +18,8 @@ import java.util.*;
 
 public class Query implements Serializable {
 
-    private static final long serialVersionUID = 1L;
 
+    private static final long serialVersionUID = 6016845657122104041L;
     transient private DbIterator op;
     transient private LogicalPlan logicalPlan;
     TransactionId tid;
@@ -53,8 +54,8 @@ public class Query implements Serializable {
         tid = t;
     }
 
-    public void start() throws IOException, DbException,
-            TransactionAbortedException {
+    public void start() throws  DbException,
+            TransactionAbortedException, IOException {
         op.open();
 
         started = true;

@@ -74,9 +74,7 @@ public class MyDb {
             case "parser":
                 // Strip the first argument and call the parser
                 String[] newargs = new String[args.length - 1];
-                for (int i = 1; i < args.length; ++i) {
-                    newargs[i - 1] = args[i];
-                }
+                System.arraycopy(args, 1, newargs, 0, args.length - 1);
 
                 try {
                     //dynamically load Parser -- if it doesn't exist, print error message
