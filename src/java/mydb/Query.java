@@ -99,9 +99,9 @@ public class Query implements Serializable {
     public void execute() throws IOException, DbException, TransactionAbortedException {
         TupleDetail td = this.getOutputTupleDesc();
 
-        String names = "";
+        StringBuilder names = new StringBuilder();
         for (int i = 0; i < td.fieldNumber(); i++) {
-            names += td.getFieldName(i) + "\t";
+            names.append(td.getFieldName(i)).append("\t");
         }
         System.out.println(names);
         for (int i = 0; i < names.length() + td.fieldNumber() * 4; i++) {
