@@ -274,12 +274,12 @@ public class Parser {
     private Transaction curtrans = null;
     private boolean inUserTrans = false;
 
-    public Query handleQueryStatement(ZQuery s, TransactionId tId)
+    public Query handleQueryStatement(ZQuery zQuery, TransactionId tId)
             throws TransactionAbortedException, DbException, IOException,
             mydb.ParsingException, Zql.ParseException {
         Query query = new Query(tId);
 
-        LogicalPlan lp = parseQueryLogicalPlan(tId, s);
+        LogicalPlan lp = parseQueryLogicalPlan(tId, zQuery);
         DbIterator physicalPlan = lp.physicalPlan(tId,
                 TableStats.getStatsMap(), explain);
         query.setPhysicalPlan(physicalPlan);
@@ -312,12 +312,12 @@ public class Parser {
         return query;
     }
 
-    public Query handleInsertStatement(ZInsert s, TransactionId tId)
+    public Query handleInsertStatement(ZInsert zInsert, TransactionId tId)
             throws TransactionAbortedException, DbException, IOException,
             mydb.ParsingException, Zql.ParseException {
         int tableId;
         try {
-            tableId = Database.getCatalog().getTableId(s.getTable()); // will
+            tableId = Database.getCatalog().getTableId(zInsert.getTable()); // will
                                                                       // fall
             // through if
             // table
@@ -325,7 +325,7 @@ public class Parser {
             // exist
         } catch (NoSuchElementException e) {
             throw new mydb.ParsingException("Unknown table : "
-                    + s.getTable());
+                    + zInsert.getTable());
         }
 
         TupleDetail td = Database.getCatalog().getTupleDetail(tableId);
@@ -334,13 +334,13 @@ public class Parser {
         int i = 0;
         DbIterator newTups;
 
-        if (s.getValues() != null) {
+        if (zInsert.getValues() != null) {
             @SuppressWarnings("unchecked")
-            Vector<ZExp> values = (Vector<ZExp>) s.getValues();
+            Vector<ZExp> values = (Vector<ZExp>) zInsert.getValues();
             if (td.fieldNumber() != values.size()) {
                 throw new mydb.ParsingException(
                         "INSERT statement does not contain same number of fields as table "
-                                + s.getTable());
+                                + zInsert.getTable());
             }
             for (ZExp e : values) {
 
@@ -377,7 +377,7 @@ public class Parser {
             newTups = new TupleArrayIterator(tups);
 
         } else {
-            ZQuery zq = s.getQuery();
+            ZQuery zq = zInsert.getQuery();
             LogicalPlan lp = parseQueryLogicalPlan(tId, zq);
             newTups = lp.physicalPlan(tId, TableStats.getStatsMap(), explain);
         }
@@ -386,29 +386,29 @@ public class Parser {
         return insertQ;
     }
 
-    public Query handleDeleteStatement(ZDelete s, TransactionId tid)
+    public Query handleDeleteStatement(ZDelete zDelete, TransactionId tid)
             throws TransactionAbortedException, DbException, IOException,
             mydb.ParsingException, Zql.ParseException {
         int id;
         try {
-            id = Database.getCatalog().getTableId(s.getTable()); // will fall
+            id = Database.getCatalog().getTableId(zDelete.getTable()); // will fall
                                                                  // through if
                                                                  // table
                                                                  // doesn't
                                                                  // exist
         } catch (NoSuchElementException e) {
             throw new mydb.ParsingException("Unknown table : "
-                    + s.getTable());
+                    + zDelete.getTable());
         }
-        String name = s.getTable();
+        String name = zDelete.getTable();
         Query sdbq = new Query(tid);
 
         LogicalPlan lp = new LogicalPlan();
-        lp.setQuery(s.toString());
+        lp.setQuery(zDelete.toString());
 
         lp.addScan(id, name);
-        if (s.getWhere() != null)
-            processExpression(tid, (ZExpression) s.getWhere(), lp);
+        if (zDelete.getWhere() != null)
+            processExpression(tid, (ZExpression) zDelete.getWhere(), lp);
         lp.addProjectField("null.*", null);
 
         DbIterator op = new Delete(tid, lp.physicalPlan(tid,
@@ -653,7 +653,7 @@ public class Parser {
             StringBuilder buffer = new StringBuilder();
             String line;
             boolean quit = false;
-            while (!quit && (line = reader.readLine("SimpleDB> ")) != null) {
+            while (!quit && (line = reader.readLine("DB-> ")) != null) {
                 // Split statements at ';': handles multiple statements on one
                 // line, or one
                 // statement spread across many lines
