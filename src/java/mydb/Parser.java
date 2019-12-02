@@ -579,8 +579,6 @@ public class Parser {
 
         p.start(argv);
 
-
-
     }
 
     static final String usage = "Usage: parser catalogFile [-explain] [-f queryFile]";
