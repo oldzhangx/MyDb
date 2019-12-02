@@ -557,8 +557,7 @@ public class Parser {
         } catch (TransactionAbortedException | IOException | DbException e) {
             e.printStackTrace();
         } catch (mydb.ParsingException e) {
-            System.out
-                    .println("Invalid SQL expression: \n \t" + e.getMessage());
+            System.out.println("Invalid SQL expression: \n \t" + e.getMessage());
         } catch (ParseException | TokenMgrError e) {
             System.out.println("Invalid SQL expression: \n \t " + e);
         }
