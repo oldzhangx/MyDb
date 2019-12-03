@@ -4,6 +4,7 @@ import mydb.Database.Database;
 import mydb.Exception.ParserException;
 import mydb.Operation.CostCard;
 import mydb.Operation.Join.Comparison;
+import mydb.Operation.Join.Join;
 
 import java.util.*;
 

@@ -13,22 +13,12 @@ public interface Aggregator extends Serializable {
     enum Opertion implements Serializable {
         MIN, MAX, SUM, AVG, COUNT;
 
-        /**
-         * Interface to access operations by a string containing an integer
-         * index for command-line convenience.
-         *
-         * @param s a string containing a valid integer Op index
-         */
+        // a string containing a valid integer Op index
         public static Opertion getOp(String s) {
             return getOp(Integer.parseInt(s));
         }
 
-        /**
-         * Interface to access operations by integer value for command-line
-         * convenience.
-         *
-         * @param i a valid integer Op index
-         */
+        // i a valid integer Op index
         public static Opertion getOp(int i) {
             return values()[i];
         }
