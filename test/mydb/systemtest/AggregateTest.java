@@ -10,6 +10,8 @@ import mydb.*;
 import mydb.Database.Database;
 import mydb.Exception.DBException;
 import mydb.Exception.TransactionAbortedException;
+import mydb.Operation.Aggregate;
+import mydb.Operation.Aggregator;
 import org.junit.Test;
 
 public class AggregateTest extends MyDbTestBase {

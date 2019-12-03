@@ -1,5 +1,6 @@
-package mydb;
+package mydb.Operation;
 
+import mydb.DbIterator;
 import mydb.TupleDetail.Tuple;
 import java.io.Serializable;
 

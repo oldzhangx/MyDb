@@ -1,9 +1,12 @@
-package mydb;
+package mydb.Operation;
 
+import mydb.*;
 import mydb.Exception.DBException;
 import mydb.Exception.TransactionAbortedException;
+import mydb.Operation.Aggregator;
 import mydb.TupleDetail.Tuple;
 import mydb.TupleDetail.TupleDetail;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.NoSuchElementException;

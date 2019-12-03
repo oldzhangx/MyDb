@@ -1,5 +1,6 @@
 package mydb;
 
+import mydb.Operation.Join.Comparison;
 import mydb.systemtest.MyDbTestBase;
 import org.junit.Test;
 

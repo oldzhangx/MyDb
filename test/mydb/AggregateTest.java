@@ -5,6 +5,8 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import junit.framework.JUnit4TestAdapter;
 
+import mydb.Operation.Aggregate;
+import mydb.Operation.Aggregator;
 import mydb.TupleDetail.TupleDetail;
 import mydb.systemtest.MyDbTestBase;
 import org.junit.Before;

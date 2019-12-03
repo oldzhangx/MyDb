@@ -2,6 +2,7 @@ package mydb;
 
 import java.util.*;
 
+import mydb.Operation.Aggregator;
 import mydb.systemtest.MyDbTestBase;
 import org.junit.Before;
 import org.junit.Test;

@@ -1,4 +1,5 @@
-package mydb;
+package mydb.Operation.Join;
+import mydb.Field;
 import mydb.TupleDetail.Tuple;
 import java.io.Serializable;
 //Last Change: 11/23

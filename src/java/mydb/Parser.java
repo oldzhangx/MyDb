@@ -14,6 +14,7 @@ import mydb.Database.Database;
 import mydb.Exception.DBException;
 import mydb.Exception.ParserException;
 import mydb.Exception.TransactionAbortedException;
+import mydb.Operation.Join.Comparison;
 import mydb.TupleDetail.Tuple;
 import mydb.TupleDetail.TupleDetail;
 

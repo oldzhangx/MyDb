@@ -1,6 +1,7 @@
 package mydb;
 import mydb.Exception.DBException;
 import mydb.Exception.TransactionAbortedException;
+import mydb.Operation.Join.Comparison;
 import mydb.TupleDetail.Tuple;
 import mydb.TupleDetail.TupleDetail;
 import java.io.IOException;

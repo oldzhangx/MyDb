@@ -1,6 +1,7 @@
 package mydb;
 
 import mydb.Database.Database;
+import mydb.Operation.Join.Comparison;
 
 import java.util.HashMap;
 import java.util.Iterator;

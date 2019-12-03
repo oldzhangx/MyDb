@@ -1,5 +1,6 @@
 package mydb;
 
+import mydb.Operation.Aggregator;
 import mydb.TupleDetail.Tuple;
 import mydb.TupleDetail.TupleDetail;
 import mydb.TupleDetail.TupleIterator;

@@ -1,4 +1,5 @@
 package mydb;
+import mydb.Operation.Join.Comparison;
 import mydb.TupleDetail.Tuple;
 import java.io.Serializable;
 

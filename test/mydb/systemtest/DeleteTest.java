@@ -3,6 +3,8 @@ package mydb.systemtest;
 import mydb.*;
 import mydb.Exception.DBException;
 import mydb.Exception.TransactionAbortedException;
+import mydb.Operation.Join.Comparison;
+import mydb.Operation.Join.Filter;
 import mydb.TupleDetail.Tuple;
 
 import static org.junit.Assert.*;

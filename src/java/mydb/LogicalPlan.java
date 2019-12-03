@@ -2,6 +2,10 @@ package mydb;
 import mydb.Database.Catalog;
 import mydb.Database.Database;
 import mydb.Exception.ParserException;
+import mydb.Operation.Aggregate;
+import mydb.Operation.Aggregator;
+import mydb.Operation.Join.Comparison;
+import mydb.Operation.Join.Filter;
 import mydb.TupleDetail.Tuple;
 import mydb.TupleDetail.TupleDetail;
 

@@ -5,6 +5,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import junit.framework.JUnit4TestAdapter;
 
+import mydb.Operation.Join.Comparison;
 import mydb.TupleDetail.Tuple;
 import mydb.TupleDetail.TupleDetail;
 import mydb.systemtest.MyDbTestBase;

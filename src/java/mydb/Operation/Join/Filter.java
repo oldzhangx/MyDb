@@ -1,6 +1,9 @@
-package mydb;
+package mydb.Operation.Join;
+import mydb.DbIterator;
 import mydb.Exception.DBException;
 import mydb.Exception.TransactionAbortedException;
+import mydb.Operation.Join.Comparison;
+import mydb.Operator;
 import mydb.TupleDetail.Tuple;
 import mydb.TupleDetail.TupleDetail;
 import java.io.IOException;

@@ -6,6 +6,7 @@ import java.util.NoSuchElementException;
 
 import junit.framework.JUnit4TestAdapter;
 
+import mydb.Operation.Aggregator;
 import mydb.systemtest.MyDbTestBase;
 import org.junit.Before;
 import org.junit.Test;

@@ -1,5 +1,7 @@
 package mydb;
 
+import mydb.Operation.Join.Comparison;
+
 /** A LogicalSubplanJoinNode represens the state needed of a join of a
  * table to a subplan in a LogicalQueryPlan -- inherits state from
  * {@link LogicalJoinNode}; t2 and f2 should always be null

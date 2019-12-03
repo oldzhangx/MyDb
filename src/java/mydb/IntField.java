@@ -1,5 +1,7 @@
 package mydb;
 
+import mydb.Operation.Join.Comparison;
+
 import java.io.DataOutputStream;
 import java.io.IOException;
 

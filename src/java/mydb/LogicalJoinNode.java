@@ -1,5 +1,7 @@
 package mydb;
 
+import mydb.Operation.Join.Comparison;
+
 /** A LogicalJoinNode represens the state needed of a join of two
  * tables in a LogicalQueryPlan */
 public class LogicalJoinNode {
