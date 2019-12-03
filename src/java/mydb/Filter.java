@@ -11,17 +11,11 @@ public class Filter extends Operator {
 
     private static final long serialVersionUID = 1644152417983932905L;
 
+    // The compare to filter tuples with
     private Comparison m_pred;
+    // The child operator
     private DbIterator m_it;
-    /**
-     * Constructor accepts a predicate to apply and a child operator to read
-     * tuples to filter from.
-     *
-     * @param p
-     *            The predicate to filter tuples with
-     * @param child
-     *            The child operator
-     */
+
     public Filter(Comparison p, DbIterator child) {
         m_pred = p;
         m_it = child;
@@ -50,15 +44,8 @@ public class Filter extends Operator {
         m_it.rewind();
     }
 
-    /**
-     * AbstractDbIterator.readNext implementation. Iterates over tuples from the
-     * child operator, applying the predicate to them and returning those that
-     * pass the predicate (i.e. for which the Predicate.filter() returns true.)
-     *
-     * @return The next tuple that passes the filter, or null if there are no
-     *         more tuples
-     * @see Comparison#filter
-     */
+
+    // find the next tuple that pass the filter
     protected Tuple fetchNext() throws NoSuchElementException,
             TransactionAbortedException, DBException, IOException {
         while (m_it.hasNext())
