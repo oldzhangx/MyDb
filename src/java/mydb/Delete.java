@@ -12,7 +12,6 @@ import java.io.IOException;
  */
 public class Delete extends Operator {
 
-
     private static final long serialVersionUID = -2713633299969413734L;
 
     TransactionId transactionId;
@@ -22,7 +21,6 @@ public class Delete extends Operator {
     int deleteCount;
 
     boolean action;
-
 
 
     /**
@@ -77,7 +75,6 @@ public class Delete extends Operator {
     // TODO: why need action
     protected Tuple fetchNext() throws TransactionAbortedException, DbException {
         if (action) return null;
-
 
         Tuple deleted_num=new Tuple(tupleDetail);
         deleted_num.setField(0,new IntField(deleteCount));
