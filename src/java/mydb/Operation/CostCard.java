@@ -1,4 +1,6 @@
-package mydb;
+package mydb.Operation;
+import mydb.LogicalJoinNode;
+
 import java.util.Vector;
 
 // specifying the cost and cardinality of the optimal plan represented by plan
