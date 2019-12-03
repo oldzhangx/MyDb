@@ -150,12 +150,12 @@ public class Utility {
     }
 
     public static String listToString(ArrayList<Integer> list) {
-        String out = "";
+        StringBuilder out = new StringBuilder();
         for (Integer i : list) {
-            if (out.length() > 0) out += "\t";
-            out += i;
+            if (out.length() > 0) out.append("\t");
+            out.append(i);
         }
-        return out;
+        return out.toString();
     }
 }
 

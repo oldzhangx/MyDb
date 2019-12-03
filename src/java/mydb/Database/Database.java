@@ -1,14 +1,12 @@
 package mydb.Database;
 
 import mydb.LogFile;
-
 import java.io.File;
 import java.io.IOException;
 
 // db main class
 // implement the database instance, catalog, bufferpool
 // skeleton inspired from simple db file
-
 
 //662266874
 public class Database {
@@ -47,7 +45,7 @@ public class Database {
         } catch (IOException e) {
             e.printStackTrace();
             // inspired by simple db
-            // make the system safe quit from crach
+            // make the system safe quit from crash
             _logfile = null;
             System.exit(1);
         }
