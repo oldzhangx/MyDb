@@ -146,19 +146,19 @@ public class Parser {
             try {
 
                 int id = Database.getCatalog().getTableId(fromIt.getTable()); // will
-                                                                              // fall
-                                                                              // through
-                                                                              // if
-                                                                              // table
-                                                                              // doesn't
-                                                                              // exist
+                // fall
+                // through
+                // if
+                // table
+                // doesn't
+                // exist
                 String name;
-
+                //R: name is either Students or s
                 if (fromIt.getAlias() != null)
                     name = fromIt.getAlias();
                 else
                     name = fromIt.getTable();
-
+                //R: add a scan to the logicalPlan for the table
                 lp.addScan(id, name);
 
                 // XXX handle subquery?
@@ -172,7 +172,7 @@ public class Parser {
         // now parse the where clause, creating Filter and Join nodes as needed
         ZExp w = q.getWhere();
         if (w != null) {
-
+            //R: no nested Query
             if (!(w instanceof ZExpression)) {
                 throw new mydb.ParsingException(
                         "Nested queries are currently unsupported.");
@@ -183,11 +183,14 @@ public class Parser {
         }
 
         // now look for group by fields
+
+        //R: ZQuery.getGroupBy() gets the GROUP BY...HAVING part of the expression, which is different from ZGroupBy.getGroupBy(), which gets only the GROUP BY part of the group by expression
         ZGroupBy gby = q.getGroupBy();
         String groupByField = null;
         if (gby != null) {
             @SuppressWarnings("unchecked")
             Vector<ZExp> gbs = gby.getGroupBy();
+            //R: only can have 1 GROUP BY
             if (gbs.size() > 1) {
                 throw new mydb.ParsingException(
                         "At most one grouping field expression supported.");
@@ -199,6 +202,7 @@ public class Parser {
                             "Complex grouping expressions (" + gbe
                                     + ") not supported.");
                 }
+                //R: get GROUP BY field
                 groupByField = ((ZConstant) gbe).getValue();
                 System.out.println("GROUP BY FIELD : " + groupByField);
             }
@@ -224,21 +228,24 @@ public class Parser {
                     throw new mydb.ParsingException(
                             "Aggregates over multiple fields not supported.");
                 }
+                //R: gets the aggregate's function and field, e.g. COUNT(sid)
                 aggField = ((ZConstant) ((ZExpression) si.getExpression())
                         .getOperand(0)).getValue();
                 aggFun = si.getAggregate();
                 System.out.println("Aggregate field is " + aggField
                         + ", agg fun is : " + aggFun);
+                //R: add a projection of a field and a aggregate to the logical plan
                 lp.addProjectField(aggField, aggFun);
             } else {
                 if (groupByField != null
                         && !(groupByField.equals(si.getTable() + "."
-                                + si.getColumn()) || groupByField.equals(si
-                                .getColumn()))) {
+                        + si.getColumn()) || groupByField.equals(si
+                        .getColumn()))) {
                     throw new mydb.ParsingException("Non-aggregate field "
                             + si.getColumn()
                             + " does not appear in GROUP BY list.");
                 }
+                //R: add a simple projection of a filed to the lp
                 lp.addProjectField(si.getTable() + "." + si.getColumn(), null);
             }
         }
@@ -248,6 +255,7 @@ public class Parser {
         }
 
         if (aggFun != null) {
+            //R:Add an aggregate over the field with the specified grouping to the query.
             lp.addAggregate(aggFun, aggField, groupByField);
         }
         // sort the data
@@ -265,6 +273,7 @@ public class Parser {
                         "Complex ORDER BY's are not supported");
             }
             ZConstant f = (ZConstant) oby.getExpression();
+            //R: add orderBy to the logical plan
 
             lp.addOrderBy(f.getValue(), oby.getAscOrder());
 
@@ -278,6 +287,7 @@ public class Parser {
     public Query handleQueryStatement(ZQuery zQuery, TransactionId tId)
             throws TransactionAbortedException, DbException, IOException,
             mydb.ParsingException, Zql.ParseException {
+        // and run it
         Query query = new Query(tId);
 
         LogicalPlan lp = parseQueryLogicalPlan(tId, zQuery);
@@ -579,7 +589,6 @@ public class Parser {
         Parser p = new Parser();
 
         p.start(argv);
-
     }
 
     static final String usage = "Usage: parser catalogFile [-explain] [-f queryFile]";
@@ -621,7 +630,6 @@ public class Parser {
                 }
             }
         }
-
         if (!interactive) {
             try {
                 // curtrans = new Transaction();
