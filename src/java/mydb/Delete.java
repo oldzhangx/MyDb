@@ -5,19 +5,19 @@ import mydb.Exception.DBException;
 import mydb.Exception.TransactionAbortedException;
 import mydb.TupleDetail.Tuple;
 import mydb.TupleDetail.TupleDetail;
-
 import java.io.IOException;
 
-/**
- * The delete operator. Delete reads tuples from its child operator and removes
- * them from the table they belong to.
- */
+// Delete reads tuples from its child operator and removes them from the table they belong to.
 public class Delete extends Operator {
 
     private static final long serialVersionUID = -2713633299969413734L;
 
+    // The transaction this delete runs in
     TransactionId transactionId;
+
+    // The child operator from which to read tuples for deletion
     DbIterator child;
+
     TupleDetail tupleDetail;
 
     int deleteCount;
@@ -25,15 +25,6 @@ public class Delete extends Operator {
     boolean action;
 
 
-    /**
-     * Constructor specifying the transaction that this delete belongs to as
-     * well as the child to read from.
-     * 
-     * @param transactionId
-     *            The transaction this delete runs in
-     * @param child
-     *            The child operator from which to read tuples for deletion
-     */
     public Delete(TransactionId transactionId, DbIterator child) {
         this.transactionId = transactionId;
         this.child = child;
