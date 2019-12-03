@@ -6,6 +6,7 @@ import mydb.Exception.TransactionAbortedException;
 import mydb.TupleDetail.Tuple;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Iterator;
 
 
 // manages the reading and writing of pages into memory from disk
@@ -17,12 +18,18 @@ public class BufferPool {
     //Default number of pages passed to the constructor
     public static final int DEFAULT_PAGES = 100;
 
-    private HashMap<PageId, Page> pages;
+//    private HashMap<PageId, Page> pages;
 
+    //当前的缓存页
+    private LRUCache lruCache;
+
+    public int PAGES_NUM;
 
     // create bufferPool
     public BufferPool(int numPages) {
-        pages = new HashMap<>(numPages);
+//        pages = new HashMap<>(numPages);
+        PAGES_NUM = numPages;
+        lruCache = new LRUCache(PAGES_NUM);
     }
 
     /**
@@ -42,11 +49,11 @@ public class BufferPool {
      */
     public  Page getPage(TransactionId tid, PageId pid, Permissions perm)
             throws TransactionAbortedException, DBException, IOException {
-        if (pages != null && pages.containsKey(pid))
-            return pages.get(pid);
+        if (lruCache != null && lruCache.get(pid)!=null)
+            return lruCache.get(pid);
         DbFile dbFile = Database.getCatalog().getDbFile(pid.getTableId());
         HeapPage newPage = (HeapPage) dbFile.readPage(pid);
-        pages.put(pid, newPage);
+        lruCache.put(pid, newPage);
 
 //        if (pages.size() > NUM_PAGES) {
 //            // TODO: implement this
@@ -145,8 +152,7 @@ public class BufferPool {
      *     break simpledb if running in NO STEAL mode.
      */
     public synchronized void flushAllPages() throws IOException {
-        // some code goes here
-        // not necessary for proj1
+
 
     }
 

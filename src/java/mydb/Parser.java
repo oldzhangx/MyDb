@@ -702,9 +702,7 @@ public class Parser {
 }
 
 class TupleArrayIterator implements DbIterator {
-    /**
-	 * 
-	 */
+
     private static final long serialVersionUID = 1L;
     ArrayList<Tuple> tups;
     Iterator<Tuple> it = null;

@@ -1,6 +1,6 @@
 package mydb;
 
-import java.util.*;
+import java.util.HashMap;
 
 public class LRUCache {
     private HashMap<PageId, Page> map;
@@ -8,7 +8,7 @@ public class LRUCache {
     private final int MAX_CAPACITY;
 
     public LRUCache(int capacity) {
-        this.map = new HashMap<PageId, Page>();
+        this.map = new HashMap<>();
         this.lruList = new LRUList(capacity);
         this.MAX_CAPACITY = capacity;
     }
