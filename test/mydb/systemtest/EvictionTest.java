@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 import mydb.*;
+import mydb.Database.Database;
 import mydb.TupleDetail.Tuple;
 import mydb.TupleDetail.TupleDetail;
 import org.junit.Test;

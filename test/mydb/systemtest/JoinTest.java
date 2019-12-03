@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import mydb.*;
-import mydb.systemtest.MyDbTestBase;
+import mydb.Database.Database;
 import org.junit.Test;
 
 

@@ -10,6 +10,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
+import mydb.Database.Database;
 import mydb.TupleDetail.Tuple;
 import mydb.TupleDetail.TupleDetail;
 

@@ -1,5 +1,6 @@
 package mydb;
 
+import mydb.Database.Database;
 import mydb.TestUtil.SkeletonFile;
 import mydb.TupleDetail.Tuple;
 import mydb.systemtest.MyDbTestBase;

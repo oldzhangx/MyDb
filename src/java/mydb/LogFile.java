@@ -31,6 +31,8 @@ must not be declared synchronized and must begin with a block like:
 </pre>
 */
 
+import mydb.Database.Database;
+
 import java.io.EOFException;
 import java.io.File;
 import java.io.IOException;

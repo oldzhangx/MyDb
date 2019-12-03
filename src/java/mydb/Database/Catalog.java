@@ -1,6 +1,9 @@
-package mydb;
+package mydb.Database;
 
+import mydb.DbFile;
+import mydb.HeapFile;
 import mydb.TupleDetail.TupleDetail;
+import mydb.Type;
 
 import java.io.*;
 import java.util.*;

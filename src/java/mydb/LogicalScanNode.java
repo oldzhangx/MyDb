@@ -1,5 +1,7 @@
 package mydb;
 
+import mydb.Database.Catalog;
+
 /** A LogicalScanNode represents table in the FROM list in a
  * LogicalQueryPlan */
 public class LogicalScanNode {

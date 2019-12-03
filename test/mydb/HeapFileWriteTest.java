@@ -1,5 +1,6 @@
 package mydb;
 
+import mydb.Database.Database;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

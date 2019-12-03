@@ -9,6 +9,7 @@ import java.util.LinkedList;
 
 import junit.framework.JUnit4TestAdapter;
 
+import mydb.Database.Database;
 import mydb.TupleDetail.Tuple;
 import mydb.systemtest.MyDbTestBase;
 import mydb.systemtest.SystemTestUtil;

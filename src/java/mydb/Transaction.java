@@ -1,5 +1,7 @@
 package mydb;
 
+import mydb.Database.Database;
+
 import java.io.IOException;
 
 //a transaction and manages transaction commit / abort.

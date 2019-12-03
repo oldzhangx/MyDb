@@ -7,6 +7,7 @@ import java.util.Map;
 
 import mydb.*;
 
+import mydb.Database.Database;
 import org.junit.Test;
 
 public class AggregateTest extends MyDbTestBase {

@@ -1,5 +1,7 @@
 package mydb;
 
+import mydb.Database.Database;
+
 import java.util.*;
 
 import javax.swing.*;

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import mydb.*;
+import mydb.Database.Database;
 import mydb.TupleDetail.Tuple;
 
 

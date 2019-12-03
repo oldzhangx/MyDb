@@ -1,7 +1,7 @@
-package mydb;
+package mydb.Database;
 
+import mydb.*;
 import mydb.TupleDetail.Tuple;
-
 import java.io.IOException;
 import java.util.HashMap;
 

@@ -8,7 +8,7 @@ import java.util.Map;
 import static org.junit.Assert.*;
 
 import mydb.*;
-import mydb.systemtest.MyDbTestBase;
+import mydb.Database.Database;
 import org.junit.Test;
 
 
