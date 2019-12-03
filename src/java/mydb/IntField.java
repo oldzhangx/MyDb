@@ -51,7 +51,6 @@ public class IntField implements Field {
         IntField iVal = (IntField) val;
 
         switch (op) {
-
         case EQUALS:
         case LIKE:
             return value == iVal.value;
