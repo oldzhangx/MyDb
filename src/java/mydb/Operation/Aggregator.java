@@ -39,13 +39,7 @@ public interface Aggregator extends Serializable {
         }
     }
 
-    /**
-     * Merge a new tuple into the aggregate for a distinct group value;
-     * creates a new group aggregate result if the group value has not yet
-     * been encountered.
-     *
-     * @param tup the Tuple containing an aggregate field and a group-by field
-     */
+    // Merge a new tuple into the aggregate for a distinct group value
     public void mergeTupleIntoGroup(Tuple tup);
 
     public DbIterator iterator();
