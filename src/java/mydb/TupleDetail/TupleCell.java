@@ -1,7 +1,6 @@
 package mydb.TupleDetail;
 
 import mydb.Type;
-
 import java.io.Serializable;
 import java.util.Objects;
 

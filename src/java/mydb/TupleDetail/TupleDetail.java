@@ -1,7 +1,6 @@
 package mydb.TupleDetail;
 
 import mydb.Type;
-
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -10,9 +9,6 @@ import java.util.NoSuchElementException;
 public class TupleDetail implements Serializable {
 
     private static final long serialVersionUID = 7041402579811379073L;
-
-    //length of tuplecells
-//    private Integer fieldNumber;
 
     private TupleCell[] tupleCells;
 
@@ -116,11 +112,9 @@ public class TupleDetail implements Serializable {
             return true;
     }
 
-    public int hashCode() {
-        // If you want to use TupleDesc as keys for HashMap, implement this so
-        // that equal objects have equals hashCode() results
-        throw new UnsupportedOperationException("unimplemented");
-    }
+//    public int hashCode() {
+//        throw new UnsupportedOperationException("unimplemented");
+//    }
 
     public String toString() {
         TupleCell[] tupleCells = this.tupleCells;

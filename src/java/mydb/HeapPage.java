@@ -1,5 +1,6 @@
 package mydb;
 
+import mydb.Database.BufferPool;
 import mydb.Database.Catalog;
 import mydb.Database.Database;
 import mydb.TupleDetail.Tuple;

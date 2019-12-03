@@ -2,16 +2,11 @@ package mydb.TupleDetail;
 
 import mydb.Field;
 import mydb.RecordId;
-
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-/**
- * Tuple maintains information about the contents of a tuple. Tuples have a
- * specified schema specified by a TupleDesc object and contain Field objects
- * with the data for each field.
- */
+// tuple includes one tuple info, including tuple detail and tuple fields
 public class Tuple implements Serializable {
 
     private static final long serialVersionUID = 5220765131088728433L;
