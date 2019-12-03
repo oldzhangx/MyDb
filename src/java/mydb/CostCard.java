@@ -1,9 +1,7 @@
 package mydb;
 import java.util.Vector;
 
-/** Class returned by {@link JoinOptimizer#computeCostAndCardOfSubplan} specifying the
-    cost and cardinality of the optimal plan represented by plan.
-*/
+// specifying the cost and cardinality of the optimal plan represented by plan
 public class CostCard {
 
     // The cost of the optimal subplan
