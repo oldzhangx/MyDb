@@ -10,20 +10,13 @@ import java.util.NoSuchElementException;
 //Last Change: 11/23
 
 
-/**
- * Abstract class for implementing operators. It handles <code>close</code>,
- * <code>next</code> and <code>hasNext</code>. Subclasses only need to implement
- * <code>open</code> and <code>readNext</code>.
- */
 public abstract class Operator implements DbIterator {
-
 
     private static final long serialVersionUID = -8386431487731922691L;
 
     public boolean hasNext() throws DBException, TransactionAbortedException, IOException {
         if (!this.open)
             throw new IllegalStateException("Operator not yet open");
-
         if (next == null)
             next = fetchNext();
         return next != null;
@@ -42,21 +35,11 @@ public abstract class Operator implements DbIterator {
         return result;
     }
 
-    /**
-     * Returns the next Tuple in the iterator, or null if the iteration is
-     * finished. Operator uses this method to implement both <code>next</code>
-     * and <code>hasNext</code>.
-     *
-     * @return the next Tuple in the iterator, or null if the iteration is
-     *         finished.
-     */
+    //Returns the next Tuple in the iterator
     protected abstract Tuple fetchNext() throws DBException,
             TransactionAbortedException, IOException;
 
-    /**
-     * Closes this iterator. If overridden by a subclass, they should call
-     * super.close() in order for Operator's internal state to be consistent.
-     */
+
     public void close() {
         // Ensures that a future call to next() will fail
         next = null;
@@ -71,42 +54,23 @@ public abstract class Operator implements DbIterator {
         this.open = true;
     }
 
-    /**
-     * @return return the children DbIterators of this operator. If there is
-     *         only one child, return an array of only one element. For join
-     *         operators, the order of the children is not important. But they
-     *         should be consistent among multiple calls.
-     * */
+
+    // return the children DbIterators of this operator
     public abstract DbIterator[] getChildren() throws IOException, TransactionAbortedException, DBException;
 
-    /**
-     * Set the children(child) of this operator. If the operator has only one
-     * child, children[0] should be used. If the operator is a join, children[0]
-     * and children[1] should be used.
-     *
-     *
-     * @param children
-     *            the DbIterators which are to be set as the children(child) of
-     *            this operator
-     * */
+    // children[0] and children[1]
     public abstract void setChildren(DbIterator[] children);
 
-    /**
-     * @return return the TupleDesc of the output tuples of this operator
-     * */
+
     public abstract TupleDetail getTupleDetail();
 
-    /**
-     * @return The estimated cardinality of this operator.
-     * */
+
+    // The estimated cardinality of this operator.
     public int getEstimatedCardinality() {
         return this.estimatedCardinality;
     }
 
-    /**
-     * @param card
-     *            The estimated cardinality of this operator.
-     * */
+
     protected void setEstimatedCardinality(int card) {
         this.estimatedCardinality = card;
     }
