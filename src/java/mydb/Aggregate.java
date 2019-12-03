@@ -1,20 +1,16 @@
 package mydb;
 
-
 import mydb.TupleDetail.Tuple;
 import mydb.TupleDetail.TupleDetail;
-
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.NoSuchElementException;
 
 import static mydb.Type.INT_TYPE;
 
-// TODO: 没用可删除
 public class Aggregate extends Operator {
 
     private static final long serialVersionUID = 6394662876144848862L;
-
 
     //the 0-based index of the group-by field in the tuple, or NO_GROUPING if there is no grouping
     int groupByFieldIndex;
@@ -144,8 +140,7 @@ public class Aggregate extends Operator {
                 new Type[]{groupByFieldType, INT_TYPE};
         String[] fieldName = groupByFieldType==null? new String[]{tupleDetail.getFieldName(aggregateFieldIndex)}:
                 new String[]{tupleDetail.getFieldName(groupByFieldIndex), tupleDetail.getFieldName(aggregateFieldIndex)};
-        TupleDetail tupleDetail = new TupleDetail(fieldType, fieldName);
-        return tupleDetail;
+        return new TupleDetail(fieldType, fieldName);
     }
 
     public void close() {
