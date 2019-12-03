@@ -454,6 +454,7 @@ public class Parser {
                 curtrans.abort();
                 curtrans = null;
                 inUserTrans = false;
+                assert curtrans != null;
                 System.out.println("Transaction " + curtrans.getId().getId()
                         + " aborted.");
 
