@@ -27,8 +27,8 @@ public class JoinCompare implements Serializable {
      */
 
     public boolean filter(Tuple t1, Tuple t2) {
-        // some code goes here
-        if (t1 == null || t2 == null) return false;
+        if(t1==null && t2==null) return true;
+        if ( t1 == null || t2 == null) return false;
             Field temp1 = t1.getField(field1);
             Field temp2 = t2.getField(field2);
             return temp1.compareWith(operation, temp2);
@@ -37,19 +37,16 @@ public class JoinCompare implements Serializable {
 
     public int getField1()
     {
-        // some code goes here
         return field1;
     }
 
     public int getField2()
     {
-        // some code goes here
         return field2;
     }
 
     public Comparison.Operation getOperator()
     {
-        // some code goes here
         return operation;
     }
 }
