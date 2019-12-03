@@ -3,6 +3,7 @@ package mydb;
 import mydb.Database.Database;
 import mydb.TupleDetail.Tuple;
 import mydb.TupleDetail.TupleDetail;
+import mydb.TupleDetail.TupleIterator;
 
 import java.io.*;
 import java.util.*;

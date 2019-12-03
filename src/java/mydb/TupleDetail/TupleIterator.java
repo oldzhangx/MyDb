@@ -1,5 +1,6 @@
-package mydb;
+package mydb.TupleDetail;
 
+import mydb.DbIterator;
 import mydb.TupleDetail.Tuple;
 import mydb.TupleDetail.TupleDetail;
 import java.util.Iterator;

@@ -9,6 +9,7 @@ import mydb.*;
 import mydb.Database.Database;
 import mydb.TupleDetail.Tuple;
 import mydb.TupleDetail.TupleDetail;
+import mydb.TupleDetail.TupleIterator;
 import org.junit.Test;
 
 import junit.framework.Assert;

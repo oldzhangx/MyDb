@@ -2,6 +2,7 @@ package mydb;
 
 import mydb.TupleDetail.Tuple;
 import mydb.TupleDetail.TupleDetail;
+import mydb.TupleDetail.TupleIterator;
 
 import java.util.ArrayList;
 import java.util.HashMap;
