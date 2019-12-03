@@ -330,7 +330,7 @@ public class JoinOptimizer {
                 t2card = j.t2Alias == null ? 0 : stats.get(table2Name)
                         .estimateTableCardinality(
                                 filterSelectivities.get(j.t2Alias));
-                rightPkey = j.t2Alias == null ? false : isPkey(j.t2Alias,
+                rightPkey = j.t2Alias != null && isPkey(j.t2Alias,
                         j.f2PureName);
             } else if (doesJoin(prevBest, j.t2Alias)) { // j.t2 is in prevbest
                                                         // (both

@@ -12,64 +12,42 @@ import java.util.*;
 public class Join extends Operator {
 
     private static final long serialVersionUID = 1421683959262591903L;
+    // The predicate to use to join the children
     private JoinCompare p;
+    // Iterator for the left(outer) relation to join
     private DbIterator child1;
+    // Iterator for the right(inner) relation to join
     private DbIterator child2;
     private Tuple[] leftBuffer;
     private Tuple[] rightBuffer;
     private ArrayList<Tuple> tempTps;
 
     //131072 is the default buffer of mysql join operation
-    private static final int BLOCKMEMORY = 131072 * 5;
+    private static final int BLOCK_MEMORY = 131072 * 5;
 
-    /**
-     * Constructor. Accepts to children to join and the predicate to join them
-     * on
-     *
-     * @param p
-     *            The predicate to use to join the children
-     * @param child1
-     *            Iterator for the left(outer) relation to join
-     * @param child2
-     *            Iterator for the right(inner) relation to join
-     */
+
     public Join(JoinCompare p, DbIterator child1, DbIterator child2) {
-        // some code goes here
         this.p = p;
         this.child1 = child1;
         this.child2 = child2;
     }
 
     public JoinCompare getJoinPredicate() {
-        // some code goes here
         return p;
     }
 
-    /**
-     * @return
-     *       the field name of join field1. Should be quantified by
-     *       alias or table name.
-     * */
+    //the field name of join field1
     public String getJoinField1Name() {
-        // some code goes here
         SeqScan scan = (SeqScan)child1;
         return scan.getTableName();
     }
 
-    /**
-     * @return
-     *       the field name of join field2. Should be quantified by
-     *       alias or table name.
-     * */
     public String getJoinField2Name() {
-        // some code goes here
         SeqScan scan = (SeqScan)child2;
         return scan.getAlias();
     }
 
-
     public TupleDetail getTupleDetail() {
-        // some code goes here
         TupleDetail td1 = child1.getTupleDetail();
         TupleDetail td2 = child2.getTupleDetail();
         return TupleDetail.merge(td1, td2);
@@ -139,8 +117,8 @@ public class Join extends Operator {
         tempTps = new ArrayList<Tuple>();
 
         //use sorted-merge algorithm
-        int leftBufferSize = BLOCKMEMORY / child1.getTupleDetail().getSize();
-        int rightBufferSize = BLOCKMEMORY / child2.getTupleDetail().getSize();
+        int leftBufferSize = BLOCK_MEMORY / child1.getTupleDetail().getSize();
+        int rightBufferSize = BLOCK_MEMORY / child2.getTupleDetail().getSize();
 
         leftBuffer = new Tuple[leftBufferSize];
         rightBuffer = new Tuple[rightBufferSize];
