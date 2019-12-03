@@ -203,6 +203,10 @@ public class Join extends Operator {
         int left = 0;
         int right = 0;
 
+        mergeTuple(leftSize, rightSize, left, right);
+    }
+
+    private void mergeTuple(int leftSize, int rightSize, int left, int right) {
         while (left < leftSize && right < rightSize) {
             Tuple ltp = leftBuffer[left];
             Tuple rtp = rightBuffer[right];
@@ -227,22 +231,7 @@ public class Join extends Operator {
         int left = 0;
         int right = 0;
 
-        while (left < leftSize && right < rightSize) {
-            Tuple ltp = leftBuffer[left];
-            Tuple rtp = rightBuffer[right];
-
-            if (p.filter(ltp, rtp)){
-                //将比他小的都合并在一起
-                for (int i = right; i < rightSize; i++) {
-                    Tuple rtpTemp = rightBuffer[i];
-                    Tuple tp = mergeTuple(ltp, rtpTemp);
-                    tempTps.add(tp);
-                }
-                left++;
-            } else {
-                right++;
-            }
-        }
+        mergeTuple(leftSize, rightSize, left, right);
     }
 
     private void handleEqual(int leftSize, int rightSize) {
@@ -291,24 +280,6 @@ public class Join extends Operator {
 
         CompareTp co = new CompareTp(reverse, field);
         Arrays.sort(buffer, 0, length, co);
-        // 冒泡排序
-        // for (int i = 1; i < length; i++) {
-        //     for (int j = 0; j < length - i; j++) {
-        //         if (reverse) {
-        //             if (greatThan.filter(buffer[j+1], buffer[j])) {
-        //                 Tuple temp = buffer[j];
-        //                 buffer[j] = buffer[j + 1];
-        //                 buffer[j + 1] = temp;
-        //             }
-        //         } else {
-        //             if (greatThan.filter(buffer[j], buffer[j+1])) {
-        //                 Tuple temp = buffer[j];
-        //                 buffer[j] = buffer[j + 1];
-        //                 buffer[j + 1] = temp;
-        //             }
-        //         }
-        //     }
-        // }
 
     }
 
@@ -357,13 +328,11 @@ public class Join extends Operator {
 
     @Override
     public DbIterator[] getChildren() {
-        // some code goes here
         return new DbIterator[]{ child1, child2 };
     }
 
     @Override
     public void setChildren(DbIterator[] children) {
-        // some code goes here
         child1 = children[0];
         child2 = children[1];
     }
