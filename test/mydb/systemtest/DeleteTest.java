@@ -12,10 +12,10 @@ public class DeleteTest extends mydb.systemtest.FilterBase {
     ArrayList<ArrayList<Integer>> expectedTuples = null;
 
     @Override
-    protected int applyPredicate(HeapFile table, TransactionId tid, Predicate predicate)
+    protected int applyPredicate(HeapFile table, TransactionId tid, Comparison comparison)
             throws DbException, TransactionAbortedException, IOException {
         SeqScan ss = new SeqScan(tid, table.getId(), "");
-        Filter filter = new Filter(predicate, ss);
+        Filter filter = new Filter(comparison, ss);
         Delete deleteOperator = new Delete(tid, filter);
 //        Query q = new Query(deleteOperator, tid);
 

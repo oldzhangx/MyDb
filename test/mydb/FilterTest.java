@@ -28,7 +28,7 @@ public class FilterTest extends MyDbTestBase {
    * Unit test for Filter.getTupleDesc()
    */
   @Test public void getTupleDesc() {
-    Predicate pred = new Predicate(0, Predicate.Operation.EQUALS, TestUtil.getField(0));
+    Comparison pred = new Comparison(0, Comparison.Operation.EQUALS, TestUtil.getField(0));
     Filter op = new Filter(pred, scan);
     TupleDetail expected = Utility.getTupleDesc(testWidth);
     TupleDetail actual = op.getTupleDetail();
@@ -39,7 +39,7 @@ public class FilterTest extends MyDbTestBase {
    * Unit test for Filter.rewind()
    */
   @Test public void rewind() throws Exception {
-    Predicate pred = new Predicate(0, Predicate.Operation.EQUALS, TestUtil.getField(0));
+    Comparison pred = new Comparison(0, Comparison.Operation.EQUALS, TestUtil.getField(0));
     Filter op = new Filter(pred, scan);
     op.open();
     assertTrue(op.hasNext());
@@ -58,8 +58,8 @@ public class FilterTest extends MyDbTestBase {
    *   some tuples
    */
   @Test public void filterSomeLessThan() throws Exception {
-    Predicate pred;
-    pred = new Predicate(0, Predicate.Operation.LESS_THAN, TestUtil.getField(2));
+    Comparison pred;
+    pred = new Comparison(0, Comparison.Operation.LESS_THAN, TestUtil.getField(2));
     Filter op = new Filter(pred, scan);
     TestUtil.MockScan expectedOut = new TestUtil.MockScan(-5, 2, testWidth);
     op.open();
@@ -72,8 +72,8 @@ public class FilterTest extends MyDbTestBase {
    * everything
    */
   @Test public void filterAllLessThan() throws Exception {
-    Predicate pred;
-    pred = new Predicate(0, Predicate.Operation.LESS_THAN, TestUtil.getField(-5));
+    Comparison pred;
+    pred = new Comparison(0, Comparison.Operation.LESS_THAN, TestUtil.getField(-5));
     Filter op = new Filter(pred, scan);
     op.open();
     assertTrue(TestUtil.checkExhausted(op));
@@ -84,9 +84,9 @@ public class FilterTest extends MyDbTestBase {
    * Unit test for Filter.getNext() using an = predicate
    */
   @Test public void filterEqual() throws Exception {
-    Predicate pred;
+    Comparison pred;
     this.scan = new TestUtil.MockScan(-5, 5, testWidth);
-    pred = new Predicate(0, Predicate.Operation.EQUALS, TestUtil.getField(-5));
+    pred = new Comparison(0, Comparison.Operation.EQUALS, TestUtil.getField(-5));
     Filter op = new Filter(pred, scan);
     op.open();
     assertTrue(TestUtil.compareTuples(Utility.getHeapTuple(-5, testWidth),
@@ -94,7 +94,7 @@ public class FilterTest extends MyDbTestBase {
     op.close();
 
     this.scan = new TestUtil.MockScan(-5, 5, testWidth);
-    pred = new Predicate(0, Predicate.Operation.EQUALS, TestUtil.getField(0));
+    pred = new Comparison(0, Comparison.Operation.EQUALS, TestUtil.getField(0));
     op = new Filter(pred, scan);
     op.open();
     assertTrue(TestUtil.compareTuples(Utility.getHeapTuple(0, testWidth),
@@ -102,7 +102,7 @@ public class FilterTest extends MyDbTestBase {
     op.close();
 
     this.scan = new TestUtil.MockScan(-5, 5, testWidth);
-    pred = new Predicate(0, Predicate.Operation.EQUALS, TestUtil.getField(4));
+    pred = new Comparison(0, Comparison.Operation.EQUALS, TestUtil.getField(4));
     op = new Filter(pred, scan);
     op.open();
     assertTrue(TestUtil.compareTuples(Utility.getHeapTuple(4, testWidth),
@@ -114,8 +114,8 @@ public class FilterTest extends MyDbTestBase {
    * Unit test for Filter.getNext() using an = predicate passing no tuples
    */
   @Test public void filterEqualNoTuples() throws Exception {
-    Predicate pred;
-    pred = new Predicate(0, Predicate.Operation.EQUALS, TestUtil.getField(5));
+    Comparison pred;
+    pred = new Comparison(0, Comparison.Operation.EQUALS, TestUtil.getField(5));
     Filter op = new Filter(pred, scan);
     op.open();
     TestUtil.checkExhausted(op);

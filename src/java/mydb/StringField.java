@@ -41,7 +41,7 @@ public class StringField implements Field {
 		}
 	}
 
-	public boolean compareWith(Predicate.Operation operation, Field field) {
+	public boolean compareWith(Comparison.Operation operation, Field field) {
 		StringField stringField = (StringField)field;
 		int cmpVal = value.compareTo(stringField.value);
 

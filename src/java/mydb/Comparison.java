@@ -4,27 +4,16 @@ import java.io.Serializable;
 //Last Change: 11/23
 
 
-/**
- * Predicate compares tuples to a specified Field value.
- */
-public class Predicate implements Serializable {
-
+public class Comparison implements Serializable {
 
     private static final long serialVersionUID = -5302308970711948938L;
     int field;
     Operation operation;
     Field operand;
-    /** Constants used for return codes in Field.compare */
+
     public enum Operation implements Serializable {
         EQUALS, GREATER_THAN, LESS_THAN, LESS_THAN_OR_EQ, GREATER_THAN_OR_EQ, LIKE, NOT_EQUALS;
 
-        /**
-         * Interface to access operations by a string containing an integer
-         * index for command-line convenience.
-         *
-         * @param s
-         *            a string containing a valid integer Op index
-         */
         public static Operation getOp(String s) {
             return getOp(Integer.parseInt(s));
         }
@@ -69,8 +58,7 @@ public class Predicate implements Serializable {
      * @param operand
      *            field value to compare passed in tuples to
      */
-    public Predicate(int field, Operation operation, Field operand) {
-        // some code goes here
+    public Comparison(int field, Operation operation, Field operand) {
         this.field = field;
         this.operation = operation;
         this.operand = operand;
@@ -81,7 +69,6 @@ public class Predicate implements Serializable {
      */
     public int getField()
     {
-        // some code goes here
         return field;
     }
 
@@ -90,7 +77,6 @@ public class Predicate implements Serializable {
      */
     public Operation getOperation()
     {
-        // some code goes here
         return operation;
     }
 
@@ -99,7 +85,6 @@ public class Predicate implements Serializable {
      */
     public Field getOperand()
     {
-        // some code goes here
         return operand;
     }
 
@@ -112,15 +97,10 @@ public class Predicate implements Serializable {
      * @param t The tuple to compare against
      * @return true if the comparison is true, false otherwise.
      */
-    //  public boolean filter(Tuple t) {
-    // some code goes here
-    //   return t.getField(field).compare(op,operand);
     public boolean filter(Tuple t) {
-        // some code goes here
         if (t == null) return false;
         //like the t > operand
-        if (t.getField(field).compareWith(operation, operand)) return true;
-        else return false;
+        return t.getField(field).compareWith(operation, operand);
     }
 
 

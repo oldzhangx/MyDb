@@ -11,7 +11,7 @@ public class LogicalFilterNode {
     public String tableAlias;
 
     /** The predicate in the filter */
-    public Predicate.Operation p;
+    public Comparison.Operation p;
     
     /* The constant on the right side of the filter */
     public String c;
@@ -21,7 +21,7 @@ public class LogicalFilterNode {
     
     public String fieldQuantifiedName;
     
-    public LogicalFilterNode(String table, String field, Predicate.Operation pred, String constant) {
+    public LogicalFilterNode(String table, String field, Comparison.Operation pred, String constant) {
         tableAlias = table;
         p = pred;
         c = constant;

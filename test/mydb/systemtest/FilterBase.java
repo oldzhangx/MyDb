@@ -18,7 +18,7 @@ public abstract class FilterBase extends MyDbTestBase {
     private static final int ROWS = 1097;
 
     /** Should apply the predicate to table. This will be executed in transaction tid. */
-    protected abstract int applyPredicate(HeapFile table, TransactionId tid, Predicate predicate)
+    protected abstract int applyPredicate(HeapFile table, TransactionId tid, Comparison comparison)
             throws DbException, TransactionAbortedException, IOException;
 
     /** Optional hook for validating database state after applyPredicate. */
@@ -27,27 +27,27 @@ public abstract class FilterBase extends MyDbTestBase {
 
     protected ArrayList<ArrayList<Integer>> createdTuples;
 
-    private int runTransactionForPredicate(HeapFile table, Predicate predicate)
+    private int runTransactionForPredicate(HeapFile table, Comparison comparison)
             throws IOException, DbException, TransactionAbortedException {
         TransactionId tid = new TransactionId();
-        int result = applyPredicate(table, tid, predicate);
+        int result = applyPredicate(table, tid, comparison);
         Database.getBufferPool().transactionComplete(tid);
         return result;
     }
 
     private void validatePredicate(int column, int columnValue, int trueValue, int falseValue,
-            Predicate.Operation operation) throws IOException, DbException, TransactionAbortedException {
+            Comparison.Operation operation) throws IOException, DbException, TransactionAbortedException {
         // Test the true value
         HeapFile f = createTable(column, columnValue);
-        Predicate predicate = new Predicate(column, operation, new IntField(trueValue));
-        assertEquals(ROWS, runTransactionForPredicate(f, predicate));
+        Comparison comparison = new Comparison(column, operation, new IntField(trueValue));
+        assertEquals(ROWS, runTransactionForPredicate(f, comparison));
         f = Utility.openHeapFile(COLUMNS, f.getFile());
         validateAfter(f);
 
         // Test the false value
         f = createTable(column, columnValue);
-        predicate = new Predicate(column, operation, new IntField(falseValue));
-        assertEquals(0, runTransactionForPredicate(f, predicate));
+        comparison = new Comparison(column, operation, new IntField(falseValue));
+        assertEquals(0, runTransactionForPredicate(f, comparison));
         f = Utility.openHeapFile(COLUMNS, f.getFile());
         validateAfter(f);
     }
@@ -63,26 +63,26 @@ public abstract class FilterBase extends MyDbTestBase {
 
     @Test public void testEquals() throws
             DbException, TransactionAbortedException, IOException {
-        validatePredicate(0, 1, 1, 2, Predicate.Operation.EQUALS);
+        validatePredicate(0, 1, 1, 2, Comparison.Operation.EQUALS);
     }
 
     @Test public void testLessThan() throws
             DbException, TransactionAbortedException, IOException {
-        validatePredicate(1, 1, 2, 1, Predicate.Operation.LESS_THAN);
+        validatePredicate(1, 1, 2, 1, Comparison.Operation.LESS_THAN);
     }
 
     @Test public void testLessThanOrEq() throws
             DbException, TransactionAbortedException, IOException {
-        validatePredicate(2, 42, 42, 41, Predicate.Operation.LESS_THAN_OR_EQ);
+        validatePredicate(2, 42, 42, 41, Comparison.Operation.LESS_THAN_OR_EQ);
     }
 
     @Test public void testGreaterThan() throws
             DbException, TransactionAbortedException, IOException {
-        validatePredicate(2, 42, 41, 42, Predicate.Operation.GREATER_THAN);
+        validatePredicate(2, 42, 41, 42, Comparison.Operation.GREATER_THAN);
     }
 
     @Test public void testGreaterThanOrEq() throws
             DbException, TransactionAbortedException, IOException {
-        validatePredicate(2, 42, 42, 43, Predicate.Operation.GREATER_THAN_OR_EQ);
+        validatePredicate(2, 42, 42, 43, Comparison.Operation.GREATER_THAN_OR_EQ);
     }
 }

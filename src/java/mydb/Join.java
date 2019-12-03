@@ -293,7 +293,7 @@ public class Join extends Operator {
         int left = 0;
         int right = 0;
 
-        JoinPredicate greatThan = new JoinPredicate(p.getField1(), Predicate.Operation.GREATER_THAN, p.getField2());
+        JoinPredicate greatThan = new JoinPredicate(p.getField1(), Comparison.Operation.GREATER_THAN, p.getField2());
 
         boolean equalFlag = true;
         int leftFlag = 0;
@@ -360,9 +360,9 @@ public class Join extends Operator {
         public CompareTp(boolean reverse, int field){
             super();
             if (reverse) {
-                cop = new JoinPredicate(field, Predicate.Operation.LESS_THAN, field);
+                cop = new JoinPredicate(field, Comparison.Operation.LESS_THAN, field);
             } else {
-                cop = new JoinPredicate(field, Predicate.Operation.GREATER_THAN, field);
+                cop = new JoinPredicate(field, Comparison.Operation.GREATER_THAN, field);
             }
         }
 

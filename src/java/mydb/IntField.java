@@ -46,7 +46,7 @@ public class IntField implements Field {
      * @throws IllegalArgumentException if val is not an IntField
      * @see Field#compareWith
      */
-    public boolean compareWith(Predicate.Operation op, Field val) {
+    public boolean compareWith(Comparison.Operation op, Field val) {
 
         IntField iVal = (IntField) val;
 

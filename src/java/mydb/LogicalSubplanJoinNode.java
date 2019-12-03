@@ -9,7 +9,7 @@ public class LogicalSubplanJoinNode extends LogicalJoinNode {
     /** The subplan (used on the inner) of the join */
     DbIterator subPlan;
     
-    public LogicalSubplanJoinNode(String table1, String joinField1, DbIterator sp, Predicate.Operation pred) {
+    public LogicalSubplanJoinNode(String table1, String joinField1, DbIterator sp, Comparison.Operation pred) {
         t1Alias = table1;
         String[] tmps = joinField1.split("[.]");
         if (tmps.length>1)

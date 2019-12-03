@@ -5,14 +5,12 @@ import mydb.TupleDetail.TupleDetail;
 import java.io.IOException;
 import java.util.NoSuchElementException;
 
-/**
- * Filter is an operator that implements a relational select.
- */
+
 public class Filter extends Operator {
 
     private static final long serialVersionUID = 1644152417983932905L;
 
-    private Predicate m_pred;
+    private Comparison m_pred;
     private DbIterator m_it;
     /**
      * Constructor accepts a predicate to apply and a child operator to read
@@ -23,12 +21,12 @@ public class Filter extends Operator {
      * @param child
      *            The child operator
      */
-    public Filter(Predicate p, DbIterator child) {
+    public Filter(Comparison p, DbIterator child) {
         m_pred = p;
         m_it = child;
     }
 
-    public Predicate getPredicate() {
+    public Comparison getPredicate() {
         return m_pred;
     }
 
@@ -58,7 +56,7 @@ public class Filter extends Operator {
      *
      * @return The next tuple that passes the filter, or null if there are no
      *         more tuples
-     * @see Predicate#filter
+     * @see Comparison#filter
      */
     protected Tuple fetchNext() throws NoSuchElementException,
             TransactionAbortedException, DbException, IOException {

@@ -100,7 +100,7 @@ public class LogicalPlan {
      *   added via {@link #addScan} or if field is ambiguous (e.g., two
      *   tables contain a field named field.)
      */
-    public void addFilter(String field, Predicate.Operation p, String
+    public void addFilter(String field, Comparison.Operation p, String
         constantValue) throws ParsingException{ 
 
         field = disambiguateName(field); 
@@ -122,7 +122,7 @@ public class LogicalPlan {
      *      or is not in one of the tables added via {@link #addScan}
     */
 
-    public void addJoin( String joinField1, String joinField2, Predicate.Operation pred) throws ParsingException {
+    public void addJoin( String joinField1, String joinField2, Comparison.Operation pred) throws ParsingException {
         joinField1 = disambiguateName(joinField1);
         joinField2 = disambiguateName(joinField2);
         String table1Alias = joinField1.split("[.]")[0];
@@ -150,7 +150,7 @@ public class LogicalPlan {
      *  @throws ParsingException if either of the fields is ambiguous,
      *      or is not in one of the tables added via {@link #addScan}
      */
-    public void addJoin( String joinField1, DbIterator joinField2, Predicate.Operation pred) throws ParsingException {
+    public void addJoin( String joinField1, DbIterator joinField2, Comparison.Operation pred) throws ParsingException {
         joinField1 = disambiguateName(joinField1);
 
         String table1 = joinField1.split("[.]")[0];
@@ -333,9 +333,9 @@ public class LogicalPlan {
             else
                 f = new StringField(lf.c, Type.STRING_LEN);
 
-            Predicate p = null;
+            Comparison p = null;
             try {
-                p = new Predicate(subplan.getTupleDetail().fieldNameToIndex(lf.fieldQuantifiedName), lf.p,f);
+                p = new Comparison(subplan.getTupleDetail().fieldNameToIndex(lf.fieldQuantifiedName), lf.p,f);
             } catch (NoSuchElementException e) {
                 throw new ParsingException("Unknown field " + lf.fieldQuantifiedName);
             }
@@ -507,7 +507,7 @@ public class LogicalPlan {
         lp.addScan(table1.getId(), "t1");
 
         try {
-            lp.addFilter("t1.field0", Predicate.Operation.GREATER_THAN, "1");
+            lp.addFilter("t1.field0", Comparison.Operation.GREATER_THAN, "1");
         } catch (Exception e) {
         }
 

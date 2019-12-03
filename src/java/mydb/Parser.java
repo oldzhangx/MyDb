@@ -17,25 +17,25 @@ import mydb.TupleDetail.TupleDetail;
 public class Parser {
     private static boolean explain = false;
 
-    public static Predicate.Operation getOp(String s) throws mydb.ParsingException, ParsingException {
+    public static Comparison.Operation getOp(String s) throws mydb.ParsingException, ParsingException {
         if (s.equals("="))
-            return Predicate.Operation.EQUALS;
+            return Comparison.Operation.EQUALS;
         if (s.equals(">"))
-            return Predicate.Operation.GREATER_THAN;
+            return Comparison.Operation.GREATER_THAN;
         if (s.equals(">="))
-            return Predicate.Operation.GREATER_THAN_OR_EQ;
+            return Comparison.Operation.GREATER_THAN_OR_EQ;
         if (s.equals("<"))
-            return Predicate.Operation.LESS_THAN;
+            return Comparison.Operation.LESS_THAN;
         if (s.equals("<="))
-            return Predicate.Operation.LESS_THAN_OR_EQ;
+            return Comparison.Operation.LESS_THAN_OR_EQ;
         if (s.equals("LIKE"))
-            return Predicate.Operation.LIKE;
+            return Comparison.Operation.LIKE;
         if (s.equals("~"))
-            return Predicate.Operation.LIKE;
+            return Comparison.Operation.LIKE;
         if (s.equals("<>"))
-            return Predicate.Operation.NOT_EQUALS;
+            return Comparison.Operation.NOT_EQUALS;
         if (s.equals("!="))
-            return Predicate.Operation.NOT_EQUALS;
+            return Comparison.Operation.NOT_EQUALS;
 
         throw new mydb.ParsingException("Unknown predicate " + s);
     }
@@ -65,7 +65,7 @@ public class Parser {
             }
 
             boolean isJoin = false;
-            Predicate.Operation op = getOp(wx.getOperator());
+            Comparison.Operation op = getOp(wx.getOperator());
 
             boolean op1const = ops.elementAt(0) instanceof ZConstant; // otherwise
                                                                       // is a

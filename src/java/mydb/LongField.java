@@ -48,7 +48,7 @@ public class LongField implements Field {
      * @see Field#compareWith
      */
 //    public boolean compareWith(Predicate.Op op, Field val) {
-    public boolean compareWith(Predicate.Operation op, Field val) {
+    public boolean compareWith(Comparison.Operation op, Field val) {
 
         LongField iVal = (LongField) val;
 

@@ -18,7 +18,7 @@ public interface Field extends Serializable {
 
 
     // deine value compare
-    boolean compareWith(Predicate.Operation op, Field value);
+    boolean compareWith(Comparison.Operation op, Field value);
 
     boolean equals(Object field);
 

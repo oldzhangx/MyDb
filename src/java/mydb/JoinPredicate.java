@@ -27,11 +27,11 @@ public class JoinPredicate implements Serializable {
      *            Predicate.Op.GREATER_THAN, Predicate.Op.LESS_THAN,
      *            Predicate.Op.EQUAL, Predicate.Op.GREATER_THAN_OR_EQ, or
      *            Predicate.Op.LESS_THAN_OR_EQ
-     * @see Predicate
+     * @see Comparison
      */
     private int field1, field2;
-    private Predicate.Operation operation;
-    public JoinPredicate(int field1, Predicate.Operation operation, int field2) {
+    private Comparison.Operation operation;
+    public JoinPredicate(int field1, Comparison.Operation operation, int field2) {
         // some code goes here
         this.field1=field1;
         this.field2=field2;
@@ -66,7 +66,7 @@ public class JoinPredicate implements Serializable {
         return field2;
     }
 
-    public Predicate.Operation getOperator()
+    public Comparison.Operation getOperator()
     {
         // some code goes here
         return operation;

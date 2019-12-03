@@ -124,7 +124,7 @@ public class TableStats {
      * tuple, of which we do not know the value of the field, return the
      * expected selectivity. You may estimate this value from the histograms.
      * */
-    public double avgSelectivity(int field, Predicate.Operation op) {
+    public double avgSelectivity(int field, Comparison.Operation op) {
         // some code goes here
         return 1.0;
     }
@@ -142,7 +142,7 @@ public class TableStats {
      * @return The estimated selectivity (fraction of tuples that satisfy) the
      *         predicate
      */
-    public double estimateSelectivity(int field, Predicate.Operation op, Field constant) {
+    public double estimateSelectivity(int field, Comparison.Operation op, Field constant) {
         // some code goes here
         return 1.0;
     }

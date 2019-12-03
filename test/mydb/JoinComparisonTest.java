@@ -7,7 +7,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
 import junit.framework.JUnit4TestAdapter;
 
-public class JoinPredicateTest extends MyDbTestBase {
+public class JoinComparisonTest extends MyDbTestBase {
 
   /**
    * Unit test for JoinPredicate.filter()
@@ -17,7 +17,7 @@ public class JoinPredicateTest extends MyDbTestBase {
 
     for (int i : vals) {
       JoinPredicate p = new JoinPredicate(0,
-          Predicate.Operation.EQUALS, 0);
+          Comparison.Operation.EQUALS, 0);
       assertFalse(p.filter(Utility.getHeapTuple(i), Utility.getHeapTuple(i - 1)));
       assertTrue(p.filter(Utility.getHeapTuple(i), Utility.getHeapTuple(i)));
       assertFalse(p.filter(Utility.getHeapTuple(i), Utility.getHeapTuple(i + 1)));
@@ -25,7 +25,7 @@ public class JoinPredicateTest extends MyDbTestBase {
 
     for (int i : vals) {
       JoinPredicate p = new JoinPredicate(0,
-          Predicate.Operation.GREATER_THAN, 0);
+          Comparison.Operation.GREATER_THAN, 0);
       assertTrue(p.filter(Utility.getHeapTuple(i), Utility.getHeapTuple(i - 1)));
       assertFalse(p.filter(Utility.getHeapTuple(i), Utility.getHeapTuple(i)));
       assertFalse(p.filter(Utility.getHeapTuple(i), Utility.getHeapTuple(i + 1)));
@@ -33,7 +33,7 @@ public class JoinPredicateTest extends MyDbTestBase {
 
     for (int i : vals) {
       JoinPredicate p = new JoinPredicate(0,
-          Predicate.Operation.GREATER_THAN_OR_EQ, 0);
+          Comparison.Operation.GREATER_THAN_OR_EQ, 0);
       assertTrue(p.filter(Utility.getHeapTuple(i), Utility.getHeapTuple(i - 1)));
       assertTrue(p.filter(Utility.getHeapTuple(i), Utility.getHeapTuple(i)));
       assertFalse(p.filter(Utility.getHeapTuple(i), Utility.getHeapTuple(i + 1)));
@@ -41,7 +41,7 @@ public class JoinPredicateTest extends MyDbTestBase {
 
     for (int i : vals) {
       JoinPredicate p = new JoinPredicate(0,
-          Predicate.Operation.LESS_THAN, 0);
+          Comparison.Operation.LESS_THAN, 0);
       assertFalse(p.filter(Utility.getHeapTuple(i), Utility.getHeapTuple(i - 1)));
       assertFalse(p.filter(Utility.getHeapTuple(i), Utility.getHeapTuple(i)));
       assertTrue(p.filter(Utility.getHeapTuple(i), Utility.getHeapTuple(i + 1)));
@@ -49,7 +49,7 @@ public class JoinPredicateTest extends MyDbTestBase {
 
     for (int i : vals) {
       JoinPredicate p = new JoinPredicate(0,
-          Predicate.Operation.LESS_THAN_OR_EQ, 0);
+          Comparison.Operation.LESS_THAN_OR_EQ, 0);
       assertFalse(p.filter(Utility.getHeapTuple(i), Utility.getHeapTuple(i - 1)));
       assertTrue(p.filter(Utility.getHeapTuple(i), Utility.getHeapTuple(i)));
       assertTrue(p.filter(Utility.getHeapTuple(i), Utility.getHeapTuple(i + 1)));
@@ -60,7 +60,7 @@ public class JoinPredicateTest extends MyDbTestBase {
    * JUnit suite target
    */
   public static junit.framework.Test suite() {
-    return new JUnit4TestAdapter(JoinPredicateTest.class);
+    return new JUnit4TestAdapter(JoinComparisonTest.class);
   }
 }
 

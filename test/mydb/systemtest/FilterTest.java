@@ -8,10 +8,10 @@ import static org.junit.Assert.*;
 
 public class FilterTest extends FilterBase {
     @Override
-    protected int applyPredicate(HeapFile table, TransactionId tid, Predicate predicate)
+    protected int applyPredicate(HeapFile table, TransactionId tid, Comparison comparison)
             throws DbException, TransactionAbortedException, IOException {
         SeqScan ss = new SeqScan(tid, table.getId(), "");
-        Filter filter = new Filter(predicate, ss);
+        Filter filter = new Filter(comparison, ss);
         filter.open();
 
         int resultCount = 0;

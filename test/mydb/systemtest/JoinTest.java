@@ -45,7 +45,7 @@ public class JoinTest extends MyDbTestBase {
         TransactionId tid = new TransactionId();
         SeqScan ss1 = new SeqScan(tid, table1.getId(), "");
         SeqScan ss2 = new SeqScan(tid, table2.getId(), "");
-        JoinPredicate p = new JoinPredicate(0, Predicate.Operation.EQUALS, 0);
+        JoinPredicate p = new JoinPredicate(0, Comparison.Operation.EQUALS, 0);
         Join joinOp = new Join(p, ss1, ss2);
 
         // test the join results

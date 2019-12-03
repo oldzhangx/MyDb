@@ -116,9 +116,9 @@ class TupleComparator implements Comparator<Tuple> {
     public int compare(Tuple o1, Tuple o2) {
         Field t1 = (o1).getField(field);
         Field t2 = (o2).getField(field);
-        if (t1.compareWith(Predicate.Operation.EQUALS, t2))
+        if (t1.compareWith(Comparison.Operation.EQUALS, t2))
             return 0;
-        if (t1.compareWith(Predicate.Operation.GREATER_THAN, t2))
+        if (t1.compareWith(Comparison.Operation.GREATER_THAN, t2))
             return asc ? 1 : -1;
         else
             return asc ? -1 : 1;

@@ -21,12 +21,12 @@ public class LogicalJoinNode {
     public String f2QuantifiedName;
 
     /** The join predicate */
-    public Predicate.Operation p;
+    public Comparison.Operation p;
 
     public LogicalJoinNode() {
     }
 
-    public LogicalJoinNode(String table1, String table2, String joinField1, String joinField2, Predicate.Operation pred) {
+    public LogicalJoinNode(String table1, String table2, String joinField1, String joinField2, Comparison.Operation pred) {
         t1Alias = table1;
         t2Alias = table2;
         String[] tmps = joinField1.split("[.]");
@@ -47,15 +47,15 @@ public class LogicalJoinNode {
     /** Return a new LogicalJoinNode with the inner and outer (t1.f1
      * and t2.f2) tables swapped. */
     public LogicalJoinNode swapInnerOuter() {
-        Predicate.Operation newp;
-        if (p == Predicate.Operation.GREATER_THAN)
-            newp = Predicate.Operation.LESS_THAN;
-        else if (p == Predicate.Operation.GREATER_THAN_OR_EQ)
-            newp = Predicate.Operation.LESS_THAN_OR_EQ;
-        else if (p == Predicate.Operation.LESS_THAN)
-            newp = Predicate.Operation.GREATER_THAN;
-        else if (p == Predicate.Operation.LESS_THAN_OR_EQ)
-            newp = Predicate.Operation.GREATER_THAN_OR_EQ;
+        Comparison.Operation newp;
+        if (p == Comparison.Operation.GREATER_THAN)
+            newp = Comparison.Operation.LESS_THAN;
+        else if (p == Comparison.Operation.GREATER_THAN_OR_EQ)
+            newp = Comparison.Operation.LESS_THAN_OR_EQ;
+        else if (p == Comparison.Operation.LESS_THAN)
+            newp = Comparison.Operation.GREATER_THAN;
+        else if (p == Comparison.Operation.LESS_THAN_OR_EQ)
+            newp = Comparison.Operation.GREATER_THAN_OR_EQ;
         else 
             newp = p;
         
