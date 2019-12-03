@@ -8,32 +8,19 @@ import java.io.IOException;
 import java.util.HashMap;
 
 
-/**
- * BufferPool manages the reading and writing of pages into memory from
- * disk. Access methods call into it to retrieve pages, and it fetches
- * pages from the appropriate location.
- * <p>
- * The BufferPool is also responsible for locking;  when a transaction fetches
- * a page, BufferPool checks that the transaction has the appropriate
- * locks to read/write the page.
- */
+// manages the reading and writing of pages into memory from disk
 public class BufferPool {
 
-    /** Bytes per page, including header. */
+    //Bytes per page
     public static final int PAGE_SIZE = 4096;
 
-    /** Default number of pages passed to the constructor. This is used by
-    other classes. BufferPool should use the numPages argument to the
-    constructor instead. */
+    //Default number of pages passed to the constructor
     public static final int DEFAULT_PAGES = 100;
 
     private HashMap<PageId, Page> pages;
 
-    /**
-     * Creates a BufferPool that caches up to numPages pages.
-     *
-     * @param numPages maximum number of pages in this buffer pool.
-     */
+
+    // create bufferPool
     public BufferPool(int numPages) {
         pages = new HashMap<>(numPages);
     }

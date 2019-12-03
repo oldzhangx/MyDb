@@ -53,45 +53,45 @@ public class Aggregate extends Operator {
         }
 
     }
-//
-//    public int groupField() {
-//	    return groupByFieldIndex;
-//    }
-//
-//    /**
-//     * @return If this aggregate is accompanied by a group by, return the name
-//     *         of the groupby field in the <b>OUTPUT</b> tuples If not, return
-//     *         null;
-//     * */
-//    public String groupFieldName() {
-//	// some code goes here
-//	return null;
-//    }
-//
-//    /**
-//     * @return the aggregate field
-//     * */
-//    public int aggregateField() {
-//	// some code goes here
-//	return -1;
-//    }
-//
-//    /**
-//     * @return return the name of the aggregate field in the <b>OUTPUT</b>
-//     *         tuples
-//     * */
-//    public String aggregateFieldName() {
-//	// some code goes here
-//	return null;
-//    }
-//
-//    /**
-//     * @return return the aggregate operator
-//     * */
-//    public Aggregator.Opertion aggregateOp() {
-//	// some code goes here
-//	return null;
-//    }
+
+    public int groupField() {
+	    return groupByFieldIndex;
+    }
+
+    /**
+     * @return If this aggregate is accompanied by a group by, return the name
+     *         of the groupby field in the <b>OUTPUT</b> tuples If not, return
+     *         null;
+     * */
+    public String groupFieldName() {
+	// some code goes here
+	return null;
+    }
+
+    /**
+     * @return the aggregate field
+     * */
+    public int aggregateField() {
+	// some code goes here
+	return -1;
+    }
+
+    /**
+     * @return return the name of the aggregate field in the <b>OUTPUT</b>
+     *         tuples
+     * */
+    public String aggregateFieldName() {
+	// some code goes here
+	return null;
+    }
+
+    /**
+     * @return return the aggregate operator
+     * */
+    public Aggregator.Opertion aggregateOp() {
+	// some code goes here
+	return null;
+    }
 
     public static String nameOfAggregatorOp(Aggregator.Opertion aop) {
 	return aop.toString();
