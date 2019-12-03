@@ -1,7 +1,8 @@
 package mydb;
+import mydb.Exception.DBException;
+import mydb.Exception.TransactionAbortedException;
 import mydb.TupleDetail.Tuple;
 import mydb.TupleDetail.TupleDetail;
-
 import java.io.IOException;
 import java.util.NoSuchElementException;
 
@@ -34,7 +35,7 @@ public class Filter extends Operator {
         return m_it.getTupleDetail();
     }
 
-    public void open() throws DbException, NoSuchElementException,
+    public void open() throws DBException, NoSuchElementException,
             TransactionAbortedException, IOException {
         super.open();
         m_it.open();
@@ -45,7 +46,7 @@ public class Filter extends Operator {
         m_it.close();
     }
 
-    public void rewind() throws DbException, TransactionAbortedException, IOException {
+    public void rewind() throws DBException, TransactionAbortedException, IOException {
         m_it.rewind();
     }
 
@@ -59,7 +60,7 @@ public class Filter extends Operator {
      * @see Comparison#filter
      */
     protected Tuple fetchNext() throws NoSuchElementException,
-            TransactionAbortedException, DbException, IOException {
+            TransactionAbortedException, DBException, IOException {
         while (m_it.hasNext())
         {
             Tuple tup = m_it.next();

@@ -1,5 +1,7 @@
 package mydb;
 import mydb.Database.BufferPool;
+import mydb.Exception.DBException;
+import mydb.Exception.TransactionAbortedException;
 import mydb.TupleDetail.Tuple;
 
 import java.io.File;
@@ -7,7 +9,7 @@ import java.io.IOException;
 
 public class MyDb {
     public static void main (String[] args)
-            throws DbException, TransactionAbortedException, IOException {
+            throws DBException, TransactionAbortedException, IOException {
         // convert a file
         switch (args[0]) {
             case "convert":

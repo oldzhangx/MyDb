@@ -5,6 +5,8 @@ import java.util.ArrayList;
 
 import mydb.*;
 import mydb.Database.Database;
+import mydb.Exception.DBException;
+import mydb.Exception.TransactionAbortedException;
 import mydb.TupleDetail.Tuple;
 
 
@@ -13,7 +15,7 @@ import org.junit.Test;
 
 public class InsertTest extends MyDbTestBase {
     private void validateInsert(int columns, int sourceRows, int destinationRows)
-                throws DbException, IOException, TransactionAbortedException {
+                throws DBException, IOException, TransactionAbortedException {
         // Create the two tables
         ArrayList<ArrayList<Integer>> sourceTuples = new ArrayList<ArrayList<Integer>>();
         HeapFile source = SystemTestUtil.createRandomHeapFile(
@@ -53,22 +55,22 @@ public class InsertTest extends MyDbTestBase {
     }
 
     @Test public void testEmptyToEmpty()
-            throws IOException, DbException, TransactionAbortedException {
+            throws IOException, DBException, TransactionAbortedException {
         validateInsert(3, 0, 0);
     }
 
     @Test public void testEmptyToOne()
-            throws IOException, DbException, TransactionAbortedException {
+            throws IOException, DBException, TransactionAbortedException {
         validateInsert(8, 0, 1);
     }
 
     @Test public void testOneToEmpty()
-            throws IOException, DbException, TransactionAbortedException {
+            throws IOException, DBException, TransactionAbortedException {
         validateInsert(3, 1, 0);
     }
 
     @Test public void testOneToOne()
-            throws IOException, DbException, TransactionAbortedException {
+            throws IOException, DBException, TransactionAbortedException {
         validateInsert(1, 1, 1);
     }
 

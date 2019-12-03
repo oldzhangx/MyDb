@@ -10,6 +10,8 @@ import java.util.UUID;
 
 import mydb.Database.BufferPool;
 import mydb.Database.Database;
+import mydb.Exception.DBException;
+import mydb.Exception.TransactionAbortedException;
 import mydb.TupleDetail.Tuple;
 import mydb.TupleDetail.TupleDetail;
 import org.junit.Assert;
@@ -26,7 +28,7 @@ public class SystemTestUtil {
     public static HeapFile createRandomHeapFile(
             int columns, int rows, Map<Integer, Integer> columnSpecification,
             ArrayList<ArrayList<Integer>> tuples)
-            throws IOException, DbException, TransactionAbortedException {
+            throws IOException, DBException, TransactionAbortedException {
         return createRandomHeapFile(columns, rows, MAX_RAND_VALUE, columnSpecification, tuples);
     }
 
@@ -34,7 +36,7 @@ public class SystemTestUtil {
     public static HeapFile createRandomHeapFile(
             int columns, int rows, int maxValue, Map<Integer, Integer> columnSpecification,
             ArrayList<ArrayList<Integer>> tuples)
-            throws IOException, DbException, TransactionAbortedException {
+            throws IOException, DBException, TransactionAbortedException {
         File temp = createRandomHeapFileUnopened(columns, rows, maxValue,
                 columnSpecification, tuples);
         return Utility.openHeapFile(columns, temp);
@@ -43,14 +45,14 @@ public class SystemTestUtil {
     public static HeapFile createRandomHeapFile(
             int columns, int rows, Map<Integer, Integer> columnSpecification,
             ArrayList<ArrayList<Integer>> tuples, String colPrefix)
-            throws IOException, DbException, TransactionAbortedException {
+            throws IOException, DBException, TransactionAbortedException {
         return createRandomHeapFile(columns, rows, MAX_RAND_VALUE, columnSpecification, tuples, colPrefix);
     }
     
     public static HeapFile createRandomHeapFile(
             int columns, int rows, int maxValue, Map<Integer, Integer> columnSpecification,
             ArrayList<ArrayList<Integer>> tuples, String colPrefix)
-            throws IOException, DbException, TransactionAbortedException {
+            throws IOException, DBException, TransactionAbortedException {
         File temp = createRandomHeapFileUnopened(columns, rows, maxValue,
                 columnSpecification, tuples);
         return Utility.openHeapFile(columns, colPrefix, temp);
@@ -99,20 +101,20 @@ public class SystemTestUtil {
     }
 
     public static void matchTuples(DbFile f, List<ArrayList<Integer>> tuples)
-            throws DbException, TransactionAbortedException, IOException {
+            throws DBException, TransactionAbortedException, IOException {
         TransactionId tid = new TransactionId();
         matchTuples(f, tid, tuples);
         Database.getBufferPool().transactionComplete(tid);
     }
 
     public static void matchTuples(DbFile f, TransactionId tid, List<ArrayList<Integer>> tuples)
-            throws DbException, TransactionAbortedException, IOException {
+            throws DBException, TransactionAbortedException, IOException {
         SeqScan scan = new SeqScan(tid, f.getId(), "");
         matchTuples(scan, tuples);
     }
 
     public static void matchTuples(DbIterator iterator, List<ArrayList<Integer>> tuples)
-            throws DbException, TransactionAbortedException, IOException {
+            throws DBException, TransactionAbortedException, IOException {
         ArrayList<ArrayList<Integer>> copy = new ArrayList<ArrayList<Integer>>(tuples);
 
         if (Debug.isEnabled()) {

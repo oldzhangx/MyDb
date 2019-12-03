@@ -1,6 +1,8 @@
 package mydb.systemtest;
 
 import mydb.*;
+import mydb.Exception.DBException;
+import mydb.Exception.TransactionAbortedException;
 import mydb.TupleDetail.Tuple;
 
 import static org.junit.Assert.*;
@@ -13,7 +15,7 @@ public class DeleteTest extends mydb.systemtest.FilterBase {
 
     @Override
     protected int applyPredicate(HeapFile table, TransactionId tid, Comparison comparison)
-            throws DbException, TransactionAbortedException, IOException {
+            throws DBException, TransactionAbortedException, IOException {
         SeqScan ss = new SeqScan(tid, table.getId(), "");
         Filter filter = new Filter(comparison, ss);
         Delete deleteOperator = new Delete(tid, filter);
@@ -48,7 +50,7 @@ public class DeleteTest extends mydb.systemtest.FilterBase {
 
     @Override
     protected void validateAfter(HeapFile table)
-            throws DbException, TransactionAbortedException, IOException {
+            throws DBException, TransactionAbortedException, IOException {
         // As part of a different transaction, scan the table
         SystemTestUtil.matchTuples(table, expectedTuples);
     }

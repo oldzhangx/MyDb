@@ -1,6 +1,8 @@
 package mydb.systemtest;
 
 import mydb.*;
+import mydb.Exception.DBException;
+import mydb.Exception.TransactionAbortedException;
 
 import java.io.IOException;
 import static org.junit.Assert.*;
@@ -9,7 +11,7 @@ import static org.junit.Assert.*;
 public class FilterTest extends FilterBase {
     @Override
     protected int applyPredicate(HeapFile table, TransactionId tid, Comparison comparison)
-            throws DbException, TransactionAbortedException, IOException {
+            throws DBException, TransactionAbortedException, IOException {
         SeqScan ss = new SeqScan(tid, table.getId(), "");
         Filter filter = new Filter(comparison, ss);
         filter.open();

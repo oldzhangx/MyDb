@@ -1,4 +1,6 @@
 package mydb;
+import mydb.Exception.DBException;
+import mydb.Exception.TransactionAbortedException;
 import mydb.TupleDetail.Tuple;
 
 import java.io.IOException;
@@ -12,14 +14,14 @@ import java.util.NoSuchElementException;
 public interface DbFileIterator extends Serializable {
     /**
      * Opens the iterator
-     * @throws DbException when there are problems opening/accessing the database.
+     * @throws DBException when there are problems opening/accessing the database.
      */
     public void open()
-            throws DbException, TransactionAbortedException, IOException;
+            throws DBException, TransactionAbortedException, IOException;
 
     /** @return true if there are more tuples available. */
     public boolean hasNext()
-            throws DbException, TransactionAbortedException, IOException;
+            throws DBException, TransactionAbortedException, IOException;
 
     /**
      * Gets the next tuple from the operator (typically implementing by reading
@@ -29,13 +31,13 @@ public interface DbFileIterator extends Serializable {
      * @throws NoSuchElementException if there are no more tuples
      */
     public Tuple next()
-            throws DbException, TransactionAbortedException, NoSuchElementException, IOException;
+            throws DBException, TransactionAbortedException, NoSuchElementException, IOException;
 
     /**
      * Resets the iterator to the start.
-     * @throws DbException When rewind is unsupported.
+     * @throws DBException When rewind is unsupported.
      */
-    public void rewind() throws DbException, TransactionAbortedException, IOException;
+    public void rewind() throws DBException, TransactionAbortedException, IOException;
 
     /**
      * Closes the iterator.

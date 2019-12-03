@@ -1,6 +1,8 @@
 package mydb;
 
 import mydb.Database.Database;
+import mydb.Exception.DBException;
+import mydb.Exception.TransactionAbortedException;
 import mydb.TupleDetail.Tuple;
 import mydb.TupleDetail.TupleDetail;
 
@@ -36,12 +38,12 @@ public class Insert extends Operator {
      *            The child operator from which to read tuples to be inserted.
      * @param tableId
      *            The table in which to insert tuples.
-     * @throws DbException
+     * @throws DBException
      *             if TupleDesc of child differs from table into which we are to
      *             insert.
      */
     public Insert(TransactionId transactionId,DbIterator child, int tableId)
-            throws DbException {
+            throws DBException {
         this.transactionId=  transactionId;
         this.child  =child;
         this.tableId = tableId;
@@ -53,7 +55,7 @@ public class Insert extends Operator {
         return tupleDetail;
     }
 
-    public void open() throws DbException, TransactionAbortedException, IOException {
+    public void open() throws DBException, TransactionAbortedException, IOException {
         super.open();
         child.open();
 
@@ -70,7 +72,7 @@ public class Insert extends Operator {
         child.close();
     }
 
-    public void rewind() throws DbException, TransactionAbortedException {
+    public void rewind() throws DBException, TransactionAbortedException {
         action = false;
     }
 
@@ -87,7 +89,7 @@ public class Insert extends Operator {
      * @see Database#getBufferPool
      * @see BufferPool#insertTuple
      */
-    protected Tuple fetchNext() throws TransactionAbortedException, DbException {
+    protected Tuple fetchNext() throws TransactionAbortedException, DBException {
         if (action) return null;
 
         Tuple insertedTuple = new Tuple(tupleDetail);
@@ -97,7 +99,7 @@ public class Insert extends Operator {
     }
 
     @Override
-    public DbIterator[] getChildren() throws IOException, TransactionAbortedException, DbException {
+    public DbIterator[] getChildren() throws IOException, TransactionAbortedException, DBException {
         return new DbIterator[]{child};
     }
 

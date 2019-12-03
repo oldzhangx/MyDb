@@ -11,13 +11,16 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 import mydb.Database.Database;
+import mydb.Exception.DBException;
+import mydb.Exception.ParserException;
+import mydb.Exception.TransactionAbortedException;
 import mydb.TupleDetail.Tuple;
 import mydb.TupleDetail.TupleDetail;
 
 public class Parser {
     private static boolean explain = false;
 
-    public static Comparison.Operation getOp(String s) throws mydb.ParsingException, ParsingException {
+    public static Comparison.Operation getOp(String s) throws ParserException, ParserException {
         if (s.equals("="))
             return Comparison.Operation.EQUALS;
         if (s.equals(">"))
@@ -37,15 +40,15 @@ public class Parser {
         if (s.equals("!="))
             return Comparison.Operation.NOT_EQUALS;
 
-        throw new mydb.ParsingException("Unknown predicate " + s);
+        throw new ParserException("Unknown predicate " + s);
     }
 
     void processExpression(TransactionId tid, ZExpression wx, LogicalPlan lp)
-            throws mydb.ParsingException {
+            throws ParserException {
         if (wx.getOperator().equals("AND")) {
             for (int i = 0; i < wx.nbOperands(); i++) {
                 if (!(wx.getOperand(i) instanceof ZExpression)) {
-                    throw new mydb.ParsingException(
+                    throw new ParserException(
                             "Nested queries are currently unsupported.");
                 }
                 ZExpression newWx = (ZExpression) wx.getOperand(i);
@@ -53,14 +56,14 @@ public class Parser {
 
             }
         } else if (wx.getOperator().equals("OR")) {
-            throw new mydb.ParsingException(
+            throw new ParserException(
                     "OR expressions currently unsupported.");
         } else {
             // this is a binary expression comparing two constants
             @SuppressWarnings("unchecked")
             Vector<ZExp> ops = wx.getOperands();
             if (ops.size() != 2) {
-                throw new mydb.ParsingException(
+                throw new ParserException(
                         "Only simple binary expresssions of the form A op B are currently supported.");
             }
 
@@ -81,7 +84,7 @@ public class Parser {
                 isJoin = true;
             } else if (ops.elementAt(0) instanceof ZExpression
                     || ops.elementAt(1) instanceof ZExpression) {
-                throw new mydb.ParsingException(
+                throw new ParserException(
                         "Only simple binary expresssions of the form A op B are currently supported, where A or B are fields, constants, or subqueries.");
             } else
                 isJoin = false;
@@ -106,7 +109,7 @@ public class Parser {
                                 TableStats.getStatsMap(), explain);
                         lp.addJoin(tab1field, pp, op);
                     } catch (IOException | ParseException e) {
-                        throw new mydb.ParsingException("Invalid subquery "
+                        throw new ParserException("Invalid subquery "
                                 + ops.elementAt(1));
                     }
                 } else {
@@ -135,7 +138,7 @@ public class Parser {
     }
 
     public LogicalPlan parseQueryLogicalPlan(TransactionId tid, ZQuery q)
-            throws IOException, Zql.ParseException, mydb.ParsingException {
+            throws IOException, Zql.ParseException, ParserException {
         @SuppressWarnings("unchecked")
         Vector<ZFromItem> from = q.getFrom();
         LogicalPlan lp = new LogicalPlan();
@@ -164,7 +167,7 @@ public class Parser {
                 // XXX handle subquery?
             } catch (NoSuchElementException e) {
                 e.printStackTrace();
-                throw new mydb.ParsingException("Table "
+                throw new ParserException("Table "
                         + fromIt.getTable() + " is not in catalog");
             }
         }
@@ -174,7 +177,7 @@ public class Parser {
         if (w != null) {
             //R: no nested Query
             if (!(w instanceof ZExpression)) {
-                throw new mydb.ParsingException(
+                throw new ParserException(
                         "Nested queries are currently unsupported.");
             }
             ZExpression wx = (ZExpression) w;
@@ -192,13 +195,13 @@ public class Parser {
             Vector<ZExp> gbs = gby.getGroupBy();
             //R: only can have 1 GROUP BY
             if (gbs.size() > 1) {
-                throw new mydb.ParsingException(
+                throw new ParserException(
                         "At most one grouping field expression supported.");
             }
             if (gbs.size() == 1) {
                 ZExp gbe = gbs.elementAt(0);
                 if (!(gbe instanceof ZConstant)) {
-                    throw new mydb.ParsingException(
+                    throw new ParserException(
                             "Complex grouping expressions (" + gbe
                                     + ") not supported.");
                 }
@@ -220,12 +223,12 @@ public class Parser {
             ZSelectItem si = selectList.elementAt(i);
             if (si.getAggregate() == null
                     && (si.isExpression() && !(si.getExpression() instanceof ZConstant))) {
-                throw new mydb.ParsingException(
+                throw new ParserException(
                         "Expressions in SELECT list are not supported.");
             }
             if (si.getAggregate() != null) {
                 if (aggField != null) {
-                    throw new mydb.ParsingException(
+                    throw new ParserException(
                             "Aggregates over multiple fields not supported.");
                 }
                 //R: gets the aggregate's function and field, e.g. COUNT(sid)
@@ -241,7 +244,7 @@ public class Parser {
                         && !(groupByField.equals(si.getTable() + "."
                         + si.getColumn()) || groupByField.equals(si
                         .getColumn()))) {
-                    throw new mydb.ParsingException("Non-aggregate field "
+                    throw new ParserException("Non-aggregate field "
                             + si.getColumn()
                             + " does not appear in GROUP BY list.");
                 }
@@ -251,7 +254,7 @@ public class Parser {
         }
 
         if (groupByField != null && aggFun == null) {
-            throw new mydb.ParsingException("GROUP BY without aggregation.");
+            throw new ParserException("GROUP BY without aggregation.");
         }
 
         if (aggFun != null) {
@@ -264,12 +267,12 @@ public class Parser {
             @SuppressWarnings("unchecked")
             Vector<ZOrderBy> obys = q.getOrderBy();
             if (obys.size() > 1) {
-                throw new mydb.ParsingException(
+                throw new ParserException(
                         "Multi-attribute ORDER BY is not supported.");
             }
             ZOrderBy oby = obys.elementAt(0);
             if (!(oby.getExpression() instanceof ZConstant)) {
-                throw new mydb.ParsingException(
+                throw new ParserException(
                         "Complex ORDER BY's are not supported");
             }
             ZConstant f = (ZConstant) oby.getExpression();
@@ -285,8 +288,8 @@ public class Parser {
     private boolean inUserTrans = false;
 
     public Query handleQueryStatement(ZQuery zQuery, TransactionId tId)
-            throws TransactionAbortedException, DbException, IOException,
-            mydb.ParsingException, Zql.ParseException {
+            throws TransactionAbortedException, DBException, IOException,
+            ParserException, Zql.ParseException {
         // and run it
         Query query = new Query(tId);
 
@@ -324,8 +327,8 @@ public class Parser {
     }
 
     public Query handleInsertStatement(ZInsert zInsert, TransactionId tId)
-            throws TransactionAbortedException, DbException, IOException,
-            mydb.ParsingException, Zql.ParseException {
+            throws TransactionAbortedException, DBException, IOException,
+            ParserException, Zql.ParseException {
         int tableId;
         try {
             tableId = Database.getCatalog().getTableId(zInsert.getTable()); // will
@@ -335,7 +338,7 @@ public class Parser {
             // doesn't
             // exist
         } catch (NoSuchElementException e) {
-            throw new mydb.ParsingException("Unknown table : "
+            throw new ParserException("Unknown table : "
                     + zInsert.getTable());
         }
 
@@ -349,19 +352,19 @@ public class Parser {
             @SuppressWarnings("unchecked")
             Vector<ZExp> values = (Vector<ZExp>) zInsert.getValues();
             if (td.fieldNumber() != values.size()) {
-                throw new mydb.ParsingException(
+                throw new ParserException(
                         "INSERT statement does not contain same number of fields as table "
                                 + zInsert.getTable());
             }
             for (ZExp e : values) {
 
                 if (!(e instanceof ZConstant))
-                    throw new mydb.ParsingException(
+                    throw new ParserException(
                             "Complex expressions not allowed in INSERT statements.");
                 ZConstant zc = (ZConstant) e;
                 if (zc.getType() == ZConstant.NUMBER) {
                     if (td.getFieldType(i) != Type.INT_TYPE) {
-                        throw new mydb.ParsingException("Value "
+                        throw new ParserException("Value "
                                 + zc.getValue()
                                 + " is not an integer, expected a string.");
                     }
@@ -369,7 +372,7 @@ public class Parser {
                     t.setField(i, f);
                 } else if (zc.getType() == ZConstant.STRING) {
                     if (td.getFieldType(i) != Type.STRING_TYPE) {
-                        throw new mydb.ParsingException("Value "
+                        throw new ParserException("Value "
                                 + zc.getValue()
                                 + " is a string, expected an integer.");
                     }
@@ -377,7 +380,7 @@ public class Parser {
                             Type.STRING_LEN);
                     t.setField(i, f);
                 } else {
-                    throw new mydb.ParsingException(
+                    throw new ParserException(
                             "Only string or int fields are supported.");
                 }
 
@@ -398,8 +401,8 @@ public class Parser {
     }
 
     public Query handleDeleteStatement(ZDelete zDelete, TransactionId tid)
-            throws TransactionAbortedException, DbException, IOException,
-            mydb.ParsingException, Zql.ParseException {
+            throws TransactionAbortedException, DBException, IOException,
+            ParserException, Zql.ParseException {
         int id;
         try {
             id = Database.getCatalog().getTableId(zDelete.getTable()); // will fall
@@ -408,7 +411,7 @@ public class Parser {
                                                                  // doesn't
                                                                  // exist
         } catch (NoSuchElementException e) {
-            throw new mydb.ParsingException("Unknown table : "
+            throw new ParserException("Unknown table : "
                     + zDelete.getTable());
         }
         String name = zDelete.getTable();
@@ -432,12 +435,12 @@ public class Parser {
 
     // TODO : delete? tranction didn't show in the code
     public void handleTransactStatement(ZTransactStmt s)
-            throws TransactionAbortedException, DbException, IOException,
-            mydb.ParsingException, Zql.ParseException {
+            throws TransactionAbortedException, DBException, IOException,
+            ParserException, Zql.ParseException {
         switch (s.getStmtType()) {
             case "COMMIT":
                 if (curtrans == null)
-                    throw new ParsingException("No transaction is currently running");
+                    throw new ParserException("No transaction is currently running");
                 curtrans.commit();
                 curtrans = null;
                 inUserTrans = false;
@@ -446,7 +449,7 @@ public class Parser {
                 break;
             case "ROLLBACK":
                 if (curtrans == null)
-                    throw new ParsingException( "No transaction is currently running");
+                    throw new ParserException( "No transaction is currently running");
                 curtrans.abort();
                 curtrans = null;
                 inUserTrans = false;
@@ -456,7 +459,7 @@ public class Parser {
                 break;
             case "SET TRANSACTION":
                 if (curtrans != null)
-                    throw new ParsingException("Can't start new transactions " +
+                    throw new ParserException("Can't start new transactions " +
                             "until current transaction has been committed or rolledback.");
                 curtrans = new Transaction();
                 curtrans.start();
@@ -465,12 +468,12 @@ public class Parser {
                         + curtrans.getId().getId());
                 break;
             default:
-                throw new ParsingException("Unsupported operation");
+                throw new ParserException("Unsupported operation");
         }
     }
 
     public LogicalPlan generateLogicalPlan(TransactionId tid, String s)
-            throws mydb.ParsingException {
+            throws ParserException {
         ByteArrayInputStream bis = new ByteArrayInputStream(s.getBytes());
         ZqlParser p = new ZqlParser(bis);
         try {
@@ -480,13 +483,13 @@ public class Parser {
                 return lp;
             }
         } catch (Zql.ParseException e) {
-            throw new mydb.ParsingException(
+            throw new ParserException(
                     "Invalid SQL expression: \n \t " + e);
         } catch (IOException e) {
-            throw new mydb.ParsingException(e);
+            throw new ParserException(e);
         }
 
-        throw new mydb.ParsingException(
+        throw new ParserException(
                 "Cannot generate logical plan for expression : " + s);
     }
 
@@ -553,21 +556,21 @@ public class Parser {
                     }
                     this.inUserTrans = false;
 
-                    if (a instanceof mydb.ParsingException
+                    if (a instanceof ParserException
                             || a instanceof Zql.ParseException)
-                        throw new ParsingException((Exception) a);
+                        throw new ParserException((Exception) a);
                     if (a instanceof Zql.TokenMgrError)
                         throw (Zql.TokenMgrError) a;
-                    throw new DbException(a.getMessage());
+                    throw new DBException(a.getMessage());
                 } finally {
                     if (!inUserTrans)
                         curtrans = null;
                 }
             }
 
-        } catch (TransactionAbortedException | IOException | DbException e) {
+        } catch (TransactionAbortedException | IOException | DBException e) {
             e.printStackTrace();
-        } catch (mydb.ParsingException e) {
+        } catch (ParserException e) {
             System.out.println("Invalid SQL expression: \n \t" + e.getMessage());
         } catch (ParseException | TokenMgrError e) {
             System.out.println("Invalid SQL expression: \n \t " + e);
@@ -709,12 +712,12 @@ class TupleArrayIterator implements DbIterator {
         this.tups = tups;
     }
 
-    public void open() throws DbException, TransactionAbortedException {
+    public void open() throws DBException, TransactionAbortedException {
         it = tups.iterator();
     }
 
     /** @return true if the iterator has more items. */
-    public boolean hasNext() throws DbException, TransactionAbortedException {
+    public boolean hasNext() throws DBException, TransactionAbortedException {
         return it.hasNext();
     }
 
@@ -725,7 +728,7 @@ class TupleArrayIterator implements DbIterator {
      * @return The next tuple in the iterator, or null if there are no more
      *         tuples.
      */
-    public Tuple next() throws DbException, TransactionAbortedException,
+    public Tuple next() throws DBException, TransactionAbortedException,
             NoSuchElementException {
         return it.next();
     }
@@ -733,10 +736,10 @@ class TupleArrayIterator implements DbIterator {
     /**
      * Resets the iterator to the start.
      * 
-     * @throws DbException
+     * @throws DBException
      *             When rewind is unsupported.
      */
-    public void rewind() throws DbException, TransactionAbortedException {
+    public void rewind() throws DBException, TransactionAbortedException {
         it = tups.iterator();
     }
 

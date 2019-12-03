@@ -1,6 +1,8 @@
 package mydb;
 
 import mydb.Database.Database;
+import mydb.Exception.DBException;
+import mydb.Exception.TransactionAbortedException;
 import mydb.TupleDetail.Tuple;
 import mydb.TupleDetail.TupleDetail;
 
@@ -79,7 +81,7 @@ public class SeqScan implements DbIterator {
         this(tid, tableid, Database.getCatalog().getTableName(tableid));
     }
 
-    public void open() throws DbException, TransactionAbortedException, IOException {
+    public void open() throws DBException, TransactionAbortedException, IOException {
         tupleIterator.open();
     }
 
@@ -107,12 +109,12 @@ public class SeqScan implements DbIterator {
         return new TupleDetail(types, names);
     }
 
-    public boolean hasNext() throws TransactionAbortedException, DbException, IOException {
+    public boolean hasNext() throws TransactionAbortedException, DBException, IOException {
         return tupleIterator.hasNext();
     }
 
     public Tuple next() throws NoSuchElementException,
-            TransactionAbortedException, DbException, IOException {
+            TransactionAbortedException, DBException, IOException {
         return tupleIterator.next();
     }
 
@@ -120,7 +122,7 @@ public class SeqScan implements DbIterator {
         tupleIterator.close();
     }
 
-    public void rewind() throws DbException, NoSuchElementException,
+    public void rewind() throws DBException, NoSuchElementException,
             TransactionAbortedException, IOException {
         tupleIterator.rewind();
     }

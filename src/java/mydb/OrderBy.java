@@ -1,5 +1,7 @@
 package mydb;
 
+import mydb.Exception.DBException;
+import mydb.Exception.TransactionAbortedException;
 import mydb.TupleDetail.Tuple;
 import mydb.TupleDetail.TupleDetail;
 
@@ -57,7 +59,7 @@ public class OrderBy extends Operator {
         return td;
     }
 
-    public void open() throws DbException, NoSuchElementException,
+    public void open() throws DBException, NoSuchElementException,
             TransactionAbortedException, IOException {
         child.open();
         // load all the tuples in a collection, and sort it
@@ -73,7 +75,7 @@ public class OrderBy extends Operator {
         it = null;
     }
 
-    public void rewind() throws DbException, TransactionAbortedException {
+    public void rewind() throws DBException, TransactionAbortedException {
         it = childTups.iterator();
     }
 
@@ -85,7 +87,7 @@ public class OrderBy extends Operator {
      *         tuples
      */
     protected Tuple fetchNext() throws NoSuchElementException,
-            TransactionAbortedException, DbException {
+            TransactionAbortedException, DBException {
         if (it != null && it.hasNext()) {
             return it.next();
         } else

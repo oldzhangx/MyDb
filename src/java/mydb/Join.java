@@ -1,4 +1,6 @@
 package mydb;
+import mydb.Exception.DBException;
+import mydb.Exception.TransactionAbortedException;
 import mydb.TupleDetail.Tuple;
 import mydb.TupleDetail.TupleDetail;
 import java.io.IOException;
@@ -73,7 +75,7 @@ public class Join extends Operator {
         return TupleDetail.merge(td1, td2);
     }
 
-    public void open() throws DbException, NoSuchElementException,
+    public void open() throws DBException, NoSuchElementException,
             TransactionAbortedException, IOException {
         // some code goes here
         super.open();
@@ -90,7 +92,7 @@ public class Join extends Operator {
         tpIter = null;
     }
 
-    public void rewind() throws DbException, TransactionAbortedException, IOException {
+    public void rewind() throws DBException, TransactionAbortedException, IOException {
         // some code goes here
         child1.rewind();
         child2.rewind();
@@ -115,7 +117,7 @@ public class Join extends Operator {
      * @return The next matching tuple.
      * @see JoinCompare#filter
      */
-    protected Tuple fetchNext() throws TransactionAbortedException, DbException {
+    protected Tuple fetchNext() throws TransactionAbortedException, DBException {
         if (tpIter == null) return null;
         Tuple tp = null;
         if (tpIter.hasNext()){
@@ -131,7 +133,7 @@ public class Join extends Operator {
      * 3. sort-merge 算法 排序算法决定整个程序运行速度下限，刚开始使用冒泡排序，第二个query用了140多秒，第三个就更不用说了
      *    之后使用java内置的sort速度明显提高，第一个0.40s，第二个2.30s，第三个6.28s
      */
-    private Iterator<Tuple> getAllFetchNext() throws TransactionAbortedException, DbException, IOException {
+    private Iterator<Tuple> getAllFetchNext() throws TransactionAbortedException, DBException, IOException {
         int tpSize1 = child1.getTupleDetail().fieldNumber();
         int tpSize2 = child2.getTupleDetail().fieldNumber();
         tempTps = new ArrayList<Tuple>();

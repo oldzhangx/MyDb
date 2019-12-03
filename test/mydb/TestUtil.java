@@ -1,6 +1,8 @@
 package mydb;
 
 import mydb.Database.Database;
+import mydb.Exception.DBException;
+import mydb.Exception.TransactionAbortedException;
 import mydb.TupleDetail.Tuple;
 import mydb.TupleDetail.TupleDetail;
 import mydb.TupleDetail.TupleIterator;
@@ -25,7 +27,7 @@ public class TestUtil {
      * @param tupdata an array such that the ith element the jth tuple lives
      *   in slot j * width + i
      * @require tupdata.length % width == 0
-     * @throws DbException if we encounter an error creating the
+     * @throws DBException if we encounter an error creating the
      *   TupleIterator
      */
     public static TupleIterator createTupleList(int width, int[] tupdata) {
@@ -50,7 +52,7 @@ public class TestUtil {
      * @param tupdata an array such that the ith element the jth tuple lives
      *   in slot j * width + i.  Objects can be strings or ints;  tuples must all be of same type.
      * @require tupdata.length % width == 0
-     * @throws DbException if we encounter an error creating the
+     * @throws DBException if we encounter an error creating the
      *   TupleIterator
      */
     public static TupleIterator createTupleList(int width, Object[] tupdata) {
@@ -112,7 +114,7 @@ public class TestUtil {
      * If not, throw an assertion.
      */
     public static void compareDbIterators(DbIterator expected, DbIterator actual)
-            throws DbException, TransactionAbortedException, IOException {
+            throws DBException, TransactionAbortedException, IOException {
         while (expected.hasNext()) {
             assertTrue(actual.hasNext());
 
@@ -131,7 +133,7 @@ public class TestUtil {
      * If not, throw an assertion.
      */
     public static void matchAllTuples(DbIterator expected, DbIterator actual) throws
-            DbException, TransactionAbortedException, IOException {
+            DBException, TransactionAbortedException, IOException {
         // TODO(ghuo): this n^2 set comparison is kind of dumb, but we haven't
         // implemented hashCode or equals for tuples.
         boolean matched = false;
@@ -158,7 +160,7 @@ public class TestUtil {
      * Verifies that the DbIterator has been exhausted of all elements.
      */
     public static boolean checkExhausted(DbIterator it)
-            throws TransactionAbortedException, DbException, IOException {
+            throws TransactionAbortedException, DBException, IOException {
 
         if (it.hasNext()) return false;
 
@@ -220,12 +222,12 @@ public class TestUtil {
         }
 
         public ArrayList<Page> insertTuple(TransactionId tid, Tuple t)
-            throws DbException, IOException, TransactionAbortedException {
+            throws DBException, IOException, TransactionAbortedException {
             throw new RuntimeException("not implemented");
         }
 
         public Page deleteTuple(TransactionId tid, Tuple t)
-            throws DbException, TransactionAbortedException {
+            throws DBException, TransactionAbortedException {
             throw new RuntimeException("not implemented");
         }
 
@@ -288,12 +290,12 @@ public class TestUtil {
             return tup;
         }
 
-		public boolean hasNext() throws DbException, TransactionAbortedException {
+		public boolean hasNext() throws DBException, TransactionAbortedException {
 			if (cur >= high) return false;
 			return true;
 		}
 
-		public Tuple next() throws DbException, TransactionAbortedException, NoSuchElementException {
+		public Tuple next() throws DBException, TransactionAbortedException, NoSuchElementException {
 			if(cur >= high) throw new NoSuchElementException();
             Tuple tup = new Tuple(getTupleDetail());
             for (int i = 0; i < width; ++i)

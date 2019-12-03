@@ -1,5 +1,7 @@
 package mydb;
 
+import mydb.Exception.DBException;
+import mydb.Exception.TransactionAbortedException;
 import mydb.TupleDetail.Tuple;
 import mydb.TupleDetail.TupleDetail;
 
@@ -54,7 +56,7 @@ public class Query implements Serializable {
         tid = t;
     }
 
-    public void start() throws  DbException,
+    public void start() throws DBException,
             TransactionAbortedException, IOException {
         op.open();
 
@@ -66,7 +68,7 @@ public class Query implements Serializable {
     }
 
     /** @return true if there are more tuples remaining. */
-    public boolean hasNext() throws DbException, TransactionAbortedException, IOException {
+    public boolean hasNext() throws DBException, TransactionAbortedException, IOException {
         return op.hasNext();
     }
 
@@ -75,17 +77,17 @@ public class Query implements Serializable {
      * is closed.
      * 
      * @return The next tuple in the iterator
-     * @throws DbException
+     * @throws DBException
      *             If there is an error in the database system
      * @throws NoSuchElementException
      *             If the iterator has finished iterating
      * @throws TransactionAbortedException
      *             If the transaction is aborted (e.g., due to a deadlock)
      */
-    public Tuple next() throws DbException, NoSuchElementException,
+    public Tuple next() throws DBException, NoSuchElementException,
             TransactionAbortedException, IOException {
         if (!started)
-            throw new DbException("Database not started.");
+            throw new DBException("Database not started.");
 
         return op.next();
     }
@@ -96,7 +98,7 @@ public class Query implements Serializable {
         started = false;
     }
 
-    public void execute() throws IOException, DbException, TransactionAbortedException {
+    public void execute() throws IOException, DBException, TransactionAbortedException {
         TupleDetail td = this.getOutputTupleDesc();
 
         StringBuilder names = new StringBuilder();

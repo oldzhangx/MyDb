@@ -1,5 +1,7 @@
 package mydb;
 
+import mydb.Exception.DBException;
+import mydb.Exception.TransactionAbortedException;
 import mydb.TupleDetail.Tuple;
 import mydb.TupleDetail.TupleDetail;
 
@@ -50,7 +52,7 @@ public class Project extends Operator {
         return td;
     }
 
-    public void open() throws DbException, NoSuchElementException,
+    public void open() throws DBException, NoSuchElementException,
             TransactionAbortedException, IOException {
         child.open();
         super.open();
@@ -61,7 +63,7 @@ public class Project extends Operator {
         child.close();
     }
 
-    public void rewind() throws DbException, TransactionAbortedException, IOException {
+    public void rewind() throws DBException, TransactionAbortedException, IOException {
         child.rewind();
     }
 
@@ -72,7 +74,7 @@ public class Project extends Operator {
      * @return The next tuple, or null if there are no more tuples
      */
     protected Tuple fetchNext() throws NoSuchElementException,
-            TransactionAbortedException, DbException, IOException {
+            TransactionAbortedException, DBException, IOException {
         while (child.hasNext()) {
             Tuple t = child.next();
             Tuple newTuple = new Tuple(td);

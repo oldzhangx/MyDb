@@ -1,6 +1,7 @@
 package mydb;
 import mydb.Database.Catalog;
 import mydb.Database.Database;
+import mydb.Exception.ParserException;
 import mydb.TupleDetail.Tuple;
 import mydb.TupleDetail.TupleDetail;
 
@@ -96,12 +97,12 @@ public class LogicalPlan {
      *   @param constantValue the constant to compare the predicate
      *   against; if field is an integer field, this should be a
      *   String representing an integer
-     *   @throws ParsingException if field is not in one of the tables
+     *   @throws ParserException if field is not in one of the tables
      *   added via {@link #addScan} or if field is ambiguous (e.g., two
      *   tables contain a field named field.)
      */
     public void addFilter(String field, Comparison.Operation p, String
-        constantValue) throws ParsingException{ 
+        constantValue) throws ParserException {
 
         field = disambiguateName(field); 
         String table = field.split("[.]")[0];
@@ -118,11 +119,11 @@ public class LogicalPlan {
      *  thrown.
      *  @param joinField2 The name of the second join field
      *  @param pred The join predicate
-     *  @throws ParsingException if either of the fields is ambiguous,
+     *  @throws ParserException if either of the fields is ambiguous,
      *      or is not in one of the tables added via {@link #addScan}
     */
 
-    public void addJoin( String joinField1, String joinField2, Comparison.Operation pred) throws ParsingException {
+    public void addJoin( String joinField1, String joinField2, Comparison.Operation pred) throws ParserException {
         joinField1 = disambiguateName(joinField1);
         joinField2 = disambiguateName(joinField2);
         String table1Alias = joinField1.split("[.]")[0];
@@ -131,7 +132,7 @@ public class LogicalPlan {
         String pureField2 = joinField2.split("[.]")[1];
 
         if (table1Alias.equals(table2Alias))
-            throw new ParsingException("Cannot join on two fields from same table");
+            throw new ParserException("Cannot join on two fields from same table");
         LogicalJoinNode lj = new LogicalJoinNode(table1Alias,table2Alias,pureField1, pureField2, pred);
         System.out.println("Added join between " + joinField1 + " and " + joinField2);
         joins.addElement(lj);
@@ -147,10 +148,10 @@ public class LogicalPlan {
      *  @param joinField2 the subquery to join with -- the join field
      *    of the subquery is the first field in the result set of the query
      *  @param pred The join predicate.
-     *  @throws ParsingException if either of the fields is ambiguous,
+     *  @throws ParserException if either of the fields is ambiguous,
      *      or is not in one of the tables added via {@link #addScan}
      */
-    public void addJoin( String joinField1, DbIterator joinField2, Comparison.Operation pred) throws ParsingException {
+    public void addJoin( String joinField1, DbIterator joinField2, Comparison.Operation pred) throws ParserException {
         joinField1 = disambiguateName(joinField1);
 
         String table1 = joinField1.split("[.]")[0];
@@ -177,9 +178,9 @@ public class LogicalPlan {
         Fields are output by the query such that the rightmost field is the first added via addProjectField.
         @param fname the field to add to the output
         @param aggOp the aggregate operation over the field.
-     * @throws ParsingException 
+     * @throws ParserException
     */
-    public void addProjectField(String fname, String aggOp) throws ParsingException {
+    public void addProjectField(String fname, String aggOp) throws ParserException {
         fname=disambiguateName(fname);
         if (fname.equals("*"))
             fname="null.*";
@@ -196,9 +197,9 @@ public class LogicalPlan {
         @param op the aggregation operator
         @param afield the field to aggregate over
         @param gfield the field to group by
-     * @throws ParsingException 
+     * @throws ParserException
     */
-    public void addAggregate(String op, String afield, String gfield) throws ParsingException {
+    public void addAggregate(String op, String afield, String gfield) throws ParserException {
         afield=disambiguateName(afield);
         if (gfield!=null)
             gfield=disambiguateName(gfield);
@@ -212,9 +213,9 @@ public class LogicalPlan {
         a single ORDER BY field.
         @param field the field to order by
         @param asc true if should be ordered in ascending order, false for descending order
-     * @throws ParsingException 
+     * @throws ParserException
     */
-    public void addOrderBy(String field, boolean asc) throws ParsingException {
+    public void addOrderBy(String field, boolean asc) throws ParserException {
         field=disambiguateName(field);
         oByField = field;
         oByAsc = asc;
@@ -225,16 +226,16 @@ public class LogicalPlan {
      *   through all of the tables added via {@link #addScan}. 
      *  @return A fully qualified name of the form tableAlias.name.  If the name parameter is already qualified
      *   with a table name, simply returns name.
-     *  @throws ParsingException if the field cannot be found in any of the tables, or if the
+     *  @throws ParserException if the field cannot be found in any of the tables, or if the
      *   field is ambiguous (appears in multiple tables)
      */
-    String disambiguateName(String name) throws ParsingException {
+    String disambiguateName(String name) throws ParserException {
 
         String[] fields = name.split("[.]");
         if (fields.length == 2 && (!fields[0].equals("null")))
             return name;
         if (fields.length > 2) 
-            throw new ParsingException("Field " + name + " is not a valid field reference.");
+            throw new ParserException("Field " + name + " is not a valid field reference.");
         if (fields.length == 2)
             name = fields[1];
         if (name.equals("*")) return name;
@@ -250,7 +251,7 @@ public class LogicalPlan {
                 if (tableName == null) {
                     tableName = table.alias;
                 } else {
-                    throw new ParsingException("Field " + name + " appears in multiple tables; disambiguate by referring to it as tablename." + name);
+                    throw new ParserException("Field " + name + " appears in multiple tables; disambiguate by referring to it as tablename." + name);
                 }
             } catch (NoSuchElementException e) {
                 //ignore
@@ -259,21 +260,21 @@ public class LogicalPlan {
         if (tableName != null)
             return tableName + "." + name;
         else
-            throw new ParsingException("Field " + name + " does not appear in any tables.");
+            throw new ParserException("Field " + name + " does not appear in any tables.");
 
     }
 
     /** Convert the aggregate operator name s into an Aggregator.op operation.
-     *  @throws ParsingException if s is not a valid operator name 
+     *  @throws ParserException if s is not a valid operator name
      */
-    static Aggregator.Opertion getAggOp(String s) throws ParsingException {
+    static Aggregator.Opertion getAggOp(String s) throws ParserException {
         s = s.toUpperCase();
         if (s.equals("AVG")) return Aggregator.Opertion.AVG;
         if (s.equals("SUM")) return Aggregator.Opertion.SUM;
         if (s.equals("COUNT")) return Aggregator.Opertion.COUNT;
         if (s.equals("MIN")) return Aggregator.Opertion.MIN;
         if (s.equals("MAX")) return Aggregator.Opertion.MAX;
-        throw new ParsingException("Unknown predicate " + s);
+        throw new ParserException("Unknown predicate " + s);
     }
 
     /** Convert this LogicalPlan into a physicalPlan represented by a {@link DbIterator}.  Attempts to
@@ -286,10 +287,10 @@ public class LogicalPlan {
      *    t2 would have just one entry with key 't' in this HashMap).
      *  @param explain flag indicating whether output visualizing the physical
      *    query plan should be given.
-     *  @throws ParsingException if the logical plan is not valid
+     *  @throws ParserException if the logical plan is not valid
      *  @return A DbIterator representing this plan.
      */ 
-    public DbIterator physicalPlan(TransactionId t, Map<String,TableStats> baseTableStats, boolean explain) throws ParsingException {
+    public DbIterator physicalPlan(TransactionId t, Map<String,TableStats> baseTableStats, boolean explain) throws ParserException {
         Iterator<LogicalScanNode> tableIt = tables.iterator();
         HashMap<String,String> equivMap = new HashMap<String,String>();
         HashMap<String,Double> filterSelectivities = new HashMap<String, Double>();
@@ -301,7 +302,7 @@ public class LogicalPlan {
             try {
                  ss = new SeqScan(t, Database.getCatalog().getDbFile(table.t).getId(), table.alias);
             } catch (NoSuchElementException e) {
-                throw new ParsingException("Unknown table " + table.t);
+                throw new ParserException("Unknown table " + table.t);
             }
             
             subplanMap.put(table.alias,ss);
@@ -316,7 +317,7 @@ public class LogicalPlan {
             LogicalFilterNode lf = filterIt.next();
             DbIterator subplan = subplanMap.get(lf.tableAlias);
             if (subplan == null) {
-                throw new ParsingException("Unknown table in WHERE clause " + lf.tableAlias);
+                throw new ParserException("Unknown table in WHERE clause " + lf.tableAlias);
             }
 
             Field f;
@@ -326,7 +327,7 @@ public class LogicalPlan {
             try {//td.fieldNameToIndex(disambiguateName(lf.fieldPureName))
                 ftyp = td.getFieldType(td.fieldNameToIndex(lf.fieldQuantifiedName));
             } catch (java.util.NoSuchElementException e) {
-                throw new ParsingException("Unknown field in filter expression " + lf.fieldQuantifiedName);
+                throw new ParserException("Unknown field in filter expression " + lf.fieldQuantifiedName);
             }
             if (ftyp == Type.INT_TYPE)
                 f = new IntField(new Integer(lf.c).intValue());
@@ -337,7 +338,7 @@ public class LogicalPlan {
             try {
                 p = new Comparison(subplan.getTupleDetail().fieldNameToIndex(lf.fieldQuantifiedName), lf.p,f);
             } catch (NoSuchElementException e) {
-                throw new ParsingException("Unknown field " + lf.fieldQuantifiedName);
+                throw new ParserException("Unknown field " + lf.fieldQuantifiedName);
             }
             subplanMap.put(lf.tableAlias, new Filter(p, subplan));
 
@@ -376,15 +377,15 @@ public class LogicalPlan {
             if (isSubqueryJoin) {
                 plan2 = ((LogicalSubplanJoinNode)lj).subPlan;
                 if (plan2 == null) 
-                    throw new ParsingException("Invalid subquery.");
+                    throw new ParserException("Invalid subquery.");
             } else { 
                 plan2 = subplanMap.get(t2name);
             }
             
             if (plan1 == null)
-                throw new ParsingException("Unknown table in WHERE clause " + lj.t1Alias);
+                throw new ParserException("Unknown table in WHERE clause " + lj.t1Alias);
             if (plan2 == null)
-                throw new ParsingException("Unknown table in WHERE clause " + lj.t2Alias);
+                throw new ParserException("Unknown table in WHERE clause " + lj.t2Alias);
             
             DbIterator j;
             j = jo.instantiateJoin(lj,plan1,plan2);
@@ -408,7 +409,7 @@ public class LogicalPlan {
         }
 
         if (subplanMap.size() > 1) {
-            throw new ParsingException("Query does not include join expressions joining all nodes!");
+            throw new ParserException("Query does not include join expressions joining all nodes!");
         }
         
         DbIterator node =  (DbIterator)(subplanMap.entrySet().iterator().next().getValue());
@@ -426,13 +427,13 @@ public class LogicalPlan {
 //                    id = 
                     td.fieldNameToIndex(si.fname);
                 } catch (NoSuchElementException e) {
-                    throw new ParsingException("Unknown field " +  si.fname + " in SELECT list");
+                    throw new ParserException("Unknown field " +  si.fname + " in SELECT list");
                 }
                 outTypes.add(Type.INT_TYPE);  //the type of all aggregate functions is INT
 
             } else if (hasAgg) {
                     if (groupByField == null) {
-                        throw new ParsingException("Field " + si.fname + " does not appear in GROUP BY list");
+                        throw new ParserException("Field " + si.fname + " does not appear in GROUP BY list");
                     }
                     outFields.add(0);
                     TupleDetail td = node.getTupleDetail();
@@ -440,7 +441,7 @@ public class LogicalPlan {
                     try {
                         id = td.fieldNameToIndex(groupByField);
                     } catch (NoSuchElementException e) {
-                        throw new ParsingException("Unknown field " +  groupByField + " in GROUP BY statement");
+                        throw new ParserException("Unknown field " +  groupByField + " in GROUP BY statement");
                     }
                     outTypes.add(td.getFieldType(id));
             } else if (si.fname.equals("null.*")) {
@@ -455,7 +456,7 @@ public class LogicalPlan {
                     try {
                         id = td.fieldNameToIndex(si.fname);
                     } catch (NoSuchElementException e) {
-                        throw new ParsingException("Unknown field " +  si.fname + " in SELECT list");
+                        throw new ParserException("Unknown field " +  si.fname + " in SELECT list");
                     }
                     outFields.add(id);
                     outTypes.add(td.getFieldType(id));
@@ -472,7 +473,7 @@ public class LogicalPlan {
                                         groupByField == null?Aggregator.NO_GROUPING:td.fieldNameToIndex(groupByField),
                                 getAggOp(aggOp));
             } catch (NoSuchElementException | IllegalArgumentException e) {
-                throw new mydb.ParsingException(e);
+                throw new ParserException(e);
             }
             node = aggNode;
         }
@@ -526,7 +527,7 @@ public class LogicalPlan {
         DbIterator j = null;
         try {
             j = lp.physicalPlan(tid,tableMap, false);
-        } catch (ParsingException e) {
+        } catch (ParserException e) {
             e.printStackTrace();
             System.exit(0);
         }

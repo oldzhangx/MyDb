@@ -3,6 +3,7 @@ package mydb;
 import mydb.Database.BufferPool;
 import mydb.Database.Catalog;
 import mydb.Database.Database;
+import mydb.Exception.DBException;
 import mydb.TupleDetail.Tuple;
 import mydb.TupleDetail.TupleDetail;
 
@@ -223,14 +224,14 @@ public class HeapPage implements Page {
     /**
      * Delete the specified tuple from the page;  the tuple should be updated to reflect
      *   that it is no longer stored on any page.
-     * @throws DbException if this tuple is not on this page, or tuple slot is
+     * @throws DBException if this tuple is not on this page, or tuple slot is
      *         already empty.
      */
-    public void deleteTuple(Tuple tuple) throws DbException {
-        if(tuple ==null) throw new DbException("delete tuple is invalid");
-        if(!(heapPageId).equals(tuple.getRecordId().getPageId())) throw new DbException("delete tuple heappageId not equal");
+    public void deleteTuple(Tuple tuple) throws DBException {
+        if(tuple ==null) throw new DBException("delete tuple is invalid");
+        if(!(heapPageId).equals(tuple.getRecordId().getPageId())) throw new DBException("delete tuple heappageId not equal");
         int TupleNo = tuple.getRecordId().tupleno();
-        if(!isSlotUsed(TupleNo)) throw new DbException("tuple slot is already empty");
+        if(!isSlotUsed(TupleNo)) throw new DBException("tuple slot is already empty");
         tuples[TupleNo] = null;
         markSlotUsed(TupleNo, false);
     }
@@ -238,12 +239,12 @@ public class HeapPage implements Page {
     /**
      * Adds the specified tuple to the page;  the tuple should be updated to reflect
      *  that it is now stored on this page.
-     * @throws DbException if the page is full (no empty slots) or tupledesc
+     * @throws DBException if the page is full (no empty slots) or tupledesc
      *         is mismatch.
      */
-    public void insertTuple(Tuple tuple) throws DbException {
-        if (tuple == null) throw new DbException("insert tuple is invalid");
-        if (!tuple.getTupleDetail().equals(tupleDetail)) throw new DbException("insert error: tupledetail not match");
+    public void insertTuple(Tuple tuple) throws DBException {
+        if (tuple == null) throw new DBException("insert tuple is invalid");
+        if (!tuple.getTupleDetail().equals(tupleDetail)) throw new DBException("insert error: tupledetail not match");
         for (int i = 0; i < tupleNumbersInPage; i++){
             if (isSlotUsed(i)) continue;
             tuples[i] = tuple;
@@ -252,7 +253,7 @@ public class HeapPage implements Page {
             tuple.setRecordId(recordId);
             return;
         }
-        throw new DbException("insert error: page cannot be inserted tuples");
+        throw new DBException("insert error: page cannot be inserted tuples");
     }
 
     /**

@@ -6,6 +6,8 @@ import java.util.HashMap;
 
 import mydb.*;
 import mydb.Database.Database;
+import mydb.Exception.DBException;
+import mydb.Exception.TransactionAbortedException;
 import org.junit.Test;
 
 
@@ -13,7 +15,7 @@ public class JoinTest extends MyDbTestBase {
     private static final int COLUMNS = 2;
     public void validateJoin(int table1ColumnValue, int table1Rows, int table2ColumnValue,
             int table2Rows)
-            throws IOException, DbException, TransactionAbortedException {
+            throws IOException, DBException, TransactionAbortedException {
         // Create the two tables
         HashMap<Integer, Integer> columnSpecification = new HashMap<Integer, Integer>();
         columnSpecification.put(0, table1ColumnValue);
@@ -56,17 +58,17 @@ public class JoinTest extends MyDbTestBase {
     }
 
     @Test public void testSingleMatch()
-            throws IOException, DbException, TransactionAbortedException {
+            throws IOException, DBException, TransactionAbortedException {
         validateJoin(1, 1, 1, 1);
     }
 
     @Test public void testNoMatch()
-            throws IOException, DbException, TransactionAbortedException {
+            throws IOException, DBException, TransactionAbortedException {
         validateJoin(1, 2, 2, 10);
     }
 
     @Test public void testMultipleMatch()
-            throws IOException, DbException, TransactionAbortedException {
+            throws IOException, DBException, TransactionAbortedException {
         validateJoin(1, 3, 1, 3);
     }
 

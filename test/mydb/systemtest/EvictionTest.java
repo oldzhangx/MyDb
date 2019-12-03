@@ -7,6 +7,8 @@ import java.util.Arrays;
 
 import mydb.*;
 import mydb.Database.Database;
+import mydb.Exception.DBException;
+import mydb.Exception.TransactionAbortedException;
 import mydb.TupleDetail.Tuple;
 import mydb.TupleDetail.TupleDetail;
 import mydb.TupleDetail.TupleIterator;
@@ -24,7 +26,7 @@ public class EvictionTest extends MyDbTestBase {
     private static final long MEMORY_LIMIT_IN_MB = 5;
     private static final int BUFFER_PAGES = 16;
 
-    @Test public void testHeapFileScanWithManyPages() throws IOException, DbException, TransactionAbortedException {
+    @Test public void testHeapFileScanWithManyPages() throws IOException, DBException, TransactionAbortedException {
         System.out.println("EvictionTest creating large table");
         HeapFile f = SystemTestUtil.createRandomHeapFile(2, 1024*500, null, null);
         System.out.println("EvictionTest scanning large table");
@@ -43,7 +45,7 @@ public class EvictionTest extends MyDbTestBase {
         }
     }
 
-    public static void insertRow(HeapFile f, Transaction t) throws DbException,
+    public static void insertRow(HeapFile f, Transaction t) throws DBException,
             TransactionAbortedException, IOException {
         // Create a row to insert
         TupleDetail twoIntColumns = Utility.getTupleDesc(2);
@@ -63,7 +65,7 @@ public class EvictionTest extends MyDbTestBase {
     }
 
     public static boolean findMagicTuple(HeapFile f, Transaction t)
-            throws DbException, TransactionAbortedException, IOException {
+            throws DBException, TransactionAbortedException, IOException {
         SeqScan ss = new SeqScan(t.getId(), f.getId(), "");
         boolean found = false;
         ss.open();

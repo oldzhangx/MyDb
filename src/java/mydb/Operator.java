@@ -1,4 +1,6 @@
 package mydb;
+import mydb.Exception.DBException;
+import mydb.Exception.TransactionAbortedException;
 import mydb.TupleDetail.Tuple;
 import mydb.TupleDetail.TupleDetail;
 
@@ -18,7 +20,7 @@ public abstract class Operator implements DbIterator {
 
     private static final long serialVersionUID = -8386431487731922691L;
 
-    public boolean hasNext() throws DbException, TransactionAbortedException, IOException {
+    public boolean hasNext() throws DBException, TransactionAbortedException, IOException {
         if (!this.open)
             throw new IllegalStateException("Operator not yet open");
 
@@ -27,7 +29,7 @@ public abstract class Operator implements DbIterator {
         return next != null;
     }
 
-    public Tuple next() throws DbException, TransactionAbortedException,
+    public Tuple next() throws DBException, TransactionAbortedException,
             NoSuchElementException, IOException {
         if (next == null) {
             next = fetchNext();
@@ -48,7 +50,7 @@ public abstract class Operator implements DbIterator {
      * @return the next Tuple in the iterator, or null if the iteration is
      *         finished.
      */
-    protected abstract Tuple fetchNext() throws DbException,
+    protected abstract Tuple fetchNext() throws DBException,
             TransactionAbortedException, IOException;
 
     /**
@@ -65,7 +67,7 @@ public abstract class Operator implements DbIterator {
     private boolean open = false;
     private int estimatedCardinality = 0;
 
-    public void open() throws DbException, TransactionAbortedException, IOException {
+    public void open() throws DBException, TransactionAbortedException, IOException {
         this.open = true;
     }
 
@@ -75,7 +77,7 @@ public abstract class Operator implements DbIterator {
      *         operators, the order of the children is not important. But they
      *         should be consistent among multiple calls.
      * */
-    public abstract DbIterator[] getChildren() throws IOException, TransactionAbortedException, DbException;
+    public abstract DbIterator[] getChildren() throws IOException, TransactionAbortedException, DBException;
 
     /**
      * Set the children(child) of this operator. If the operator has only one

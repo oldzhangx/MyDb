@@ -1,4 +1,6 @@
 package mydb;
+import mydb.Exception.DBException;
+import mydb.Exception.TransactionAbortedException;
 import mydb.TupleDetail.Tuple;
 import mydb.TupleDetail.TupleDetail;
 
@@ -17,16 +19,16 @@ import java.util.NoSuchElementException;
 public interface DbIterator extends Serializable{
   /**
    * Opens the iterator. This must be called before any of the other methods.
-   * @throws DbException when there are problems opening/accessing the database.
+   * @throws DBException when there are problems opening/accessing the database.
    */
   public void open()
-          throws DbException, TransactionAbortedException, IOException;
+          throws DBException, TransactionAbortedException, IOException;
 
   /** Returns true if the iterator has more tuples.
    * @return true f the iterator has more tuples.
    * @throws IllegalStateException If the iterator has not been opened
  */
-  public boolean hasNext() throws DbException, TransactionAbortedException, IOException;
+  public boolean hasNext() throws DBException, TransactionAbortedException, IOException;
 
   /**
    * Returns the next tuple from the operator (typically implementing by reading
@@ -36,14 +38,14 @@ public interface DbIterator extends Serializable{
    * @throws NoSuchElementException if there are no more tuples.
    * @throws IllegalStateException If the iterator has not been opened
    */
-  public Tuple next() throws DbException, TransactionAbortedException, NoSuchElementException, IOException;
+  public Tuple next() throws DBException, TransactionAbortedException, NoSuchElementException, IOException;
 
   /**
    * Resets the iterator to the start.
-   * @throws DbException when rewind is unsupported.
+   * @throws DBException when rewind is unsupported.
    * @throws IllegalStateException If the iterator has not been opened
    */
-  public void rewind() throws DbException, TransactionAbortedException, IOException;
+  public void rewind() throws DBException, TransactionAbortedException, IOException;
 
   /**
    * Returns the TupleDesc associated with this DbIterator. 

@@ -1,5 +1,7 @@
 package mydb;
 
+import mydb.Exception.DBException;
+import mydb.Exception.TransactionAbortedException;
 import mydb.TupleDetail.Tuple;
 import mydb.TupleDetail.TupleDetail;
 import java.io.IOException;
@@ -95,7 +97,7 @@ public class Aggregate extends Operator {
 	return aop.toString();
     }
 
-    public void open() throws NoSuchElementException, DbException,
+    public void open() throws NoSuchElementException, DBException,
             TransactionAbortedException, IOException {
         child.open();
         super.open();
@@ -113,14 +115,14 @@ public class Aggregate extends Operator {
      * the result tuple should contain one field representing the result of the
      * aggregate. Should return null if there are no more tuples.
      */
-    protected Tuple fetchNext() throws TransactionAbortedException, DbException, IOException {
+    protected Tuple fetchNext() throws TransactionAbortedException, DBException, IOException {
         if (aggregateIter.hasNext()) {
             return aggregateIter.next();
         }
         return null;
     }
 
-    public void rewind() throws DbException, TransactionAbortedException, IOException {
+    public void rewind() throws DBException, TransactionAbortedException, IOException {
         aggregateIter.rewind();
     }
 

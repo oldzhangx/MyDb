@@ -1,6 +1,8 @@
 package mydb;
 
 import mydb.Database.Database;
+import mydb.Exception.DBException;
+import mydb.Exception.TransactionAbortedException;
 import mydb.TupleDetail.Tuple;
 import mydb.TupleDetail.TupleDetail;
 
@@ -43,7 +45,7 @@ public class Delete extends Operator {
         return tupleDetail;
     }
 
-    public void open() throws DbException, TransactionAbortedException, IOException {
+    public void open() throws DBException, TransactionAbortedException, IOException {
         child.open();
         super.open();
         while (child.hasNext()) {
@@ -59,7 +61,7 @@ public class Delete extends Operator {
         child.close();
     }
 
-    public void rewind() throws DbException, TransactionAbortedException {
+    public void rewind() throws DBException, TransactionAbortedException {
         action = false;
     }
 
@@ -73,7 +75,7 @@ public class Delete extends Operator {
      * @see BufferPool#deleteTuple
      */
     // TODO: why need action
-    protected Tuple fetchNext() throws TransactionAbortedException, DbException {
+    protected Tuple fetchNext() throws TransactionAbortedException, DBException {
         if (action) return null;
 
         Tuple deleted_num=new Tuple(tupleDetail);

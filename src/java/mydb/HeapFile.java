@@ -2,6 +2,8 @@ package mydb;
 
 import mydb.Database.BufferPool;
 import mydb.Database.Database;
+import mydb.Exception.DBException;
+import mydb.Exception.TransactionAbortedException;
 import mydb.TupleDetail.Tuple;
 import mydb.TupleDetail.TupleDetail;
 
@@ -81,8 +83,8 @@ public class HeapFile implements DbFile {
     }
 
     // see DbFile.java for javadocs
-    public Page readPage(PageId pid) throws IOException, DbException {
-        if(pid == null) throw new DbException("invalid page info");
+    public Page readPage(PageId pid) throws IOException, DBException {
+        if(pid == null) throw new DBException("invalid page info");
         byte[] data = new byte[BufferPool.PAGE_SIZE];
         RandomAccessFile randomAccessFile = new RandomAccessFile(getFile(), "r");
         randomAccessFile.seek(pid.pageNumber() * BufferPool.PAGE_SIZE);
@@ -91,8 +93,8 @@ public class HeapFile implements DbFile {
     }
 
     // see DbFile.java for javadocs
-    public void writePage(Page page) throws IOException, DbException {
-        if(page == null) throw new DbException("invalid page info");
+    public void writePage(Page page) throws IOException, DBException {
+        if(page == null) throw new DBException("invalid page info");
         RandomAccessFile randomAccessFile = new RandomAccessFile(file, "rw");
         randomAccessFile.seek(page.getId().pageNumber() * BufferPool.PAGE_SIZE);
         byte[] data = page.getPageData();
@@ -102,8 +104,8 @@ public class HeapFile implements DbFile {
 
     // see DbFile.java for javadocs
     public ArrayList<Page> insertTuple(TransactionId transactionId, Tuple tuple)
-            throws DbException, IOException, TransactionAbortedException {
-        if(tuple == null) throw new DbException("Page insert error tuple is null");
+            throws DBException, IOException, TransactionAbortedException {
+        if(tuple == null) throw new DBException("Page insert error tuple is null");
         ArrayList<Page> pageArrayList = new ArrayList<>();
         boolean mark  = false;
         //find pages can be inserted
@@ -112,7 +114,7 @@ public class HeapFile implements DbFile {
             HeapPage page = (HeapPage) Database.getBufferPool().
                     // heapPage is creates by hashcode and i in pageNo
                     getPage(transactionId, new HeapPageId(getId(),i), Permissions.READ_WRITE);
-            if(page == null) throw new DbException("heapPage page is not found error");
+            if(page == null) throw new DBException("heapPage page is not found error");
             if(page.getNumEmptySlots() == 0) continue;
             page.insertTuple(tuple);
             page.markDirty(true,transactionId);
@@ -138,9 +140,9 @@ public class HeapFile implements DbFile {
     }
 
     // see DbFile.java for javadocs
-    public Page deleteTuple(TransactionId transactionId, Tuple tuple) throws DbException,
+    public Page deleteTuple(TransactionId transactionId, Tuple tuple) throws DBException,
             TransactionAbortedException, IOException {
-        if(tuple == null) throw new DbException("Page delete error tuple is null");
+        if(tuple == null) throw new DBException("Page delete error tuple is null");
         PageId pageId = tuple.getRecordId().getPageId();
         if(pageId.pageNumber()<pageCount) {
             HeapPage page = (HeapPage) Database.getBufferPool().
@@ -168,19 +170,19 @@ public class HeapFile implements DbFile {
             tid = transactionId;
         }
 
-        public Iterator<Tuple> getTuplesInPage(HeapPageId pid) throws TransactionAbortedException, DbException, IOException {
+        public Iterator<Tuple> getTuplesInPage(HeapPageId pid) throws TransactionAbortedException, DBException, IOException {
             return ((HeapPage) Database.getBufferPool().getPage(tid, pid, Permissions.READ_ONLY)).iterator();
         }
 
         @Override
-        public void open() throws DbException, TransactionAbortedException, IOException {
+        public void open() throws DBException, TransactionAbortedException, IOException {
             pageNo = 0;
             HeapPageId pid = new HeapPageId(getId(), pageNo);
             tuplesInPage = getTuplesInPage(pid);
         }
 
         @Override
-        public boolean hasNext() throws DbException, TransactionAbortedException, IOException {
+        public boolean hasNext() throws DBException, TransactionAbortedException, IOException {
             if (tuplesInPage == null) return false;
             if (tuplesInPage.hasNext()) return true;
             //TODO : page and iter relation
@@ -193,14 +195,14 @@ public class HeapFile implements DbFile {
         }
 
         @Override
-        public Tuple next() throws DbException, TransactionAbortedException, NoSuchElementException, IOException {
+        public Tuple next() throws DBException, TransactionAbortedException, NoSuchElementException, IOException {
             //TODO
             if (!hasNext()) throw new NoSuchElementException("not opened or no tuple remained");
             return tuplesInPage.next();
         }
 
         @Override
-        public void rewind() throws DbException, TransactionAbortedException, IOException {
+        public void rewind() throws DBException, TransactionAbortedException, IOException {
             open();
         }
 

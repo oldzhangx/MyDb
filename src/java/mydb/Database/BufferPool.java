@@ -1,6 +1,8 @@
 package mydb.Database;
 
 import mydb.*;
+import mydb.Exception.DBException;
+import mydb.Exception.TransactionAbortedException;
 import mydb.TupleDetail.Tuple;
 import java.io.IOException;
 import java.util.HashMap;
@@ -52,7 +54,7 @@ public class BufferPool {
      * @param perm the requested permissions on the page
      */
     public  Page getPage(TransactionId tid, PageId pid, Permissions perm)
-            throws TransactionAbortedException, DbException, IOException {
+            throws TransactionAbortedException, DBException, IOException {
         if (pages != null && pages.containsKey(pid))
             return pages.get(pid);
         DbFile dbFile = Database.getCatalog().getDbFile(pid.getTableId());
@@ -121,7 +123,7 @@ public class BufferPool {
      *
      */
     public void insertTuple(TransactionId transactionId, int tableId, Tuple tuple)
-        throws DbException, IOException, TransactionAbortedException {
+        throws DBException, IOException, TransactionAbortedException {
 
         HeapFile table = (HeapFile) Database.getCatalog().getDbFile(tableId);
         table.insertTuple(transactionId, tuple);
@@ -143,7 +145,7 @@ public class BufferPool {
      *
      */
     public  void deleteTuple(TransactionId transactionId, Tuple tuple)
-            throws DbException, TransactionAbortedException, IOException {
+            throws DBException, TransactionAbortedException, IOException {
         int tableId=tuple.getRecordId().getPageId().getTableId();
         HeapFile table = (HeapFile) Database.getCatalog().getDbFile(tableId);
         table.deleteTuple(transactionId, tuple);
@@ -191,7 +193,7 @@ public class BufferPool {
      * Discards a page from the buffer pool.
      * Flushes the page to disk to ensure dirty pages are updated on disk.
      */
-    private synchronized  void evictPage() throws DbException {
+    private synchronized  void evictPage() throws DBException {
         // some code goes here
         // not necessary for proj1
     }

@@ -2,6 +2,8 @@
 package mydb;
 
 import mydb.Database.Catalog;
+import mydb.Exception.DBException;
+import mydb.Exception.TransactionAbortedException;
 import mydb.TupleDetail.Tuple;
 import mydb.TupleDetail.TupleDetail;
 
@@ -23,7 +25,7 @@ public interface DbFile extends Serializable {
      *
      * @throws IllegalArgumentException if the page does not exist in this file.
      */
-    public Page readPage(PageId id) throws IOException, DbException;
+    public Page readPage(PageId id) throws IOException, DBException;
 
     /**
      * Push the specified page to disk.
@@ -32,7 +34,7 @@ public interface DbFile extends Serializable {
      * @throws IOException if the write fails
      *
      */
-    public void writePage(Page p) throws IOException, DbException;
+    public void writePage(Page p) throws IOException, DBException;
 
     /**
      * Inserts the specified tuple to the file on behalf of transaction.
@@ -43,11 +45,11 @@ public interface DbFile extends Serializable {
      * @param t The tuple to add.  This tuple should be updated to reflect that
      *          it is now stored in this file.
      * @return An ArrayList contain the pages that were modified
-     * @throws DbException if the tuple cannot be added
+     * @throws DBException if the tuple cannot be added
      * @throws IOException if the needed file can't be read/written
      */
     public ArrayList<Page> insertTuple(TransactionId tid, Tuple t)
-        throws DbException, IOException, TransactionAbortedException;
+        throws DBException, IOException, TransactionAbortedException;
 
     /**
      * Removes the specifed tuple from the file on behalf of the specified
@@ -55,11 +57,11 @@ public interface DbFile extends Serializable {
      * This method will acquire a lock on the affected pages of the file, and
      * may block until the lock can be acquired.
      *
-     * @throws DbException if the tuple cannot be deleted or is not a member
+     * @throws DBException if the tuple cannot be deleted or is not a member
      *   of the file
      */
     public Page deleteTuple(TransactionId tid, Tuple t)
-            throws DbException, TransactionAbortedException, IOException;
+            throws DBException, TransactionAbortedException, IOException;
 
     /**
      * Returns an iterator over all the tuples stored in this DbFile. The

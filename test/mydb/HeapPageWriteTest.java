@@ -10,6 +10,7 @@ import java.util.LinkedList;
 import junit.framework.JUnit4TestAdapter;
 
 import mydb.Database.Database;
+import mydb.Exception.DBException;
 import mydb.TupleDetail.Tuple;
 import mydb.systemtest.MyDbTestBase;
 import mydb.systemtest.SystemTestUtil;
@@ -81,7 +82,7 @@ public class HeapPageWriteTest extends MyDbTestBase {
         try {
             page.insertTuple(Utility.getHeapTuple(0, 2));
             throw new Exception("page should be full; expected DbException");
-        } catch (DbException e) {
+        } catch (DBException e) {
             // explicitly ignored
         }
     }
@@ -89,7 +90,7 @@ public class HeapPageWriteTest extends MyDbTestBase {
     /**
      * Unit test for HeapPage.deleteTuple() with false tuples
      */
-    @Test(expected=DbException.class)
+    @Test(expected= DBException.class)
         public void deleteNonexistentTuple() throws Exception {
         HeapPage page = new HeapPage(pid, HeapPageReadTest.EXAMPLE_DATA);
         page.deleteTuple(Utility.getHeapTuple(2, 2));
@@ -122,7 +123,7 @@ public class HeapPageWriteTest extends MyDbTestBase {
         try {
             page.deleteTuple(first);
             throw new Exception("page should be empty; expected DbException");
-        } catch (DbException e) {
+        } catch (DBException e) {
             // explicitly ignored
         }
     }

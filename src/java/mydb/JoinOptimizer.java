@@ -1,6 +1,7 @@
 package mydb;
 
 import mydb.Database.Database;
+import mydb.Exception.ParserException;
 
 import java.util.*;
 
@@ -45,7 +46,7 @@ public class JoinOptimizer {
      *            The right join node's child
      */
     public static DbIterator instantiateJoin(LogicalJoinNode lj,
-            DbIterator plan1, DbIterator plan2) throws ParsingException {
+            DbIterator plan1, DbIterator plan2) throws ParserException {
 
         int t1id = 0, t2id = 0;
         DbIterator j;
@@ -53,7 +54,7 @@ public class JoinOptimizer {
         try {
             t1id = plan1.getTupleDetail().fieldNameToIndex(lj.f1QuantifiedName);
         } catch (NoSuchElementException e) {
-            throw new ParsingException("Unknown field " + lj.f1QuantifiedName);
+            throw new ParserException("Unknown field " + lj.f1QuantifiedName);
         }
 
         if (lj instanceof LogicalSubplanJoinNode) {
@@ -63,7 +64,7 @@ public class JoinOptimizer {
                 t2id = plan2.getTupleDetail().fieldNameToIndex(
                         lj.f2QuantifiedName);
             } catch (NoSuchElementException e) {
-                throw new ParsingException("Unknown field "
+                throw new ParserException("Unknown field "
                         + lj.f2QuantifiedName);
             }
         }
@@ -211,14 +212,14 @@ public class JoinOptimizer {
      *            simply execute it
      * @return A Vector<LogicalJoinNode> that stores joins in the left-deep
      *         order in which they should be executed.
-     * @throws ParsingException
+     * @throws ParserException
      *             when stats or filter selectivities is missing a table in the
      *             join, or or when another internal error occurs
      */
     public Vector<LogicalJoinNode> orderJoins(
             HashMap<String, TableStats> stats,
             HashMap<String, Double> filterSelectivities, boolean explain)
-            throws ParsingException {
+            throws ParserException {
         //Not necessary for projs 1--3
 
         // some code goes here
@@ -254,7 +255,7 @@ public class JoinOptimizer {
      *            plans of size joinSet.size()-1
      * @return A {@link CostCard} objects desribing the cost, cardinality,
      *         optimal subplan
-     * @throws ParsingException
+     * @throws ParserException
      *             when stats, filterSelectivities, or pc object is missing
      *             tables involved in join
      */
@@ -263,16 +264,16 @@ public class JoinOptimizer {
             HashMap<String, TableStats> stats,
             HashMap<String, Double> filterSelectivities,
             LogicalJoinNode joinToRemove, Set<LogicalJoinNode> joinSet,
-            double bestCostSoFar, PlanCache pc) throws ParsingException {
+            double bestCostSoFar, PlanCache pc) throws ParserException {
 
         LogicalJoinNode j = joinToRemove;
 
         Vector<LogicalJoinNode> prevBest;
 
         if (this.p.getTableId(j.t1Alias) == null)
-            throw new ParsingException("Unknown table " + j.t1Alias);
+            throw new ParserException("Unknown table " + j.t1Alias);
         if (this.p.getTableId(j.t2Alias) == null)
-            throw new ParsingException("Unknown table " + j.t2Alias);
+            throw new ParserException("Unknown table " + j.t2Alias);
 
         String table1Name = Database.getCatalog().getTableName(
                 this.p.getTableId(j.t1Alias));

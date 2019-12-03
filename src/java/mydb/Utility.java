@@ -1,6 +1,7 @@
 package mydb;
 
 import mydb.Database.Database;
+import mydb.Exception.DBException;
 import mydb.TupleDetail.Tuple;
 import mydb.TupleDetail.TupleDetail;
 
@@ -105,7 +106,7 @@ public class Utility {
      * the specified number of columns as IntFields.
      */
     public static HeapFile createEmptyHeapFile(String path, int cols)
-            throws IOException, DbException {
+            throws IOException, DBException {
         File f = new File(path);
         // touch the file
         FileOutputStream fos = new FileOutputStream(f);
