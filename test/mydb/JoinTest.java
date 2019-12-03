@@ -59,7 +59,7 @@ public class JoinTest extends MyDbTestBase {
    * Unit test for Join.getTupleDesc()
    */
   @Test public void getTupleDesc() {
-    JoinPredicate pred = new JoinPredicate(0, Comparison.Operation.EQUALS, 0);
+    JoinCompare pred = new JoinCompare(0, Comparison.Operation.EQUALS, 0);
     Join op = new Join(pred, scan1, scan2);
     TupleDetail expected = Utility.getTupleDesc(width1 + width2);
     TupleDetail actual = op.getTupleDetail();
@@ -70,7 +70,7 @@ public class JoinTest extends MyDbTestBase {
    * Unit test for Join.rewind()
    */
   @Test public void rewind() throws Exception {
-    JoinPredicate pred = new JoinPredicate(0, Comparison.Operation.EQUALS, 0);
+    JoinCompare pred = new JoinCompare(0, Comparison.Operation.EQUALS, 0);
     Join op = new Join(pred, scan1, scan2);
     op.open();
     while (op.hasNext()) {
@@ -89,7 +89,7 @@ public class JoinTest extends MyDbTestBase {
    * Unit test for Join.getNext() using a &gt; predicate
    */
   @Test public void gtJoin() throws Exception {
-    JoinPredicate pred = new JoinPredicate(0, Comparison.Operation.GREATER_THAN, 0);
+    JoinCompare pred = new JoinCompare(0, Comparison.Operation.GREATER_THAN, 0);
     Join op = new Join(pred, scan1, scan2);
     op.open();
     gtJoin.open();
@@ -100,7 +100,7 @@ public class JoinTest extends MyDbTestBase {
    * Unit test for Join.getNext() using an = predicate
    */
   @Test public void eqJoin() throws Exception {
-    JoinPredicate pred = new JoinPredicate(0, Comparison.Operation.EQUALS, 0);
+    JoinCompare pred = new JoinCompare(0, Comparison.Operation.EQUALS, 0);
     Join op = new Join(pred, scan1, scan2);
     op.open();
     eqJoin.open();

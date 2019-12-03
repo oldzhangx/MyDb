@@ -68,7 +68,7 @@ public class JoinOptimizer {
             }
         }
 
-        JoinPredicate p = new JoinPredicate(t1id, lj.p, t2id);
+        JoinCompare p = new JoinCompare(t1id, lj.p, t2id);
 
         j = new Join(p,plan1,plan2);
 

@@ -10,7 +10,7 @@ import java.util.*;
 public class Join extends Operator {
 
     private static final long serialVersionUID = 1421683959262591903L;
-    private JoinPredicate p;
+    private JoinCompare p;
     private DbIterator child1;
     private DbIterator child2;
     private Tuple[] leftBuffer;
@@ -31,14 +31,14 @@ public class Join extends Operator {
      * @param child2
      *            Iterator for the right(inner) relation to join
      */
-    public Join(JoinPredicate p, DbIterator child1, DbIterator child2) {
+    public Join(JoinCompare p, DbIterator child1, DbIterator child2) {
         // some code goes here
         this.p = p;
         this.child1 = child1;
         this.child2 = child2;
     }
 
-    public JoinPredicate getJoinPredicate() {
+    public JoinCompare getJoinPredicate() {
         // some code goes here
         return p;
     }
@@ -113,7 +113,7 @@ public class Join extends Operator {
      * joined on equality of the first column, then this returns {1,2,3,1,5,6}.
      *
      * @return The next matching tuple.
-     * @see JoinPredicate#filter
+     * @see JoinCompare#filter
      */
     protected Tuple fetchNext() throws TransactionAbortedException, DbException {
         if (tpIter == null) return null;
@@ -293,7 +293,7 @@ public class Join extends Operator {
         int left = 0;
         int right = 0;
 
-        JoinPredicate greatThan = new JoinPredicate(p.getField1(), Comparison.Operation.GREATER_THAN, p.getField2());
+        JoinCompare greatThan = new JoinCompare(p.getField1(), Comparison.Operation.GREATER_THAN, p.getField2());
 
         boolean equalFlag = true;
         int leftFlag = 0;
@@ -355,14 +355,14 @@ public class Join extends Operator {
 
     class CompareTp implements Comparator<Tuple>{
 
-        private JoinPredicate cop;
+        private JoinCompare cop;
 
         public CompareTp(boolean reverse, int field){
             super();
             if (reverse) {
-                cop = new JoinPredicate(field, Comparison.Operation.LESS_THAN, field);
+                cop = new JoinCompare(field, Comparison.Operation.LESS_THAN, field);
             } else {
-                cop = new JoinPredicate(field, Comparison.Operation.GREATER_THAN, field);
+                cop = new JoinCompare(field, Comparison.Operation.GREATER_THAN, field);
             }
         }
 
