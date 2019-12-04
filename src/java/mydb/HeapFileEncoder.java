@@ -4,32 +4,22 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-/**
- * HeapFileEncoder reads a comma delimited text file or accepts
- * an array of tuples and converts it to
- * pages of binary data in the appropriate format for simpledb heap pages
- * Pages are padded out to a specified length, and written consecutive in a
- * data file.
- */
-
+// Pages are padded out to a specified length
 public class HeapFileEncoder {
 
-  /** Convert the specified tuple list (with only integer fields) into a binary
-   * page file. <br>
-   *
-   * The format of the output file will be as specified in HeapPage and
-   * HeapFile.
-   *
-   * @see HeapPage
-   * @see HeapFile
-   * @param tuples the tuples - a list of tuples, each represented by a list of integers that are
-   *        the field values for that tuple.
-   * @param outFile The output file to write data to
-   * @param npagebytes The number of bytes per page in the output file
-   * @param numFields the number of fields in each input tuple
-   * @throws IOException if the temporary/output file can't be opened
-   */
-  public static void convert(ArrayList<ArrayList<Integer>> tuples, File outFile, int npagebytes, int numFields) throws IOException {
+
+//   * @see HeapPage
+//   * @see HeapFile
+//   * @param tuples the tuples - a list of tuples, each represented by a list of integers that are
+//   *        the field values for that tuple.
+//   * @param outFile The output file to write data to
+//   * @param npagebytes The number of bytes per page in the output file
+//   * @param numFields the number of fields in each input tuple
+//   * @throws IOException if the temporary/output file can't be opened
+
+
+  // Convert the specified tuple list (with only integer fields) into a binary page file.
+  public static void convert(ArrayList<ArrayList<Integer>> tuples, File outFile, int npagebytes, int numFields) throws  IOException {
       File tempInput = File.createTempFile("tempTable", ".txt");
       tempInput.deleteOnExit();
       BufferedWriter bw = new BufferedWriter(new FileWriter(tempInput));
@@ -65,27 +55,16 @@ public class HeapFileEncoder {
       convert(inFile,outFile,npagebytes,numFields,typeAr,',');
   }
 
-   /** Convert the specified input text file into a binary
-    * page file. <br>
-    * Assume format of the input file is (note that only integer fields are
-    * supported):<br>
-    * int,...,int\n<br>
-    * int,...,int\n<br>
-    * ...<br>
-    * where each row represents a tuple.<br>
-    * <p>
-    * The format of the output file will be as specified in HeapPage and
-    * HeapFile.
-    *
-    * @see HeapPage
-    * @see HeapFile
-    * @param inFile The input file to read data from
-    * @param outFile The output file to write data to
-    * @param npagebytes The number of bytes per page in the output file
-    * @param numFields the number of fields in each input line/output tuple
-    * @throws IOException if the input/output file can't be opened or a
-    *   malformed input line is encountered
-    */
+
+//    * @see HeapPage
+//    * @see HeapFile
+//    * @param inFile The input file to read data from
+//    * @param outFile The output file to write data to
+//    * @param npagebytes The number of bytes per page in the output file
+//    * @param numFields the number of fields in each input line/output tuple
+//    * @throws IOException if the input/output file can't be opened or a
+//    *   malformed input line is encountered
+
   public static void convert(File inFile, File outFile, int npagebytes,
                  int numFields, Type[] typeAr, char fieldSeparator)
       throws IOException {
@@ -148,8 +127,7 @@ public class HeapFileEncoder {
                 s = s.trim();
                 int overflow = Type.STRING_LEN - s.length();
                 if (overflow < 0) {
-                    String news = s.substring(0,Type.STRING_LEN);
-                    s  = news;
+                    s  = s.substring(0,Type.STRING_LEN);
                 }
                 pageStream.writeInt(s.length());
                 pageStream.writeBytes(s);

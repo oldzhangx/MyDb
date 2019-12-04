@@ -3,7 +3,6 @@ import mydb.DbIterator;
 import mydb.Exception.DBException;
 import mydb.Exception.TransactionAbortedException;
 import mydb.JoinCompare;
-import mydb.Operation.Join.Comparison;
 import mydb.Operator;
 import mydb.SeqScan;
 import mydb.TupleDetail.Tuple;
@@ -11,9 +10,7 @@ import mydb.TupleDetail.TupleDetail;
 import java.io.IOException;
 import java.util.*;
 
-/**
- * The Join operator implements the relational join operation.
- */
+// The Join operator implements the relational join operation.
 public class Join extends Operator {
 
     private static final long serialVersionUID = 1421683959262591903L;

@@ -128,24 +128,22 @@ public class Catalog {
         tableIdNameMap.clear();
     }
     
-    /**
-     * Reads the schema from a file and creates the appropriate tables in the database.
-     * @param catalogFile
-     */
+    // Reads the schema from a file and creates the appropriate tables in the database.
     public void loadSchema(String catalogFile) {
         String line = "";
         String baseFolder=new File(catalogFile).getParent();
         try {
+            // read from disk
             BufferedReader br = new BufferedReader(new FileReader(new File(catalogFile)));
             
             while ((line = br.readLine()) != null) {
                 //assume line is of the format name (field type, field type, ...)
                 String name = line.substring(0, line.indexOf("(")).trim();
-                //System.out.println("TABLE NAME: " + name);
+                System.out.println("TABLE NAME: " + name);
                 String fields = line.substring(line.indexOf("(") + 1, line.indexOf(")")).trim();
                 String[] els = fields.split(",");
-                ArrayList<String> names = new ArrayList<String>();
-                ArrayList<Type> types = new ArrayList<Type>();
+                ArrayList<String> names = new ArrayList<>();
+                ArrayList<Type> types = new ArrayList<>();
                 String primaryKey = "";
                 for (String e : els) {
                     String[] els2 = e.trim().split(" ");
@@ -170,9 +168,11 @@ public class Catalog {
                 Type[] typeAr = types.toArray(new Type[0]);
                 String[] namesAr = names.toArray(new String[0]);
                 TupleDetail t = new TupleDetail(typeAr, namesAr);
+
+
                 HeapFile tabHf = new HeapFile(new File(baseFolder+"/"+name + ".dat"), t);
                 addTable(tabHf,name,primaryKey);
-                System.out.println("Added table : " + name + " with schema " + t);
+                System.out.println("TABLE: " + name + "; attribute: " + t + " ; end; ");
             }
         } catch (IOException e) {
             e.printStackTrace();

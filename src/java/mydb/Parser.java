@@ -314,7 +314,7 @@ public class Parser {
                 System.out.println("The query plan is:");
                 m.invoke(null, (Operator) physicalPlan,
                         lp.getTableAliasToIdMapping(), TableStats.getStatsMap());
-                c = Class.forName("simpledb.QueryPlanVisualizer");
+                c = Class.forName("mydb.QueryPlanVisualizer");
                 m = c.getMethod(
                         "printQueryPlanTree", DbIterator.class, System.out.getClass());
                 m.invoke(c.newInstance(), physicalPlan,System.out);
@@ -445,8 +445,8 @@ public class Parser {
                 curtrans.commit();
                 curtrans = null;
                 inUserTrans = false;
-                System.out.println("Transaction " + curtrans.getId().getId()
-                        + " committed.");
+//                System.out.println("Transaction " + curtrans.getId().getId()
+//                        + " committed.");
                 break;
             case "ROLLBACK":
                 if (curtrans == null)
@@ -454,9 +454,8 @@ public class Parser {
                 curtrans.abort();
                 curtrans = null;
                 inUserTrans = false;
-                assert curtrans != null;
-                System.out.println("Transaction " + curtrans.getId().getId()
-                        + " aborted.");
+//                System.out.println("Transaction " + curtrans.getId().getId()
+//                        + " aborted.");
 
                 break;
             case "SET TRANSACTION":
@@ -466,8 +465,8 @@ public class Parser {
                 curtrans = new Transaction();
                 curtrans.start();
                 inUserTrans = true;
-                System.out.println("Started a new transaction tid = "
-                        + curtrans.getId().getId());
+//                System.out.println("Started a new transaction tid = "
+//                        + curtrans.getId().getId());
                 break;
             default:
                 throw new ParserException("Unsupported operation");
@@ -522,8 +521,8 @@ public class Parser {
                     // a transaction and manages transaction commit / abort.
                     curtrans = new Transaction();
                     curtrans.start();
-                    System.out.println("Started a new transaction tid = "
-                            + curtrans.getId().getId());
+//                    System.out.println("Started a new transaction tid = "
+//                            + curtrans.getId().getId());
                 }
                 try{
                     if(s instanceof ZInsert)
@@ -599,7 +598,7 @@ public class Parser {
     static final String usage = "Usage: parser catalogFile [-explain] [-f queryFile]";
 
     protected void shutdown() {
-        System.out.println("Bye");
+        System.out.println("See you next time");
     }
 
     protected boolean interactive = true;
