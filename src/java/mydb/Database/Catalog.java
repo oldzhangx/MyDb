@@ -2,20 +2,14 @@ package mydb.Database;
 
 import mydb.DbFile;
 import mydb.HeapFile;
+import mydb.HeapFileEncoder;
 import mydb.TupleDetail.TupleDetail;
 import mydb.Type;
 
 import java.io.*;
 import java.util.*;
 
-/**
- * The Catalog keeps track of all available tables in the database and their
- * associated schemas.
- * For now, this is a stub catalog that must be populated with tables by a
- * user program before it can be used -- eventually, this should be converted
- * to a catalog that reads a catalog table from disk.
- */
-
+// reads a catalog table from disk.
 public class Catalog {
 
     private HashMap<String, Integer> tableNameIdMap;
@@ -26,10 +20,7 @@ public class Catalog {
 
     private HashMap<Integer, String> tableIdNameMap;
 
-    /**
-     * Constructor.
-     * Creates a new, empty catalog.
-     */
+
     Catalog() {
         tableNameIdMap = new HashMap<>();
         tableIdFileMap =new HashMap<>();
@@ -37,15 +28,7 @@ public class Catalog {
         tableIdNameMap = new HashMap<>();
     }
 
-    /**
-     * Add a new table to the catalog.
-     * This table's contents are stored in the specified DbFile.
-     * @param file the contents of the table to add;  file.getId() is the identfier of
-     *    this file/tupledesc param for the calls getTupleDesc and getFile
-     * @param name the name of the table -- may be an empty string.  May not be null.  If a name
-     * @param pkeyField the name of the primary key field
-     * conflict exists, use the last table to be added as the table for a given name.
-     */
+    //Add a new table to the catalog.
     private void addTable(DbFile file, String name, String pkeyField) {
         if (name == null || pkeyField == null || file == null)  throw new IllegalArgumentException();
         tableNameIdMap.put(name, file.getId());
@@ -58,21 +41,12 @@ public class Catalog {
         addTable(file, name, "");
     }
 
-    /**
-     * Add a new table to the catalog.
-     * This table has tuples formatted using the specified TupleDesc and its
-     * contents are stored in the specified DbFile.
-     * @param file the contents of the table to add;  file.getId() is the identfier of
-     *    this file/tupledesc param for the calls getTupleDesc and getFile
-     */
+
     public void addTable(DbFile file) {
         addTable(file, (UUID.randomUUID()).toString());
     }
 
-    /**
-     * Return the id of the table with a specified name,
-     * @throws NoSuchElementException if the table doesn't exist
-     */
+
     public int getTableId(String name) throws NoSuchElementException {
         if(name == null) throw new NoSuchElementException();
         Integer result = tableNameIdMap.get(name);
@@ -80,24 +54,14 @@ public class Catalog {
         throw new NoSuchElementException();
     }
 
-    /**
-     * Returns the tuple descriptor (schema) of the specified table
-     * @param tableid The id of the table, as specified by the DbFile.getId()
-     *     function passed to addTable
-     * @throws NoSuchElementException if the table doesn't exist
-     */
+
     public TupleDetail getTupleDetail(int tableid) throws NoSuchElementException {
         DbFile result = tableIdFileMap.get(tableid);
         if(result!=null) return result.getTupleDetail();
         throw new NoSuchElementException();
     }
 
-    /**
-     * Returns the DbFile that can be used to read the contents of the
-     * specified table.
-     * @param tableid The id of the table, as specified by the DbFile.getId()
-     *     function passed to addTable
-     */
+
     public DbFile getDbFile(int tableid) throws NoSuchElementException {
         DbFile result = tableIdFileMap.get(tableid);
         if(result!=null) return result;
@@ -120,7 +84,7 @@ public class Catalog {
         throw new NoSuchElementException();
     }
     
-    /** Delete all tables from the catalog */
+
     public void clear() {
         tableNameIdMap.clear();
         tableIdFileMap.clear();
@@ -137,11 +101,15 @@ public class Catalog {
             BufferedReader br = new BufferedReader(new FileReader(new File(catalogFile)));
             
             while ((line = br.readLine()) != null) {
+
+
                 //assume line is of the format name (field type, field type, ...)
                 String name = line.substring(0, line.indexOf("(")).trim();
                 System.out.println("TABLE NAME: " + name);
+
                 String fields = line.substring(line.indexOf("(") + 1, line.indexOf(")")).trim();
                 String[] els = fields.split(",");
+
                 ArrayList<String> names = new ArrayList<>();
                 ArrayList<Type> types = new ArrayList<>();
                 String primaryKey = "";
@@ -165,8 +133,11 @@ public class Catalog {
                         }
                     }
                 }
+
                 Type[] typeAr = types.toArray(new Type[0]);
                 String[] namesAr = names.toArray(new String[0]);
+
+                readFromDisk(name,typeAr);
                 TupleDetail t = new TupleDetail(typeAr, namesAr);
 
 
@@ -180,6 +151,47 @@ public class Catalog {
         } catch (IndexOutOfBoundsException e) {
             System.out.println ("Invalid catalog entry : " + line);
             System.exit(0);
+        }
+    }
+
+
+    public void readFromDisk(String name, Type[] typeAr){
+        try {
+
+            String filename = name+".txt";
+            File sourceTxtFile = new File(filename);
+            File targetDatFile = new File(filename.replaceAll(".txt", ".dat"));
+            char fieldSeparator = ',';
+
+//            if (args.length == 3)
+//                for (int i = 0; i < count; i++)
+//                    ts[i] = Type.INT_TYPE;
+//            else {
+//                String typeString = args[3];
+//                String[] typeStringAr = typeString.split(",");
+//                if (typeStringAr.length != count) {
+//                    System.err.println("The number of types does not agree with the number of columns");
+//                    return;
+//                }
+//                int index = 0;
+//                for (String s : typeStringAr) {
+//                    if (s.toLowerCase().equals("int"))
+//                        typeAr[index++] = Type.INT_TYPE;
+//                    else if (s.toLowerCase().equals("string"))
+//                        typeAr[index++] = Type.STRING_TYPE;
+//                    else {
+//                        System.err.println("Unknown type " + s);
+//                        return;
+//                    }
+//                }
+
+//            }
+
+            HeapFileEncoder.convert(sourceTxtFile, targetDatFile,
+                    BufferPool.PAGE_SIZE, typeAr.length, typeAr, fieldSeparator);
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 }

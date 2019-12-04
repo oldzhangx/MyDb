@@ -642,13 +642,12 @@ public class Parser {
                 assert queryFile != null;
                 processNextStatement(new FileInputStream(new File(queryFile)));
                 long time = System.currentTimeMillis() - startTime;
-                System.out.printf("----------------\n%.2f seconds\n\n",
-                        ((double) time / 1000.0));
-                System.out.println("Press Enter to exit");
+                System.out.printf("done\n-%.2f ms-\n\n", ((double)time));
+                System.out.println("see you later");
                 System.in.read();
                 this.shutdown();
             } catch (FileNotFoundException e) {
-                System.out.println("Unable to find query file" + queryFile);
+                System.out.println("file not found" + queryFile);
                 e.printStackTrace();
             }
         } else { // no query file, run interactive prompt
@@ -663,7 +662,7 @@ public class Parser {
             StringBuilder buffer = new StringBuilder();
             String line;
             boolean quit = false;
-            while (!quit && (line = reader.readLine("DB-> ")) != null) {
+            while (!quit && (line = reader.readLine("> ")) != null) {
                 // Split statements at ';': handles multiple statements on one
                 // line, or one
                 // statement spread across many lines
@@ -685,8 +684,7 @@ public class Parser {
                     // start sql process
                     processNextStatement(new ByteArrayInputStream(statementBytes));
                     long time = System.currentTimeMillis() - startTime;
-                    System.out.printf("----------------\n%.2f seconds\n\n",
-                            ((double) time / 1000.0));
+                    System.out.printf("done\n-%.2f ms-\n\n", ((double)time));
 
                     // Grab the remainder of the line
                     line = line.substring(split + 1);
