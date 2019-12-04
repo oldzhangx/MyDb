@@ -48,7 +48,7 @@ public class Insert extends Operator {
         this.child  =child;
         this.tableId = tableId;
         insertCount = 0;
-        tupleDetail = new TupleDetail(new Type[]{Type.INT_TYPE}, new String[]{null});
+        tupleDetail = new TupleDetail(new Type[]{Type.INT_TYPE}, new String[]{"insert_count"});
     }
 
     public TupleDetail getTupleDetail() {

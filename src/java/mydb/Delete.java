@@ -29,7 +29,7 @@ public class Delete extends Operator {
         this.transactionId = transactionId;
         this.child = child;
         //TODO: tuple name
-        tupleDetail = new TupleDetail(new Type[]{Type.INT_TYPE}, new String[]{null});
+        tupleDetail = new TupleDetail(new Type[]{Type.INT_TYPE}, new String[]{"delete_count"});
         deleteCount = 0;
     }
 

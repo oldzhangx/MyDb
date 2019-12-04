@@ -236,8 +236,8 @@ public class Parser {
                 aggField = ((ZConstant) ((ZExpression) si.getExpression())
                         .getOperand(0)).getValue();
                 aggFun = si.getAggregate();
-                System.out.println("Aggregate field is " + aggField
-                        + ", agg fun is : " + aggFun);
+//                System.out.println("Aggregate field is " + aggField
+//                        + ", agg fun is : " + aggFun);
                 //R: add a projection of a field and a aggregate to the logical plan
                 lp.addProjectField(aggField, aggFun);
             } else {
@@ -480,8 +480,7 @@ public class Parser {
         try {
             ZStatement stmt = p.readStatement();
             if (stmt instanceof ZQuery) {
-                LogicalPlan lp = parseQueryLogicalPlan(tid, (ZQuery) stmt);
-                return lp;
+                return parseQueryLogicalPlan(tid, (ZQuery) stmt);
             }
         } catch (Zql.ParseException e) {
             throw new ParserException(
@@ -535,17 +534,14 @@ public class Parser {
                         query = handleQueryStatement((ZQuery) s,
                                 curtrans.getId());
                     else{
-                        System.out.println("Can't parse "
-                                        + s
-                                        + "\n -- parser only handles SQL transactions, insert, delete, and select statements");
+                        System.out.println("parse word error!");
                     }
                     if (query != null)
                         query.execute();
 
                     if (!inUserTrans && curtrans != null) {
                         curtrans.commit();
-                        System.out.println("Transaction "
-                                + curtrans.getId().getId() + " committed.");
+//                        System.out.println("Transaction " + curtrans.getId().getId() + " committed.");
                     }
                 } catch (Throwable a) {
                     // Whenever error happens, abort the current transaction

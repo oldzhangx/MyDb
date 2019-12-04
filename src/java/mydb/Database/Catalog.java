@@ -95,7 +95,7 @@ public class Catalog {
     // Reads the schema from a file and creates the appropriate tables in the database.
     public void loadSchema(String catalogFile) {
         String line = "";
-        String baseFolder=new File(catalogFile).getParent();
+
         try {
             // read from disk
             BufferedReader br = new BufferedReader(new FileReader(new File(catalogFile)));
@@ -139,9 +139,13 @@ public class Catalog {
 
                 readFromDisk(name,typeAr);
                 TupleDetail t = new TupleDetail(typeAr, namesAr);
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
 
-
-                HeapFile tabHf = new HeapFile(new File(baseFolder+"/"+name + ".dat"), t);
+                HeapFile tabHf = new HeapFile(new File("dat/"+name + ".dat"), t);
                 addTable(tabHf,name,primaryKey);
                 System.out.println("TABLE: " + name + "; attribute: " + t + " ; end; ");
             }
@@ -160,7 +164,7 @@ public class Catalog {
 
             String filename = name+".txt";
             File sourceTxtFile = new File(filename);
-            File targetDatFile = new File(filename.replaceAll(".txt", ".dat"));
+            File targetDatFile = new File("dat/"+filename.replaceAll(".txt", ".dat"));
             char fieldSeparator = ',';
 
 //            if (args.length == 3)

@@ -173,7 +173,7 @@ public class LogicalPlan {
     */
 
     public void addScan(int table, String name) {
-        System.out.println("Added scan of table " + name);
+        //System.out.println(name);
         tables.addElement(new LogicalScanNode(table,name));
         tableMap.put(name,table);
     }
@@ -188,7 +188,7 @@ public class LogicalPlan {
         fname=disambiguateName(fname);
         if (fname.equals("*"))
             fname="null.*";
-        System.out.println("Added select list field " + fname);
+//        System.out.println("Added select list field " + fname);
         if (aggOp != null) {
             System.out.println("\t with aggregator " + aggOp);
         }
