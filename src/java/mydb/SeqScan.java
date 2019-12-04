@@ -115,6 +115,7 @@ public class SeqScan implements DbIterator {
 
     public Tuple next() throws NoSuchElementException,
             TransactionAbortedException, DBException, IOException {
+        if(!hasNext()) throw new NoSuchElementException();
         return tupleIterator.next();
     }
 

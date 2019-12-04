@@ -108,6 +108,14 @@ public class HeapPage implements Page {
         oldData = getPageData().clone();
     }
 
+    public int getTupleNumber() {
+        int result = 0;
+        for(int i = 0; i< tuples.length ; i++)
+            if (tuples[i] != null)
+                result++;
+        return result;
+    }
+
     /**
      * @return the PageId associated with this page.
      */

@@ -140,8 +140,10 @@ public class HeapFile implements DbFile {
             tid = transactionId;
         }
 
-        public Iterator<Tuple> getTuplesInPage(HeapPageId pid) throws TransactionAbortedException, DBException, IOException {
-            return ((HeapPage) Database.getBufferPool().getPage(tid, pid, Permissions.READ_ONLY)).iterator();
+        Iterator<Tuple> getTuplesInPage(HeapPageId pid) throws TransactionAbortedException, DBException, IOException {
+            HeapPage heapPage = (HeapPage) Database.getBufferPool().getPage(tid, pid, Permissions.READ_ONLY);
+            if (heapPage.getTupleNumber()==0) return null;
+            return heapPage.iterator();
         }
 
         @Override
@@ -192,8 +194,12 @@ public class HeapFile implements DbFile {
             for (; pagePos < pageCount && addNum < cachePool.getNum(); ) {
                 HeapPageId pid = new HeapPageId(getId(), pagePos);
                 Iterator<Tuple> tuples = getTuplesInPage(pid);
-                cachePool.addPage(tuples);
-                addNum = ++pagePos - initPos;
+                if (tuples != null) {
+                    cachePool.addPage(tuples);
+                    addNum = ++pagePos - initPos;
+                }else{
+                    ++pagePos;
+                }
             }
             if (addNum != 0) {
                 cachePool.init();
