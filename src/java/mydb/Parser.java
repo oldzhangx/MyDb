@@ -303,7 +303,7 @@ public class Parser {
         if (physicalPlan != null) {
             Class<?> c;
             try {
-                c = Class.forName("simpledb.OperatorCardinality");
+                c = Class.forName("mydb.OperatorCardinality");
 
                 Class<?> p = Operator.class;
                 Class<?> h = Map.class;
