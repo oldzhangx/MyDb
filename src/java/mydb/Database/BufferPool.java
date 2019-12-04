@@ -143,7 +143,8 @@ public class BufferPool {
         int tableId=tuple.getRecordId().getPageId().getTableId();
         HeapFile table = (HeapFile) Database.getCatalog().getDbFile(tableId);
         table.deleteTuple(transactionId, tuple);
-        //Page affectedPage = table.deleteTuple(tid, t);
+//        Page affectedPage = table.deleteTuple(transactionId, tuple);
+//        affectedPage.markDirty(true,transactionId);
     }
 
     /**

@@ -28,6 +28,7 @@ public class Delete extends Operator {
     public Delete(TransactionId transactionId, DbIterator child) {
         this.transactionId = transactionId;
         this.child = child;
+        //TODO: tuple name
         tupleDetail = new TupleDetail(new Type[]{Type.INT_TYPE}, new String[]{null});
         deleteCount = 0;
     }
@@ -56,16 +57,7 @@ public class Delete extends Operator {
         action = false;
     }
 
-    /**
-     * Deletes tuples as they are read from the child operator. Deletes are
-     * processed via the buffer pool (which can be accessed via the
-     * Database.getBufferPool() method.
-     * 
-     * @return A 1-field tuple containing the number of deleted records.
-     * @see Database#getBufferPool
-     * @see BufferPool#deleteTuple
-     */
-    // TODO: why need action
+    // Deletes tuples as they are read from the child operator
     protected Tuple fetchNext() throws TransactionAbortedException, DBException {
         if (action) return null;
 

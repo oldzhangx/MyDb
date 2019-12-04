@@ -114,10 +114,13 @@ public class HeapFileReadTest extends MyDbTestBase {
         it.open();
         assertTrue(it.hasNext());
         it.close();
+        int i = 0;
         try {
             it.next();
             fail("expected exception");
         } catch (NoSuchElementException e) {
+            i++;
+            System.out.println(i);
         }
         // close twice is harmless
         it.close();

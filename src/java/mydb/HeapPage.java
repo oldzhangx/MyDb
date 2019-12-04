@@ -317,16 +317,19 @@ public class HeapPage implements Page {
 
         int divide = 0;
         int count = 0;
+        int usedTuplesNum = tupleNumbersInPage - getNumEmptySlots();
 
         @Override
         public boolean hasNext() {
-            return tupleNumbersInPage > count && divide < tupleNumbersInPage - getNumEmptySlots();
+            return tupleNumbersInPage > count && divide < usedTuplesNum;
         }
 
         @Override
         public Tuple next() {
             if(!hasNext()) throw new NoSuchElementException();
-            while (!isSlotUsed(count)) count++;
+//            while (!isSlotUsed(count)) count++;
+            for (; !isSlotUsed(count); count++) {
+            }
             divide++;
             //count = count +1;
             return tuples[count++];

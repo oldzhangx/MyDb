@@ -77,7 +77,8 @@ public class SystemTestUtil {
                 Integer columnValue = null;
                 if (columnSpecification != null) columnValue = columnSpecification.get(j);
                 if (columnValue == null) {
-                    columnValue = r.nextInt(maxValue);
+                    //columnValue = r.nextInt(maxValue);
+                    columnValue = i;
                 }
                 tuple.add(columnValue);
             }
